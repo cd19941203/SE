@@ -1,0 +1,530 @@
+<!DOCTYPE HTML>
+<html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- datetimepicker -->
+<script type="text/javascript" src="../moment/moment.min.js"></script>
+<script type="text/javascript" src="../bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="../bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.css" />
+
+<head>
+    <title>BFS - customer</title>
+    <meta charset="utf-8">
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+        
+        body {
+            /*min-width: 1205px;*/
+        }
+        
+        form {
+            align-items: center;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        form {
+            margin: 10px;
+        }
+        
+        .Block {
+            width: 50%;
+            min-width: 450px;
+            max-width: 500px;
+            float: left;
+            padding: 12px;
+            background-color: #fcfcfc;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .number {
+            width: 50px;
+            margin-left: 10px;
+            display: none;
+        }
+        
+        .plus,
+        .num,
+        .minus {
+            display: inline-block;
+        }
+        
+        .num {
+            width: 20px;
+            text-align: center;
+            font-weight: bold;
+            margin: 0px 6px;
+        }
+        
+        .plus,
+        .minus {
+            color: #58a3ef;
+            cursor: pointer;
+        }
+        
+        .remove {
+            color: red;
+            display: inline-block;
+            float: right;
+            cursor: pointer;
+        }
+        
+        #addOrderListItem {
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #555;
+            text-align: center;
+            background-color: #eee;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #addOrderListItem:hover {
+            background-color: #f3f3f3;
+            border-color: #b0b0b0;
+            color: #888;
+        }
+        
+        .order {
+            background-color: #fff;
+            border: 1px dashed #ccc;
+        }
+
+    </style>
+</head>
+
+<script>
+    var USER = "customer3";
+    var orderList;
+    var ModalBtn;
+    var dfd = $.Deferred();
+
+    function Init() {
+        orderList = document.getElementById("orderList");
+        AddOrderListItem();
+        orderList.children[0].children[0].setAttribute("autofocus", "");
+        AddOrderListItem();
+        ModalBtn = document.getElementById("ModalBtn");
+    }
+
+    // ---------------------------------------- datetimepicker begin ---------------------------------------- //
+    $(function() {
+        var date = moment();
+        date.minutes(date.minutes() + 15);
+
+        $('#datetimepicker').datetimepicker({
+            sideBySide: true,
+            defaultDate: date
+        });
+    });
+    // ---------------------------------------- datetimepicker end   ---------------------------------------- //
+
+
+    // ---------------------------------------- Socket begin ---------------------------------------- //
+    var socket = io('http://140.121.197.192:9003');
+
+    socket.on('userIdRequest', function(msg) {
+        socket.emit('userId', USER /*location.href.split("name=")[1]*/ );
+        return
+        $('#Modal').modal('show');
+        $('#Modal').on('shown.bs.modal', function(e) {
+            $('#Modal').on('hidden.bs.modal', function(e) {
+                USER = document.getElementById("USER").value.replace(" ", "");
+                socket.emit('userId', USER /*location.href.split("name=")[1]*/ );
+            });
+        });
+    });
+
+    socket.on('order response', OrderResponse);
+
+    function Emit(type, msg) {
+        socket.emit(type, msg);
+    }
+    // ---------------------------------------- Socket end   ---------------------------------------- //
+
+    function Submit() {
+        var order = {
+            "order": {}
+        };
+        var orderList = $("#orderList li").get();
+
+        order["time"] = new Date().toISOString();
+
+        order["bookTime"] = $('#datetimepicker').data("DateTimePicker").date().format();
+
+        var flag = true;
+        for (var doc of orderList) {
+            var key = doc.children[0].value;
+            var val = parseInt(doc.children[1].children[1].innerText);
+
+            if (key == "" || key.replace(" ", "") == "")
+                continue;
+
+            flag = false;
+
+            if (order.order[key] != undefined)
+                order.order[key] += val;
+            else
+                order.order[key] = val;
+        }
+        if (flag)
+            return;
+
+        Emit('new order', JSON.stringify(order));
+
+        document.getElementById("orders").prepend(new OrderItem(order));
+    }
+
+    function OrderItem(order) {
+        var div_horizontal = document.createElement("div");
+        div_horizontal.className = "form-horizontal order";
+
+        var div_group = document.createElement("div");
+        div_group.className = "form-group";
+        var label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "訂單狀態";
+        var div = document.createElement("div");
+        div.className = "col-sm-9";
+        div.style.position = "relative";
+        div.style.top = "8px";
+        div.innerHTML = "未成立";
+        div_group.appendChild(label);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "預定時間";
+        div = document.createElement("div");
+        div.className = "col-sm-9";
+        div.style.position = "relative";
+        div.style.top = "8px";
+        div.innerHTML = new Date(order["time"]).toLocaleString();
+        div_group.appendChild(label);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "預定取餐時間";
+        div = document.createElement("div");
+        div.className = "col-sm-9";
+        div.style.position = "relative";
+        div.style.top = "8px";
+        div.innerHTML = new Date(order["bookTime"]).toLocaleString();
+        div_group.appendChild(label);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "訂餐明細";
+        var ol = document.createElement("ol");
+        ol.className = "col-sm-9";
+        ol.style.position = "relative";
+        ol.style.top = "8px"
+        for (var key in order.order) {
+            //console.log(key);
+            //console.log(order.order[key]);
+            var li = document.createElement("li");
+
+            var div = document.createElement("div");
+            div.className = "col-sm-4";
+            div.innerHTML = key;
+            li.appendChild(div);
+
+            div = document.createElement("div");
+            div.className = "col-sm-3";
+            div.innerHTML = "數量";
+            li.appendChild(div);
+
+            div = document.createElement("div");
+            div.className = "col-sm-2";
+            div.innerHTML = order.order[key];
+            li.appendChild(div);
+
+            ol.append(li);
+        }
+        div_group.appendChild(label);
+        div_group.appendChild(ol);
+        div_horizontal.appendChild(div_group);
+
+        return div_horizontal;
+    }
+
+    function BecomeHistory(This) {
+        order = This.parentNode.parentNode.parentNode;
+        order.parentNode.removeChild(order);
+        This.parentNode.parentNode.parentNode.className = "form-horizontal order";
+        This.parentNode.parentNode.removeChild(This.parentNode.parentNode.children[0]);
+        $("#ordersHistory").prepend(order);
+    }
+
+    function OrderResponse(msg) {
+        console.log(msg);
+        msg = JSON.parse(msg);
+        var orders = document.getElementById("orders");
+        for (var index in orders.children) {
+            var children = orders.children[index].children;
+
+            if (children[1].children[1].innerHTML.replace(" ", "") == msg["time"].replace(" ", "") &&
+                children[2].children[1].innerHTML.replace(" ", "") == msg["bookTime"].replace(" ", "")) {
+
+                if (msg["response"] == "確認") {
+                    children[0].children[1].innerHTML = "訂單成立";
+                    orders.children[index].className = "form-horizontal order alert-info";
+
+                    break;
+                } else if (msg["response"] == "等待取餐") {
+                    children[0].children[1].innerHTML = "可取餐";
+                    orders.children[index].className = "form-horizontal order alert-success";
+
+                    var div_group = document.createElement("div");
+                    div_group.className = "form-group";
+                    var label = document.createElement("label");
+                    label.className = "col-sm-3 control-label";
+                    label.innerHTML = "餐點完成時間";
+                    var div = document.createElement("div");
+                    div.className = "col-sm-9";
+                    div.style.position = "relative";
+                    div.style.top = "8px";
+                    div.innerHTML = new Date(msg["preparedCompleteTime"]).toLocaleString();
+                    div_group.appendChild(label);
+                    div_group.appendChild(div);
+                    orders.children[index].insertBefore(div_group, orders.children[index].children[3]);
+
+                    break;
+                } else if (msg["response"] == "完成") {
+                    children[0].children[1].innerHTML = "訂單完成";
+                    orders.children[index].className = "form-horizontal order";
+
+                    var div_group = document.createElement("div");
+                    div_group.className = "form-group";
+                    var label = document.createElement("label");
+                    label.className = "col-sm-3 control-label";
+                    label.innerHTML = "實際取餐時間";
+                    var div = document.createElement("div");
+                    div.className = "col-sm-9";
+                    div.style.position = "relative";
+                    div.style.top = "8px";
+                    div.innerHTML = new Date(msg["completeTime"]).toLocaleString();
+                    div_group.appendChild(label);
+                    div_group.appendChild(div);
+                    orders.children[index].insertBefore(div_group, orders.children[index].children[4]);
+
+                    $("#ordersHistory").prepend(orders.children[index]);
+
+                    break;
+                }
+
+
+                var div_group = document.createElement("div");
+                div_group.className = "form-group";
+                var div = document.createElement("div");
+                div.className = "col-sm-offset-1";
+                div.style.marginTop = "12px";
+                var button = document.createElement("button");
+                button.setAttribute("type", "button");
+                //button.className = "btn btn-success";
+                button.setAttribute("onclick", "BecomeHistory(this)");
+                button.innerHTML = "確認";
+                div.appendChild(button);
+                div_group.appendChild(div);
+                orders.children[index].prepend(div_group);
+
+                if (msg["response"] == "要求修改") {
+                    children[1].children[1].innerHTML = "要求修改訂單";
+                    orders.children[index].className = "form-horizontal order alert-warning";
+                    button.className = "btn btn-warning";
+                } else if (msg["response"] == "拒絕") {
+                    children[1].children[1].innerHTML = "訂單取消";
+                    orders.children[index].className = "form-horizontal order alert-danger";
+                    button.className = "btn btn-danger";
+                }
+
+                break;
+            }
+        }
+    }
+
+    function AddOrderListItem() {
+        var li = document.createElement("li");
+
+        var input = document.createElement("input");
+        input.classList.add("col-sm-8");
+        $(input).keyup(function() {
+            if (this.value == "" || this.value.replace(" ", "") == "")
+                this.parentNode.lastElementChild.style.display = "none";
+            else
+                this.parentNode.lastElementChild.style.display = "inline";
+        })
+
+        var div_number = document.createElement("div");
+        div_number.classList.add("number");
+
+        var div = document.createElement("div");
+        div.className = "glyphicon glyphicon-minus minus";
+        $(div).click(function() {
+            var numDom = this.parentNode.children[1];
+            var num = parseInt(numDom.innerHTML);
+            num = num > 1 ? num - 1 : 1;
+            numDom.innerHTML = num;
+        });
+        div_number.appendChild(div);
+
+        div = document.createElement("div");
+        div.className = "num";
+        div.innerHTML = "1";
+        div_number.appendChild(div);
+
+        div = document.createElement("div");
+        div.className = "glyphicon glyphicon-plus plus";
+        $(div).click(function() {
+            var numDom = this.parentNode.children[1];
+            var num = parseInt(numDom.innerHTML);
+            num = num < 10 ? num + 1 : 10;
+            numDom.innerHTML = num;
+        });
+        div_number.appendChild(div);
+
+        div = document.createElement("div");
+        div.className = "glyphicon glyphicon-remove remove";
+        $(div).click(function() {
+            var li = this.parentNode.parentNode;
+            var ol = li.parentNode;
+            ol.removeChild(li);
+            while (orderList.children.length <= 2) {
+                AddOrderListItem();
+            }
+        });
+        div_number.appendChild(div);
+
+        li.appendChild(input);
+        li.appendChild(div_number);
+
+
+        var lastChild = orderList.children[orderList.children.length - 1];
+        orderList.removeChild(lastChild);
+        orderList.appendChild(li);
+        orderList.appendChild(lastChild);
+    }
+
+    window.addEventListener("load", Init, false);
+
+</script>
+
+<body>
+    <div id="Modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="Modal">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Customer Name</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="USER">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Block">
+        <form action="javascript:Submit()">
+            <label for="bookTime">預定取餐時間</label>
+            <div style="display: inline-flex;">
+                <div class='input-group date col-sm-9' id='datetimepicker'>
+                    <input type='text' class="form-control" required>
+                    <span class="input-group-addon" id="bookTime">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <div class="form-group col-sm-2">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <label for="orderList">預定餐點</label>
+            <ol id="orderList">
+                <div>
+                    <div id='addOrderListItem' class="col-sm-8" onclick="AddOrderListItem()">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </div>
+                </div>
+            </ol>
+        </form>
+    </div>
+    <div class="Block">
+        <label for="orders">未取餐訂單</label>
+        <div id="orders">
+        </div>
+    </div>
+    <div class="Block">
+        <label for="ordersHistory">歷史訂單</label>
+        <div id="ordersHistory">
+            <!--div class="form-horizontal order">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">訂單狀態</label>
+                    <div class="col-sm-9" style="position: relative; top: 8px;">已完成</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">預定時間</label>
+                    <div class="col-sm-9" style="position: relative; top: 8px;">2017/11/27 上午8:22:14</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">預定取餐時間</label>
+                    <div class="col-sm-9" style="position: relative; top: 8px;">2017/11/27 上午8:35:00</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">餐點完成時間</label>
+                    <div class="col-sm-9" style="position: relative; top: 8px;">2017/11/27 上午8:32:48</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">實際取餐時間</label>
+                    <div class="col-sm-9" style="position: relative; top: 8px;">2017/11/27 上午8:34:15</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">訂餐明細</label>
+                    <ol class="col-sm-9" style="position: relative; top: 8px;">
+                        <li>
+                            <div class="col-sm-4">原味蛋餅</div>
+                            <div class="col-sm-3">數量</div>
+                            <div class="col-sm-2">1</div>
+                        </li>
+                        <li>
+                            <div class="col-sm-4">紅茶</div>
+                            <div class="col-sm-3">數量</div>
+                            <div class="col-sm-2">1</div>
+                        </li>
+                    </ol>
+                </div>
+            </div-->
+        </div>
+    </div>
+</body>
+
+</html>
