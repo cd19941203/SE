@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<head>
+    <title>BFS - customer</title>
+    <meta charset="utf-8">
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+        
+        .Block {
+            width: 50%;
+            min-width: 450px;
+            max-width: 500px;
+            float: left;
+            padding: 12px;
+            background-color: #fcfcfc;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .order {
+            background-color: #fff;
+            border: 1px dashed #ccc;
+        }
+
+    </style>
+</head>
+
+<script>
+    var modal = {};
+
+    function Init() {
+        modal["customer"] = document.getElementById("modal-customer");
+        modal["time"] = document.getElementById("modal-time");
+        modal["bookTime"] = document.getElementById("modal-bookTime");
+        modal["orderList"] = document.getElementById("modal-orderList");
+    }
+
+    // ---------------------------------------- Socket start ---------------------------------------- //
+    var socket = io('http://140.121.197.192:9003');
+
+    $('form').submit(function() {
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+    });
+
+    socket.on('userIdRequest', function(msg) {
+        socket.emit('userId', "admin" /*location.href.split("name=")[1]*/ );
+    });
+
+    socket.on('new order', newOrder);
+
+    function Emit(type, msg) {
+        socket.emit(type, msg);
+    }
+    // ---------------------------------------- Socket end   ---------------------------------------- //
+
+    function newOrder(order) {
+        //console.log(order);
+        order = JSON.parse(order);
+        document.getElementById("newOrders").appendChild(new OrderItem(order));
+    }
+
+    function OrderResponse(msg, This) {
+        order = This.parentNode.parentNode.parentNode;
+
+        msg = {
+            "response": msg,
+            "customer": order.children[2].children[1].innerHTML,
+            "time": order.children[3].children[1].innerHTML,
+            "bookTime": order.children[4].children[1].innerHTML
+        };
+
+        order.parentNode.removeChild(order);
+        if (msg.response == "確認") {
+            This.parentNode.removeChild(This.parentNode.children[2]);
+            This.parentNode.removeChild(This.parentNode.children[1]);
+            This.parentNode.parentNode.parentNode.children[1].children[1].innerHTML = "未完成";
+            This.parentNode.children[0].innerHTML = "完成";
+            This.parentNode.children[0].setAttribute("onclick", "OrderResponse('等待取餐', this)");
+            $("#orders").append(order);
+
+        } else if (msg.response == "等待取餐") {
+            This.parentNode.parentNode.parentNode.children[1].children[1].innerHTML = "等待取餐";
+            This.parentNode.children[0].innerHTML = "已取餐";
+            This.parentNode.children[0].setAttribute("onclick", "OrderResponse('完成', this)");
+            $("#waitingOrders").prepend(order);
+
+            msg["preparedCompleteTime"] = new Date().toISOString();
+        } else {
+            if (msg.response == "要求修改")
+                This.parentNode.parentNode.parentNode.children[1].children[1].innerHTML = "要求修改訂單";
+            else if (msg.response == "拒絕")
+                This.parentNode.parentNode.parentNode.children[1].children[1].innerHTML = "訂單取消";
+            else if (msg.response == "完成") {
+                This.parentNode.parentNode.parentNode.children[1].children[1].innerHTML = "訂單完成";
+                msg["completeTime"] = new Date().toISOString();
+            }
+            This.parentNode.parentNode.parentNode.className = "form-horizontal order";
+            This.parentNode.parentNode.removeChild(This.parentNode.parentNode.children[0]);
+            $("#ordersHistory").prepend(order);
+        }
+
+        Emit("order response", JSON.stringify(msg));
+    }
+
+    function OrderItem(order) {
+        var div_horizontal = document.createElement("div");
+        div_horizontal.className = "form-horizontal order alert-info";
+
+
+        var div_group = document.createElement("div");
+        div_group.className = "form-group";
+        var div = document.createElement("div");
+        div.className = "col-sm-offset-1";
+        div.style.marginTop = "12px";
+        var button = document.createElement("button");
+        button.setAttribute("type", "button");
+        button.className = "btn btn-success";
+        button.setAttribute("onclick", "OrderResponse('確認', this)");
+        button.innerHTML = "確認";
+        div.appendChild(button);
+        button = document.createElement("button");
+        button.setAttribute("type", "button");
+        button.className = "btn btn-warning";
+        button.setAttribute("onclick", "OrderResponse('要求修改', this)");
+        button.innerHTML = "要求修改";
+        div.appendChild(button);
+        button = document.createElement("button");
+        button.setAttribute("type", "button");
+        button.className = "btn btn-danger";
+        button.setAttribute("onclick", "OrderResponse('拒絕', this)");
+        button.innerHTML = "拒絕";
+        div.appendChild(button);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        var label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "訂單狀態";
+        div = document.createElement("div");
+        div.className = "col-sm-9";
+        div.style.position = "relative";
+        div.style.top = "8px";
+        div.innerHTML = "新訂單";
+        div_group.appendChild(label);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "顧客";
+        div = document.createElement("div");
+        div.className = "col-sm-9";
+        div.style.position = "relative";
+        div.style.top = "8px";
+        div.innerHTML = order.userId;
+        div_group.appendChild(label);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "預定時間";
+        div = document.createElement("div");
+        div.className = "col-sm-9";
+        div.style.position = "relative";
+        div.style.top = "8px";
+        div.innerHTML = new Date(order["time"]).toLocaleString();
+        div_group.appendChild(label);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "預定取餐時間";
+        div = document.createElement("div");
+        div.className = "col-sm-9";
+        div.style.position = "relative";
+        div.style.top = "8px";
+        div.innerHTML = new Date(order["bookTime"]).toLocaleString();
+        div_group.appendChild(label);
+        div_group.appendChild(div);
+        div_horizontal.appendChild(div_group);
+
+        div_group = document.createElement("div");
+        div_group.className = "form-group";
+        label = document.createElement("label");
+        label.className = "col-sm-3 control-label";
+        label.innerHTML = "訂餐明細";
+        var ol = document.createElement("ol");
+        ol.className = "col-sm-9";
+        ol.style.position = "relative";
+        ol.style.top = "8px"
+        for (var key in order.order) {
+            //console.log(key);
+            //console.log(order.order[key]);
+            var li = document.createElement("li");
+
+            var div = document.createElement("div");
+            div.className = "col-sm-4";
+            div.innerHTML = key;
+            li.appendChild(div);
+
+            div = document.createElement("div");
+            div.className = "col-sm-3";
+            div.innerHTML = "數量";
+            li.appendChild(div);
+
+            div = document.createElement("div");
+            div.className = "col-sm-2";
+            div.innerHTML = order.order[key];
+            li.appendChild(div);
+
+            ol.append(li);
+        }
+        div_group.appendChild(label);
+        div_group.appendChild(ol);
+        div_horizontal.appendChild(div_group);
+
+        return div_horizontal;
+    }
+
+    window.addEventListener("load", Init, false);
+
+</script>
+
+<body>
+    <div class="Block">
+        <label for="orders">未完成訂單</label>
+        <div id="orders">
+        </div>
+    </div>
+    <div class="Block">
+        <label for="waitingOrders">未取餐訂單</label>
+        <div id="waitingOrders">
+        </div>
+    </div>
+    <div class="Block">
+        <label for="newOrders">新訂單</label>
+        <div id="newOrders">
+        </div>
+    </div>
+    <div class="Block">
+        <label for="ordersHistory">歷史訂單</label>
+        <div id="ordersHistory">
+        </div>
+    </div>
+</body>
+
+</html>
