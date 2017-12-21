@@ -11,3 +11,12 @@ async function init(){
 }
 
 init();
+
+/*
+
+db.collection('User').query({account:'root'}).toArray((err,result)=>{
+	for(i of result){
+		console.log(i.account);
+		console.log(i.password);
+	}
+});
