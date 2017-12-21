@@ -66,6 +66,11 @@ async function init(){
 		res.send("123");
 	});
 	
+	app.get('/login',(req,res)=>{
+		console.log('!');
+		res.send('8787');
+	});
+	
 	app.get('/test',(req,res)=>{
 		res.sendFile('test.html',{root:rootPath});
 	});
