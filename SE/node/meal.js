@@ -9,13 +9,12 @@ async function getMenu(){
 					rej(err);
 				else
 					res(result);
+			});
 		});
-	});
 	}catch(err){
 		console.log(err);
 		return ;
 	}
-	
 }
 
 module.exports.getMenu = getMenu;
