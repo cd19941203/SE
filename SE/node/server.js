@@ -66,17 +66,21 @@ async function init(){
 		res.send("123");
 	});
 	
-	app.get('/login',(req,res)=>{
-		console.log('!');
-		res.send('8787');
-	});
-	
 	app.get('/test',(req,res)=>{
 		res.sendFile('test.html',{root:rootPath});
 	});
 	
 	app.get('/',(req,res)=>{
 		res.sendFile('index.html',{root:rootPath});
+	});
+	
+	app.get('/getMenu',async function(req,res){
+		try{
+			var result = await meal.getMenu();
+			res.send(result);
+		}catch(err){
+			res.send({});
+		}
 	});
 	
 	app.listen(8787,()=>{
