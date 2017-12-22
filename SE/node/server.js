@@ -44,7 +44,8 @@ async function init(){
 	}));
 	/////
 	// web service and socket setting
-	app.use('/js',express.static(__dirname + '/../js'));
+	app.use('/clientJs',express.static(__dirname + '/../clientJs'));
+	app.use('/serverJs',express.static(__dirname + '/../serverJs'));
 	var sessionMiddleware = session({
 		//store: new RedisStore({}), // XXX redis server config
 		secret: "keyboard cat",
