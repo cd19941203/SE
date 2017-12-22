@@ -20,14 +20,7 @@ var multipartyOptions = {
 
 async function init(){
 	
-	try{
-		var conn = await database.connect();
-	}catch(err){
-		// db connection failed
-		console.log(err);
-		//process.exit();
-	}
-	/////
+	////////////////////////////////////////////////////////////
 	// setting for parsing post data
 	app.use(formData.parse(multipartyOptions));
 	app.use(formData.format());
@@ -35,11 +28,11 @@ async function init(){
 	app.use(formData.union());
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({extended: true}));
-	/////
+	////////////////////////////////////////////////////////////
 	// web service and socket setting
 	app.use('/js',express.static(__dirname + '/../www/js'));
 	//app.use('/',express.static(__dirname + '/../www'));
-	/////
+	////////////////////////////////////////////////////////////
 	//let we can get connection session from socket
 	var sessionMiddleware = session({
 		secret: "keyboard cat",
@@ -50,7 +43,7 @@ async function init(){
 		sessionMiddleware(socket.request, socket.request.res, next);
 	});
 	app.use(sessionMiddleware);
-	/////
+	////////////////////////////////////////////////////////////
 	
 	// middleware for checking user authentication
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
@@ -60,7 +53,7 @@ async function init(){
 		else
 			next();
 	});
-	/////
+	////////////////////////////////////////////////////////////
 	// start here
 	
 	app.post('/loginCheck',(req,res)=>{
