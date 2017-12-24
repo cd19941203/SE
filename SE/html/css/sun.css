@@ -37,7 +37,7 @@
 
 
 
-
+/*like link style*/
 .a-click{
 	cursor:pointer;
 }
@@ -62,4 +62,11 @@ color:gray;
 text-decoration:none;
 background-color:gray;
 color:#fafafa;
+}
+
+
+/*font size*/
+font-5
+{
+	font-size:200px;
 }
