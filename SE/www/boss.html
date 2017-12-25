@@ -1,16 +1,18 @@
 <html>
 	<head>
 		<script src = "./js/boss.js"></script>
+		<script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 	</head>
 	<body>
 		<h1>BOSS</h1>
-		<button value= "Click1" id = "click1" onclick = "test1();">click1</button>
-		OUTPUT 1:<span id = "output1"></span><br><hr>
+		收訂單:<span id = "output1"></span><br><hr>
 		
-		<button value= "Click2" id = "click2" onclick = "test2();">click2</button>
-		OUTPUT 2:<span id = "output2"></span><br><hr>
+		<button value= "Click2" id = "click2" onclick = "test2();">送訂單ack</button>
+		<hr>
 		
-		<button value= "Click3" id = "click3" onclick = "test3();">click3</button>
-		OUTPUT 3:<span id = "output3"></span><br><hr>
+		<button value= "Click3" id = "click3" onclick = "test3();">做好囉</button>
+		<hr>
+		<button value= "Click4" id = "click4" onclick = "test4();">結單OUO</button>
+		<hr>
 	</body>
 </html>

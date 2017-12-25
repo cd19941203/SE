@@ -1,13 +1,25 @@
+var socket;
+var x;
+
 function init(){
-	
+	socket = io.connect('localhost:8787');
+	socket.on('newOrder',(data)=>{
+		x=data;
+		document.getElementById("output1").innerHTML = JSON.stringify(data);
+	});
 }
-addEventListener("load",init,false);
-function test1(){
-	var DIV1 = document.getElementById("output1").innerHTML = "Click";
-}
+
 function test2(){
-	var DIV2 = document.getElementById("output2").innerHTML = "Click";
+	x['ack'] = 'okok';
+	socket.emit('orderAck',JSON.stringify(x));
 }
 function test3(){
-	var DIV3 = document.getElementById("output3").innerHTML = "Click";
+	x['complete'] = 'okok';
+	socket.emit('orderComplete',JSON.stringify(x));
 }
+function test4(){
+	x['done'] = 'okok';
+	socket.emit('orderEnd',JSON.stringify(x));
+}
+
+addEventListener("load",init,false);
