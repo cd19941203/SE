@@ -10,15 +10,15 @@ function init(){
 }
 
 function test2(){
-	x['ack'] = 'okok';
+	x['status'] = 'accept';
 	socket.emit('orderAck',JSON.stringify(x));
 }
 function test3(){
-	x['complete'] = 'okok';
+	x['status'] = 'waiting';
 	socket.emit('orderComplete',JSON.stringify(x));
 }
 function test4(){
-	x['done'] = 'okok';
+	x['status'] = 'done';
 	socket.emit('orderEnd',JSON.stringify(x));
 }
 

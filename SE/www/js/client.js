@@ -12,6 +12,6 @@ function init(){
 
 function test1(){
 	var DIV1 = document.getElementById("output1");
-	socket.emit('newOrder','{"meal":"蛋餅"}');
+	socket.emit('newOrder','{"mealName":"蛋餅"}');
 }
 addEventListener("load",init,false);

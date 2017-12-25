@@ -10,6 +10,8 @@ var socket = require('./order.js');
 var account = require('./account.js');
 var database = require('./database.js');
 var meal = require('./meal.js');
+var setting = require('./setting.js');
+var order = require('./order.js');
 
 var rootPath = '../www/';
 var multipartyOptions = {
@@ -74,38 +76,42 @@ async function init(){
 		socket.join(socket.request.session.account,()=>{
 			
 			// from customer
-			socket.on('newOrder',(data)=>{
+			socket.on('newOrder',async(data)=>{
 				console.log("here comes a new order");
 				var newOrder = JSON.parse(data);
 				newOrder['account'] = socket.request.session.account;
-				newOrder['order_num'] = 5
-				//await order.newOrder(newOrder); 在DB紀錄新增該筆訂單
+				newOrder['orderNumber'] = await setting.getOrderNumber();
+				newOrder['status'] = 'new';
+				newOrder['beginTime'] = new Date();
+				order.newOrder(newOrder);
+				delete newOrder['_id'];
 				// to boss
-				console.log(newOrder['account']);
 				sio.to('boss').emit('newOrder',newOrder);
 			});
 
 			// from boss
-			socket.on('orderAck',(data)=>{
+			socket.on('orderAck',async(data)=>{
 				var orderAck = JSON.parse(data);
-				//await order.orderAck(orderAck); 更新DB訂單狀態  老闆已接到
+				order.orderAck(orderAck);
+				delete orderAck['_id'];
 				// to customer
 				sio.to(orderAck['account']).emit('orderAck',orderAck);
 			});
 
 			// from boss
-			socket.on('orderComplete',(data)=>{
+			socket.on('orderComplete',async(data)=>{
 				var orderComplete = JSON.parse(data);
-				//await order.orderComplete(orderComplete); 更新DB訂單狀態   餐點已完成
+				order.orderComplete(orderComplete);
+				delete orderComplete['_id'];
 				// to customer
 				sio.to(orderComplete['account']).emit('orderComplete',orderComplete);
 			});
 
 			// from boss // 以取餐 訂單完成
-			socket.on('orderEnd',(data)=>{
+			socket.on('orderEnd',async(data)=>{
 				var orderEnd = JSON.parse(data);
-				console.log(orderEnd);
-				//await order.orderEnd(orderEnd); 更新DB訂單狀態   結單
+				orderEnd['endTime'] = new Date();
+				order.orderEnd(orderEnd);
 				// to customer
 				//sio.to(orederEnd['user']).emit('orderEnd',orderComplete);
 			});
