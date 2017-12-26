@@ -32,7 +32,7 @@ async function orderComplete(order){
                 console.log(err);
         });
     }catch(err){
-        
+        console.log(err);
     }
 }
 
@@ -44,7 +44,23 @@ async function orderEnd(order){
                 console.log(err);
         });
     }catch(err){
-        
+        console.log(err);
+    }
+}
+
+async function getNotAckOrder(){
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('order').find({status:'new'}).toArray((err,result)=>{
+                if(err)
+                    rej(err);
+                else
+                    res(result);
+            });
+        });
+    }catch(err){
+        return {};
     }
 }
 
@@ -52,3 +68,4 @@ module.exports.newOrder = newOrder;
 module.exports.orderAck = orderAck;
 module.exports.orderComplete = orderComplete;
 module.exports.orderEnd = orderEnd;
+module.exports.getNotAckOrder = getNotAckOrder;

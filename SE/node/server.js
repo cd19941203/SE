@@ -61,13 +61,24 @@ async function init(){
 
 	// about socket 
 
-	sio.sockets.on('connection', (socket)=>{
+	sio.sockets.on('connection', async(socket)=>{
 		console.log('new socket connection');
-		console.log(socket.request.session.account);
+		var user = socket.request.session.account;
 		
-		
+
+		if(typeof(user) === "undefined")
+			return ;
+
+		console.log(user);
+		if(user == 'boss'){
+			var bossNotAckOrder = await order.getNotAckOrder();
+			console.log(bossNotAckOrder);
+		}
 		// if account is boss
 		// 查出所有還沒有得到boss ack的訂單 全部再送一次
+
+		// if account is customer
+		// resend all order without commited ???
 
 
 
@@ -134,7 +145,7 @@ async function init(){
 	app.get('/loginCheck',(req,res)=>{
 		req.session.valid = true;
 		req.session.account = req.query.account;
-		console.log(req.session.account);
+		//console.log(req.session.account);
 		res.send('hello');
 	});
 	

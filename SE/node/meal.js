@@ -4,7 +4,7 @@ async function getMenu(){
 	try{
 		var db = await database.connect();
 		return new Promise((res,rej)=>{
-			db.collection('User').find({account:'root'}).toArray((err,result)=>{
+			db.collection('user').find({account:'root'}).toArray((err,result)=>{
 				if(err)
 					rej(err);
 				else
