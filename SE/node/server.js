@@ -19,8 +19,6 @@ var multipartyOptions = {
 };
 
 
-// yoooooooooooooooooooooooooooooo
-
 async function init(){
 	
 	////////////////////////////////////////////////////////////
