@@ -14,8 +14,17 @@
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
+	<!-- Bootstrap-Switch CSS -->
+    <link href="css/bootstrap-switch.min.css" rel="stylesheet">
+	
     <!-- Custom CSS -->
     <link href="css/shop-homepage.css" rel="stylesheet">
+	
+	<!-- SweetAlert CSS -->
+    <link href="css/sweetalert.min.css" rel="stylesheet">
+	
+	<!-- MyCSS -->
+    <link href="css/sun.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,7 +56,17 @@
             </div>
 
             <div class="col-md-9">
+	            <div class="row carousel-holder">
 
+                    <div class="col-md-12">
+                        <h3 class = "mytitle" style = "display : inline;">等待的訂單</h3>
+						<div class="pull-right">
+							通知
+							<input id = "onNotice" type="checkbox" checked>
+						</div>
+					</div>
+
+                </div>
                 <div class="row">
 
                     <div class="col-sm-6 col-lg-6 col-md-6">
@@ -204,37 +223,6 @@
     </div>
     <!-- /.container -->
 
-	
-<!------------- Testing modal ------------->
-<!-- Large modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      ...
-    </div>
-  </div>
-</div>
-
-<!-- Small modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
-
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      ...
-    </div>
-  </div>
-</div>
-<!------------- Testing modal ------------->
-	
-	
-	
-	
-	
-	
-	
     <div class="container">
 
         <hr>
@@ -256,6 +244,12 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+	
+	<!-- SweetAlert -->
+    <script src="js/sweetalert.min.js"></script>
+	
+	<!-- Bootstrap-Switch -->
+    <script src="js/bootstrap-switch.min.js"></script>
 
 </body>
 
