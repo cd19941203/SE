@@ -1,9 +1,23 @@
 //The List Button
-var ACCEPT = ".accept";
-var EDIT = ".edit";
-var REFUSE = ".refuse";
+var WAIT = [];
+WAIT['ACCEPT'] = ".accept";
+WAIT['EDIT'] = ".edit";
+WAIT['REFUSE'] = ".refuse";
+/*
+var PROCESS = [];
+PROCESS['ACCEPT'] = ".accept";
+PROCESS['EDIT'] = ".edit";
+PROCESS['REFUSE'] = ".refuse";
+*/
+var FINISH = [];
+FINISH['OK'] = ".ok";
+FINISH['CANCEL'] = ".cancel";
+
+
 //the Switch to open Notice or not.
 var onNotice = true;
+
+
 function mesgNotice(title,message,tag){
     if(onNotice&&window.Notification && Notification.permission !== "denied") {
         Notification.requestPermission(function(status) {
@@ -12,9 +26,8 @@ function mesgNotice(title,message,tag){
 				notice_.close();
             }
         });
-    }   
+    }
 }
-
 
 function btnRemoveList(test,btn_switch){
 	if(btn_switch)//bind 'click' event
@@ -24,7 +37,8 @@ function btnRemoveList(test,btn_switch){
 				var item = $(this);
 				
 				mesgNotice("Test Title", test+"Click", "Button");
-				
+				$(this).parent().parent().parent().children('.information').html('TEST');
+				//);
 				item.parent().parent().parent().parent().fadeOut(400);
 				setTimeout(function(){item.parent().parent().parent().parent().remove();},1000);
 			}
@@ -36,7 +50,7 @@ function btnRemoveList(test,btn_switch){
 	}
 }
 function init(){
-	btnRemoveList(REFUSE, true);
+	btnRemoveList(WAIT['ACCEPT'], true);
 	$("#onNotice").bootstrapSwitch({size:"mini"});
 	
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {
