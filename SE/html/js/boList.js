@@ -35,9 +35,9 @@ function btnRemoveList(test,btn_switch){
 		$(test).click( 
 			function(){
 				var item = $(this);
+				var message = $(this).parent().parent().parent().children('.information').html();
+				mesgNotice(test.substr(1), message + " accept", "Button");
 				
-				mesgNotice("Test Title", test+"Click", "Button");
-				$(this).parent().parent().parent().children('.information').html('TEST');
 				//);
 				item.parent().parent().parent().parent().fadeOut(400);
 				setTimeout(function(){item.parent().parent().parent().parent().remove();},1000);
