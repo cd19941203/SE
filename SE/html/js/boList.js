@@ -1,23 +1,10 @@
-//The List Button
-var WAIT = [];
-WAIT['ACCEPT'] = ".accept";
-WAIT['EDIT'] = ".edit";
-WAIT['REFUSE'] = ".refuse";
-/*
-var PROCESS = [];
-PROCESS['ACCEPT'] = ".accept";
-PROCESS['EDIT'] = ".edit";
-PROCESS['REFUSE'] = ".refuse";
-*/
-var FINISH = [];
-FINISH['OK'] = ".ok";
-FINISH['CANCEL'] = ".cancel";
 
+var STATUS='WAIT';
 
 //the Switch to open Notice or not.
 var onNotice = true;
 
-
+//--------------------------- Function about Action ---------------------------//
 function mesgNotice(title,message,tag){
     if(onNotice&&window.Notification && Notification.permission !== "denied") {
         Notification.requestPermission(function(status) {
@@ -49,15 +36,62 @@ function btnRemoveList(test,btn_switch){
 		$(test).unbind("click");
 	}
 }
-function init(){
-	btnRemoveList(WAIT['ACCEPT'], true);
-	$("#onNotice").bootstrapSwitch({size:"mini"});
+
+//--------------------------- Function about Data   ---------------------------//
+
+//EX.   addData(example);
+function addData(data){
+	var data = JSON.parse(data);
+	for(var i = 0; i < data.length ; i++)
+	{
+		webMake(data[i].orderNumber,data[i].account,"0988452145","100",[[data[i].mealName,10,350],['起司蛋餅',10,350]],4);
+	}
+}
+
+//--------------------------- Function about Trigger---------------------------//
+function btnTrigger(){
+	var length = document.getElementsByClassName('btnn').length;
+	for(var i=0;i<length;i++)
+	{
+		document.getElementsByClassName('btnn')[i].innerHTML = btnStr[STATUS];
+	}
 	
-	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {
-		//console.log(this); // DOM element
-		//console.log(event); // jQuery event
-		//console.log(state); // true | false
-		onNotice = state;
+	if(STATUS=='NEW')
+	{
+		btnRemoveList(NAME['ACCEPT'], true);
+	}
+	else if (STATUS == 'ACCEPT')
+	{
+		
+	}
+	else if(STATUS == 'WAIT')
+	{
+		
+	}
+	else {console.error("'STATUS' is error");}
+}
+function btnPage(){
+	$("#NEW").click(function(){
+		STATUS = "NEW";addData(example);
 	});
+	$("#ACCEPT").click(function(){
+		STATUS = "ACCEPT";addData(example);
+	});
+	$("#WAIT").click(function(){
+		STATUS = "WAIT";addData(example);
+	});
+	
+}
+function init(){
+	//All Trigger Button Action
+	btnPage();
+	btnTrigger();
+	
+	//Notification
+	$("#onNotice").bootstrapSwitch({size:"mini"});
+	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
+	
+	//init
+	//$("#NEW").trigger('load');
 }
 addEventListener("load",init,false);
