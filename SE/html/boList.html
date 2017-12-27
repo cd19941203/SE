@@ -33,6 +33,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 	<script src="js/navBoss.js"></script>
+	<script src="js/boListData.js"></script>
 	<script src="js/boList.js"></script>
 </head>
 
@@ -49,9 +50,9 @@
             <div class="col-md-3">
                 <p class="lead">Breakfast Store</p>
                 <div class="list-group">
-                    <a href="#" class="list-group-item">等待的訂單</a>
-                    <a href="#" class="list-group-item">處理中</a>
-                    <a href="#" class="list-group-item">待取餐</a>
+                    <a href="#" id = "NEW"    class="list-group-item">等待的訂單</a>
+                    <a href="#" id = "ACCEPT" class="list-group-item">處理中</a>
+                    <a href="#" id = "WAIT"   class="list-group-item">待取餐</a>
                 </div>
             </div>
 
@@ -59,7 +60,8 @@
 	            <div class="row carousel-holder">
 
                     <div class="col-md-12">
-                        <h3 class = "mytitle" style = "display : inline;">等待的訂單</h3>
+                        <h3 class = "mytitle" id = "title" style = "display : inline;">等待的訂單</h3>
+						<button type="button" class="btn btn-success accept btn-group-sm">Accept</button>
 						<div class="pull-right">
 							通知
 							<input id = "onNotice" type="checkbox" checked>
@@ -67,7 +69,7 @@
 					</div>
 
                 </div>
-                <div class="row">
+                <div class="row" id = "DATA" >
 
                     <div class="col-sm-12 col-lg-12 col-md-12">
                         <div class="thumbnail">
@@ -75,8 +77,9 @@
 							<div class = "information">#12355125</div>
 							
                             <div class="caption">
-                                <h4 class="pull-right"></h4>
+                                
                                 <h4>
+									<span>#123</span>
 									<a href="#">
 										吳先生
 									</a>
@@ -95,190 +98,8 @@
 									
                             </div>
                             <div class="ratings" style = "height: 40px;">
-                                <div class = "pull-right ratings">
-									<button type="button" class="btn btn-success accept">Accept</button>
-									<button type="button" class="btn btn-warning edit">Edit</button>
-									<button type="button" class="btn btn-danger refuse">Refuse</button>
-								</div>
-                                <p>
-                                    可信度：
-									<span class="glyphicon glyphicon-star"></span>
-                                    <span >4</span>
-                                </p>
-                            </div>
-							
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 col-lg-12 col-md-12">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h4 class="pull-right"></h4>
-                                <h4>
-									<a href="#">
-										吳先生
-									</a>
-									<span>
-										(0982547854)
-									</span>
-									<span class="pull-right font-5">NT$ 105</span>
-                                </h4>
-								
-								<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
-								<p>火腿三明治 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-									
-                            </div>
-                            <div class="ratings" style = "height: 40px;">
-                                <div class = "pull-right ratings">
-									<button type="button" class="btn btn-success accept">Accept</button>
-									<button type="button" class="btn btn-warning edit">Edit</button>
-									<button type="button" class="btn btn-danger refuse">Refuse</button>
-								</div>
-                                <p>
-                                    可信度：
-									<span class="glyphicon glyphicon-star"></span>
-                                    <span >4</span>
-                                </p>
-                            </div>
-							
-                        </div>
-                    </div><div class="col-sm-12 col-lg-12 col-md-12">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h4 class="pull-right"></h4>
-                                <h4>
-									<a href="#">
-										吳先生
-									</a>
-									<span>
-										(0982547854)
-									</span>
-									<span class="pull-right font-5">NT$ 105</span>
-                                </h4>
-								
-								<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
-								<p>火腿三明治 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-									
-                            </div>
-                            <div class="ratings" style = "height: 40px;">
-                                <div class = "pull-right ratings">
-									<button type="button" class="btn btn-success accept">Accept</button>
-									<button type="button" class="btn btn-warning edit">Edit</button>
-									<button type="button" class="btn btn-danger refuse">Refuse</button>
-								</div>
-                                <p>
-                                    可信度：
-									<span class="glyphicon glyphicon-star"></span>
-                                    <span >4</span>
-                                </p>
-                            </div>
-							
-                        </div>
-                    </div><div class="col-sm-12 col-lg-12 col-md-12">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h4 class="pull-right"></h4>
-                                <h4>
-									<a href="#">
-										吳先生
-									</a>
-									<span>
-										(0982547854)
-									</span>
-									<span class="pull-right font-5">NT$ 105</span>
-                                </h4>
-								
-								<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
-								<p>火腿三明治 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-									
-                            </div>
-                            <div class="ratings" style = "height: 40px;">
-                                <div class = "pull-right ratings">
-									<button type="button" class="btn btn-success accept">Accept</button>
-									<button type="button" class="btn btn-warning edit">Edit</button>
-									<button type="button" class="btn btn-danger refuse">Refuse</button>
-								</div>
-                                <p>
-                                    可信度：
-									<span class="glyphicon glyphicon-star"></span>
-                                    <span >4</span>
-                                </p>
-                            </div>
-							
-                        </div>
-                    </div><div class="col-sm-12 col-lg-12 col-md-12">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h4 class="pull-right"></h4>
-                                <h4>
-									<a href="#">
-										吳先生
-									</a>
-									<span>
-										(0982547854)
-									</span>
-									<span class="pull-right font-5">NT$ 105</span>
-                                </h4>
-								
-								<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
-								<p>火腿三明治 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-									
-                            </div>
-                            <div class="ratings" style = "height: 40px;">
-                                <div class = "pull-right ratings">
-									<button type="button" class="btn btn-success accept">Accept</button>
-									<button type="button" class="btn btn-warning edit">Edit</button>
-									<button type="button" class="btn btn-danger refuse">Refuse</button>
-								</div>
-                                <p>
-                                    可信度：
-									<span class="glyphicon glyphicon-star"></span>
-                                    <span >4</span>
-                                </p>
-                            </div>
-							
-                        </div>
-                    </div><div class="col-sm-12 col-lg-12 col-md-12">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h4 class="pull-right"></h4>
-                                <h4>
-									<a href="#">
-										吳先生
-									</a>
-									<span>
-										(0982547854)
-									</span>
-									<span class="pull-right font-5">NT$ 105</span>
-                                </h4>
-								
-								<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
-								<p>火腿三明治 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-									
-                            </div>
-                            <div class="ratings" style = "height: 40px;">
-                                <div class = "pull-right ratings">
-									<button type="button" class="btn btn-success accept">Accept</button>
-									<button type="button" class="btn btn-warning edit">Edit</button>
-									<button type="button" class="btn btn-danger refuse">Refuse</button>
+                                <div class = "pull-right ratings btnn">
+									<!-- btnTrigger(); -->
 								</div>
                                 <p>
                                     可信度：
