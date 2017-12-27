@@ -18,6 +18,10 @@ var multipartyOptions = {
 	autoFiles: true
 };
 
+function getDate(){
+	var x = new Date();
+	return new Date(x.getTime() + 8*3600000);
+}
 
 async function init(){
 	
@@ -88,7 +92,7 @@ async function init(){
 					newOrder['account'] = socket.request.session.account;
 					newOrder['orderNumber'] = await setting.getOrderNumber();
 					newOrder['status'] = 'new';
-					newOrder['beginTime'] = new Date();
+					newOrder['beginTime'] = getDate();
 					order.newOrder(newOrder);
 					delete newOrder['_id'];
 					// ack customer
@@ -163,7 +167,7 @@ async function init(){
 					orderNumber = orderDone['orderNumber'];
 					Promise.all([
 						order.getOrderData(orderNumber),
-						order.orderStatusChange(orderNumber,order.orderStatus['done'])
+						order.orderDone(orderNumner,getDate())
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderDone',{orderNumber:orderNumber,status:'success'})

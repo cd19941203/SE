@@ -94,6 +94,22 @@ async function changeOrder(orderData){
     }
 }
 
+async function orderDone(number,date){
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('order').updateOne({orderNumber:number},{$set:{status:'done',endTime:date}},(err,result)=>{
+                if(err)
+                    rej(dbManipulationError);
+                else
+                    res();
+            });
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
 async function getNewOrder(){
     try{
         var db = await database.connect();
@@ -118,5 +134,6 @@ module.exports.getOrderData = getOrderData;
 module.exports.newOrder = newOrder;
 module.exports.orderStatusChange = orderStatusChange;
 module.exports.updateModifyAdvice = updateModifyAdvice;
+module.exports.orderDone = orderDone;
 module.exports.changeOrder = changeOrder;
 module.exports.getNewOrder = getNewOrder;
