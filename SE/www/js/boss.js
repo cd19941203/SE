@@ -7,11 +7,14 @@ function init(){
 		x=data;
 		document.getElementById("output1").innerHTML = JSON.stringify(data);
 	});
+	socket.on('orderAccept',(data)=>{
+		document.getElementById("output2").innerHTML = JSON.stringify(data);
+	});
 }
 
 function test2(){
 	x['status'] = 'accept';
-	socket.emit('orderAck',JSON.stringify(x));
+	socket.emit('orderAccept',JSON.stringify(x));
 }
 function test3(){
 	x['status'] = 'waiting';

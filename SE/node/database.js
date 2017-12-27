@@ -5,7 +5,7 @@ function connect(){
 	return new Promise((res,rej)=>{
 		MongoClient.connect(url,(err,db)=>{
 			if(err)
-				rej(err);
+				rej('Database connection error');
 			else{
 				res(db.db('SE'));
 			}

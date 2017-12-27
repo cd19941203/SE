@@ -19,8 +19,6 @@ var multipartyOptions = {
 };
 
 
-// yoooooooooooooooooooooooooooooo
-
 async function init(){
 	
 	////////////////////////////////////////////////////////////
@@ -59,6 +57,14 @@ async function init(){
 			next();
 	});
 	
+	var bossOnlyAPI = ['/getNewOrder'];
+
+	app.use(bossOnlyAPI,(req,res,next)=>{
+		if(req.session.account!='boss')
+			res.send('get out');
+		else
+			next();
+	});
 	////////////////////////////////////////////////////////////
 	//---------------------- start here ----------------------//
 
@@ -67,23 +73,9 @@ async function init(){
 	sio.sockets.on('connection', async(socket)=>{
 		console.log('new socket connection');
 		var user = socket.request.session.account;
-		
-
+	
 		if(typeof(user) === "undefined")
 			return ;
-
-		console.log(user);
-		if(user == 'boss'){
-			var bossNotAckOrder = await order.getNotAckOrder();
-			console.log(bossNotAckOrder);
-		}
-		// if account is boss
-		// 查出所有還沒有得到boss ack的訂單 全部再送一次
-
-		// if account is customer
-		// resend all order without commited ???
-
-
 
 		// 把各個user加入個別的room,即可一次對該user的所有socket emit
 		// unfortunately socket.join is asynchronous... 
@@ -91,45 +83,179 @@ async function init(){
 			
 			// from customer
 			socket.on('newOrder',async(data)=>{
-				console.log("here comes a new order");
-				var newOrder = JSON.parse(data);
-				newOrder['account'] = socket.request.session.account;
-				newOrder['orderNumber'] = await setting.getOrderNumber();
-				newOrder['status'] = 'new';
-				newOrder['beginTime'] = new Date();
-				order.newOrder(newOrder);
-				delete newOrder['_id'];
-				// to boss
-				sio.to('boss').emit('newOrder',newOrder);
+				try{
+					var newOrder = JSON.parse(data);
+					newOrder['account'] = socket.request.session.account;
+					newOrder['orderNumber'] = await setting.getOrderNumber();
+					newOrder['status'] = 'new';
+					newOrder['beginTime'] = new Date();
+					order.newOrder(newOrder);
+					delete newOrder['_id'];
+					// ack customer
+					sio.to(socket.request.session.account).emit('newOrder',{orderNumber:newOrder['orderNumber'],status:'success'});
+					// to boss
+					sio.to('boss').emit('newOrder',newOrder);
+				}catch(err){
+					if(err instanceof SyntaxError){
+						sio.to(socket.request.session.account).emit('newOrder',{status:'Data format error'});
+					}else{
+						sio.to(socket.request.session.account).emit('newOrder',{status:err});	
+					}
+				}
 			});
 
 			// from boss
-			socket.on('orderAck',async(data)=>{
-				var orderAck = JSON.parse(data);
-				order.orderAck(orderAck);
-				delete orderAck['_id'];
-				// to customer
-				sio.to(orderAck['account']).emit('orderAck',orderAck);
+			socket.on('orderAccept',data=>{
+				var orderNumber;
+				try{
+					var orderAccept = JSON.parse(data);
+					orderNumber = orderAccept['orderNumber'];
+					Promise.all([
+						order.getOrderData(orderNumber),
+						order.orderStatusChange(orderNumber,order.orderStatus['accepted'])
+					]).then(values=>{
+						var account = values[0]['account'];
+						sio.to('boss').emit('orderAccept',{orderNumber:orderNumber,status:'success'});
+						sio.to(account).emit('orderAccept',{orderNumber:orderNumber});
+					}).catch(err=>{
+						throw(err);
+					});
+				}catch(err){
+					if(err instanceof SyntaxError){
+						sio.to('boss').emit('orderAccept',{status:'Data format error'});
+					}
+					else{
+						sio.to('boss').emit('orderAccept',{orderNumber:orderNumber,status:err});
+					}
+				}
 			});
 
 			// from boss
-			socket.on('orderComplete',async(data)=>{
-				var orderComplete = JSON.parse(data);
-				order.orderComplete(orderComplete);
-				delete orderComplete['_id'];
-				// to customer
-				sio.to(orderComplete['account']).emit('orderComplete',orderComplete);
+			socket.on('orderComplete',data=>{
+				var orderNumber;
+				try{
+					var orderComplete = JSON.parse(data);
+					orderNumber = orderComplete['orderNumber'];
+					Promise.all([
+						order.getOrderData(orderNumber),
+						order.orderStatusChange(orderNumber,order.orderStatus['completed'])
+					]).then(values=>{
+						var account = values[0]['account'];
+						sio.to('boss').emit('orderComplete',{orderNumber:orderNumber,status:'success'});
+						sio.to(account).emit('orderComplete',{orderNumber:orderNumber});
+					}).catch(err=>{
+						throw(err);
+					});
+				}catch(err){
+					if(err instanceof SyntaxError){
+						sio.to('boss').emit('orderAccept',{status:'Data format error'});
+					}
+					else{
+						sio.to('boss').emit('orderAccept',{orderNumber:orderNumber,status:err});
+					}
+				}
 			});
 
-			// from boss // 以取餐 訂單完成
-			socket.on('orderEnd',async(data)=>{
-				var orderEnd = JSON.parse(data);
-				orderEnd['endTime'] = new Date();
-				order.orderEnd(orderEnd);
-				// to customer
-				//sio.to(orederEnd['user']).emit('orderEnd',orderComplete);
+			socket.on('orderDone',data=>{
+				var orderNumber;
+				try{
+					var orderDone = JSON.parse(data);
+					orderNumber = orderDone['orderNumber'];
+					Promise.all([
+						order.getOrderData(orderNumber),
+						order.orderStatusChange(orderNumber,order.orderStatus['done'])
+					]).then(values=>{
+						var account = values[0]['account'];
+						sio.to('boss').emit('orderDone',{orderNumber:orderNumber,status:'success'})
+						sio.to(account).emit('orderDone',{orderNumber:orderNumber});
+					}).catch(err=>{
+						throw(err);
+					});
+				}catch(err){
+					if(err instanceof SyntaxError){
+						sio.to('boss').emit('orderDone',{status:'Data format error'});
+					}
+					else{
+						sio.to('boss').emit('orderDone',{orderNumber:orderNumber,status:err});
+					}
+				}
 			});
-		});	
+
+			socket.on('orderModify',data=>{
+				var orderNumber;
+				try{
+					var orderModify = JSON.parse(data);
+					orderNumber = orderModify['orderNumber'];
+					var advice = orderModify['advice'];
+					Promise.all([
+						order.getOrderData(orderNumber),
+						order.orderStatusChange(orderNumber,order.orderStatus['pending']),
+						order.updateModifyAdvice(orderNumber,advice)
+					]).then(values=>{
+						var account = values[0]['account'];
+						sio.to('boss').emit('orderModify',{orderNumber:orderNumber,status:'success'})
+						sio.to(account).emit('orderModify',{orderNumber:orderNumber,advice:advice});
+					}).catch(err=>{
+						throw(err);
+					});
+				}catch(err){
+					if(err instanceof SyntaxError){
+						sio.to('boss').emit('orderModify',{status:'Data format error'});
+					}
+					else{
+						sio.to('boss').emit('orderModify',{orderNumber:orderNumber,status:err});
+					}
+				}
+			});
+
+			socket.on('orderRes',async(data)=>{
+				var orderNumber;
+				try{
+					var orderRes = JSON.parse(data);
+					orderNumber = orderRes['orderNumber'];
+					orderRes['status'] = 'new';
+					orderRes['beginTime'] = new Date();
+					await order.changeOrder(orderRes);
+					delete orderRes['_id'];
+					sio.to(socket.request.session.account).emit('orderRes',{orderNumber:orderNumber,status:'success'});
+					sio.to('boss').emit('newOrder',orderRes);
+				}catch(err){
+					if(err instanceof SyntaxError){
+						sio.to(socket.request.session.account).emit('orderRes',{status:'Data format error'});
+					}
+					else{
+						sio.to(socket.request.session.account).emit('orderRes',{orderNumber:orderNumber,status:err});
+					}
+				}
+			});
+
+			socket.on('orderCancel',async(data)=>{
+				var orderNumber;
+				var source = socket.request.session.account;
+				var target;
+				try{
+					var orderCancel = JSON.parse(data);
+					orderNumber = orderCancel['orderNumber'];
+					var orderData = await order.getOrderData(orderNumber);
+					if(source == 'boss') 
+						target = orderData['account'];
+					else 
+						target = 'boss';
+
+					await order.orderStatusChange(orderNumber,order.orderStatus['canceled']);
+					sio.to(target).emit('orderCancel',{account:orderData['account'],orderNumber:orderNumber});
+					sio.to(source).emit('orderCancel',{orderNumber:orderNumber,status:'success'});
+				}catch(err){
+					if(err instanceof SyntaxError){
+						sio.to(source).emit('orderCancel',{status:'Data format error'});
+					}
+					else{
+						sio.to(source).emit('orderCancel',{orderNumber:orderNumber,status:err});
+					}
+				}
+			});
+
+		});	// socket.join
     });
 
 
@@ -137,10 +263,12 @@ async function init(){
 	////////////////////////////////////////////////////////////
 	// about web server
 	
+	// login and logout
 	app.post('/loginCheck',(req,res)=>{
 		var account = req.body.account;
 		var password = req.body.password;
 		console.log(req.body);
+		console.log(account);
 		res.sendFile('index.html',{root:rootPath});
 	});
 	
@@ -160,10 +288,13 @@ async function init(){
 		req.session.destroy();
 	});
 
-	app.get('/test',(req,res)=>{
-		res.sendFile('test.html',{root:rootPath});
+	// route
+	app.get('/index',(req,res)=>{
+		var m = req.query.m;
+
 	});
-	
+
+
 	// testing socket
 
 	app.get('/client',(req,res)=>{
@@ -174,7 +305,17 @@ async function init(){
 	app.get('/boss',(req,res)=>{
 		res.sendFile('boss.html',{root:rootPath});
 	});
-	//
+
+	// API
+
+	app.get('/getNewOrder',async(req,res)=>{
+		try{
+			var data = await order.getNewOrder();
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
 
 	app.get('/getMenu',async(req,res)=>{
 		try{
