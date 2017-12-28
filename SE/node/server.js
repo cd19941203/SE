@@ -44,7 +44,7 @@ async function init(){
 	//let we can get connection session from socket
 	var sessionMiddleware = session({
 		secret: "keyboard cat",
-		cookie:{maxAge:60*10000}
+		cookie:{maxAge:60*30000}
 	});
 
 	sio.use(function(socket, next) {
@@ -339,7 +339,7 @@ async function init(){
 				qeury={};
 			else
 				query={status:status};
-				
+
 			var data = await order.getOrderList(query);
 			res.send(data);
 		}catch(err){
