@@ -268,12 +268,25 @@ async function init(){
 	// about web server
 	
 	// login and logout
-	app.post('/loginCheck',(req,res)=>{
-		var account = req.body.account;
-		var password = req.body.password;
-		console.log(req.body);
-		console.log(account);
-		res.sendFile('index.html',{root:rootPath});
+	app.post('/loginCheck',async(req,res)=>{
+		try{
+			var account = req.body.account;
+			var password = req.body.password;
+			var status = await account.login(account,password);
+			if(status == true){
+				req.session.valid = true;
+				req.session.account = account;
+				if(account == 'boss')
+					res.sendFile('boss.html',{root:rootPath});
+				else
+					res.sendFile('client.html',{root:rootPath});
+			}
+			else{
+				res.sendFile('login.html',{root:rootPath});
+			}
+		}catch(err){
+			res.sendFile('login.html',{root:rootPath});
+		}
 	});
 	
 	// 用來假裝登入der

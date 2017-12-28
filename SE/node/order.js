@@ -1,6 +1,6 @@
 var database = require('./database.js');
-var dbConnectionError = 'Database conneciton error';
-var dbManipulationError = 'Database error 0x12';
+var dbConnectionError = database.dbConnectionError;
+var dbManipulationError = database.dbManipulationError;
 var dataError = 'orderNumerError';
 var orderStatus = {
     new:'new',
