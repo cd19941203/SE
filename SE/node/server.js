@@ -57,7 +57,7 @@ async function init(){
 	// middleware for checking user authentication
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
 	
-	app.use(/^(?:(?!loginCheck).)*$/,(req,res,next)=>{
+	app.use(/^(?:(?!index).)*$/,(req,res,next)=>{
 		if(!(req.session.valid==true))
 			res.sendFile('login.html',{root:rootPath});
 		else
@@ -272,18 +272,21 @@ async function init(){
 	
 	// login and logout
 	app.post('/index',async(req,res)=>{
-		res.sendFile('boMenu.html',{root:rootPath});
 		try{
 			var acc = req.body.account;
 			var password = req.body.password;
 			var status = await account.login(acc,password);
-			if(status == true){
+			console.log(acc);
+            if(status == true){
 				req.session.valid = true;
-				req.session.account = account;
-				if(account == 'boss')
+				req.session.account = acc;
+				if(acc == 'boss')
+                {
+                    console.log("!!");
 					res.sendFile('boMenu.html',{root:rootPath});
+                }
 				else
-					res.sendFile('cuMunu.html',{root:rootPath});
+					res.sendFile('cuMenu.html',{root:rootPath});
 			}
 			else{
 				res.sendFile('login.html',{root:rootPath});
@@ -312,10 +315,10 @@ async function init(){
 	});
 
 	// route
-	//app.get('/index',(req,res)=>{
-	//	var m = req.query.m;
-	//	res.sendFile(m+'.html',{root:rootPath});
-	//});
+	app.get('/index',(req,res)=>{
+		var m = req.query.m;
+		res.sendFile(m+'.html',{root:rootPath});
+	});
 
 
 	// testing socket

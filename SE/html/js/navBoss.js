@@ -36,10 +36,10 @@ var str =
 '				</ul>'+
 '                <ul class="nav navbar-nav">'+
 '                    <li>'+
-'                        <a href="boList.html">Make List</a>'+
+'                        <a href="/index?m=boList">Make List</a>'+
 '                    </li>'+
 '                    <li>'+
-'                        <a href="boMenuList.html">Menu</a>'+
+'                        <a href="/index?m=boMenuList">Menu</a>'+
 '                    </li>'+
 '                    <li>'+
 '                        <a href="#">History</a>'+
