@@ -275,8 +275,8 @@ async function init(){
 		try{
 			var acc = req.body.account;
 			var password = req.body.password;
-			var status = await account.login(acc,password);
 			console.log(acc);
+			var status = await account.login(acc,password);
             if(status == true){
 				req.session.valid = true;
 				req.session.account = acc;

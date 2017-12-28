@@ -117,8 +117,9 @@ async function getOrderList(query){
             db.collection('order').find(query,{projection:{_id:0}}).toArray((err,result)=>{
                 if(err)
                     rej(dbManipulationError);
-                else
+                else{
                     res(result);
+                }
             });
         });
     }catch(err){
