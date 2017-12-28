@@ -294,7 +294,11 @@ async function init(){
 		req.session.valid = true;
 		req.session.account = req.query.account;
 		//console.log(req.session.account);
-		res.send('hello');
+		//res.send('hello');
+        if(req.session.account == "boss")
+            res.sendFile('boss.html',{root:rootPath});
+        else
+            res.sendFile('client.html',{root:rootPath});
 	});
 	
 	app.get('/logout',(req,res)=>{

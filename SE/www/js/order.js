@@ -1,4 +1,4 @@
-function Order = function(meal)
+function Order(meal)
 {
     this.meal = meal;
     
