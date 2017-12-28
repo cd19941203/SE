@@ -271,7 +271,8 @@ async function init(){
 	// about web server
 	
 	// login and logout
-	app.post('/loginCheck',async(req,res)=>{
+	app.post('/index',async(req,res)=>{
+		res.sendFile('boMenu.html',{root:rootPath});
 		try{
 			var acc = req.body.account;
 			var password = req.body.password;
@@ -311,10 +312,10 @@ async function init(){
 	});
 
 	// route
-	app.get('/index',(req,res)=>{
-		var m = req.query.m;
-		res.sendFile(m+'.html',{root:rootPath});
-	});
+	//app.get('/index',(req,res)=>{
+	//	var m = req.query.m;
+	//	res.sendFile(m+'.html',{root:rootPath});
+	//});
 
 
 	// testing socket
