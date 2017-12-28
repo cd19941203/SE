@@ -145,7 +145,7 @@ function btnPage(){
 		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("等待的訂單 &nbsp; ");
 		STATUS = "NEW";
-		addData(example);
+		//addData(example);
 		
 		document.getElementById("allaccept").style.display = "inline";
 	});
@@ -154,7 +154,8 @@ function btnPage(){
 		$("#ACCEPT").addClass("list-group-item-info");
 		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("處理中");
-		STATUS = "ACCEPT";addData(example);
+		STATUS = "ACCEPT";
+        //addData(example);
 		document.getElementById("allaccept").style.display = "none";
 	});
 	$("#WAIT").click(function(){
@@ -162,7 +163,8 @@ function btnPage(){
 		$("#ACCEPT").removeClass("list-group-item-info");
 		$("#WAIT").addClass("list-group-item-info");
 		$("#title").html("待取餐");
-		STATUS = "WAIT";addData(example);
+		STATUS = "WAIT";
+        //addData(example);
 		document.getElementById("allaccept").style.display = "none";
 	});
 	

@@ -3,9 +3,7 @@ function init()
     $.ajax({
         url: "/getOrderList",
         type: "get",
-        data:{
-            status: "new"
-        },
+        data:{},
         success: function(data)
         {
             addData(data);
