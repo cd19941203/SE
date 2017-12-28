@@ -7,7 +7,7 @@ var sio = require("socket.io")(server);
 var bodyParser = require('body-parser');
 var formData = require("express-form-data");
 var socket = require('./order.js');
-var d = require('./account.js');
+var account = require('./account.js');
 var database = require('./database.js');
 var meal = require('./meal.js');
 var setting = require('./setting.js');
@@ -273,9 +273,9 @@ async function init(){
 	// login and logout
 	app.post('/loginCheck',async(req,res)=>{
 		try{
-			var account = req.body.account;
+			var acc = req.body.account;
 			var password = req.body.password;
-			var status = await account.login(account,password);
+			var status = await account.login(acc,password);
 			if(status == true){
 				req.session.valid = true;
 				req.session.account = account;
