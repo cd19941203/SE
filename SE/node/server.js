@@ -61,7 +61,7 @@ async function init(){
 			next();
 	});
 	
-	var bossOnlyAPI = ['/getNewOrder'];
+	var bossOnlyAPI = ['/getOrderList'];
 
 	app.use(bossOnlyAPI,(req,res,next)=>{
 		if(req.session.account!='boss')
@@ -299,6 +299,7 @@ async function init(){
 	
 	app.get('/logout',(req,res)=>{
 		req.session.destroy();
+		res.sendFile('login.html',{root:rootPath});
 	});
 
 	// route
@@ -321,12 +322,13 @@ async function init(){
 
 	// API
 
-	app.get('/getNewOrder',async(req,res)=>{
+	app.get('/getOrderList',async(req,res)=>{
 		try{
-			var data = await order.getNewOrder();
+			var status = req.query.status;
+			var data = await order.getOrderList(status);
 			res.send(data);
 		}catch(err){
-			res.send(err);
+			res.send({});
 		}
 	});
 
