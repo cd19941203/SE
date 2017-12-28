@@ -20,10 +20,12 @@ function init(){
 		if( $(this).hasClass("list-group-item-danger") )
 		{
 			$(this).removeClass("list-group-item-danger");
+			$(this).removeClass("del");
 		}
 		else
 		{
 			$(this).addClass("list-group-item-danger");
+			$(this).addClass("del");
 		}
 		//$(".list-group-item-danger").each(function(){ console.log($(this).attr("id")) });
 	});
