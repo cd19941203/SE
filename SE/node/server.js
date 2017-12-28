@@ -281,10 +281,7 @@ async function init(){
 				req.session.valid = true;
 				req.session.account = acc;
 				if(acc == 'boss')
-                {
-                    console.log("!!");
 					res.sendFile('boMenu.html',{root:rootPath});
-                }
 				else
 					res.sendFile('cuMenu.html',{root:rootPath});
 			}
@@ -337,7 +334,13 @@ async function init(){
 	app.get('/getOrderList',async(req,res)=>{
 		try{
 			var status = req.query.status;
-			var data = await order.getOrderList(status);
+			var query;
+			if(typeof status === "undefined")
+				qeury={};
+			else
+				query={status:status};
+				
+			var data = await order.getOrderList(query);
 			res.send(data);
 		}catch(err){
 			res.send({});

@@ -110,11 +110,11 @@ async function orderDone(number,date){
     }
 }
 
-async function getOrderList(status){
+async function getOrderList(query){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            db.collection('order').find({status:status},{projection:{_id:0}}).toArray((err,result)=>{
+            db.collection('order').find(query,{projection:{_id:0}}).toArray((err,result)=>{
                 if(err)
                     rej(dbManipulationError);
                 else
