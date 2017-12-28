@@ -18,6 +18,10 @@ var multipartyOptions = {
 	autoFiles: true
 };
 
+function getDate(){
+	var x = new Date();
+	return new Date(x.getTime() + 8*3600000);
+}
 
 async function init(){
 	
@@ -57,7 +61,7 @@ async function init(){
 			next();
 	});
 	
-	var bossOnlyAPI = ['/getNewOrder'];
+	var bossOnlyAPI = ['/getOrderList'];
 
 	app.use(bossOnlyAPI,(req,res,next)=>{
 		if(req.session.account!='boss')
@@ -88,7 +92,7 @@ async function init(){
 					newOrder['account'] = socket.request.session.account;
 					newOrder['orderNumber'] = await setting.getOrderNumber();
 					newOrder['status'] = 'new';
-					newOrder['beginTime'] = new Date();
+					newOrder['beginTime'] = getDate();
 					order.newOrder(newOrder);
 					delete newOrder['_id'];
 					// ack customer
@@ -163,7 +167,7 @@ async function init(){
 					orderNumber = orderDone['orderNumber'];
 					Promise.all([
 						order.getOrderData(orderNumber),
-						order.orderStatusChange(orderNumber,order.orderStatus['done'])
+						order.orderDone(orderNumner,getDate())
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderDone',{orderNumber:orderNumber,status:'success'})
@@ -264,12 +268,25 @@ async function init(){
 	// about web server
 	
 	// login and logout
-	app.post('/loginCheck',(req,res)=>{
-		var account = req.body.account;
-		var password = req.body.password;
-		console.log(req.body);
-		console.log(account);
-		res.sendFile('index.html',{root:rootPath});
+	app.post('/loginCheck',async(req,res)=>{
+		try{
+			var account = req.body.account;
+			var password = req.body.password;
+			var status = await account.login(account,password);
+			if(status == true){
+				req.session.valid = true;
+				req.session.account = account;
+				if(account == 'boss')
+					res.sendFile('boss.html',{root:rootPath});
+				else
+					res.sendFile('client.html',{root:rootPath});
+			}
+			else{
+				res.sendFile('login.html',{root:rootPath});
+			}
+		}catch(err){
+			res.sendFile('login.html',{root:rootPath});
+		}
 	});
 	
 	// 用來假裝登入der
@@ -286,6 +303,7 @@ async function init(){
 	
 	app.get('/logout',(req,res)=>{
 		req.session.destroy();
+		res.sendFile('login.html',{root:rootPath});
 	});
 
 	// route
@@ -308,12 +326,13 @@ async function init(){
 
 	// API
 
-	app.get('/getNewOrder',async(req,res)=>{
+	app.get('/getOrderList',async(req,res)=>{
 		try{
-			var data = await order.getNewOrder();
+			var status = req.query.status;
+			var data = await order.getOrderList(status);
 			res.send(data);
 		}catch(err){
-			res.send(err);
+			res.send({});
 		}
 	});
 

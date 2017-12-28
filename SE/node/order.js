@@ -1,6 +1,6 @@
 var database = require('./database.js');
-var dbConnectionError = 'Database conneciton error';
-var dbManipulationError = 'Database error 0x12';
+var dbConnectionError = database.dbConnectionError;
+var dbManipulationError = database.dbManipulationError;
 var dataError = 'orderNumerError';
 var orderStatus = {
     new:'new',
@@ -94,11 +94,27 @@ async function changeOrder(orderData){
     }
 }
 
-async function getNewOrder(){
+async function orderDone(number,date){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            db.collection('order').find({status:'new'},{projection:{_id:0}}).toArray((err,result)=>{
+            db.collection('order').updateOne({orderNumber:number},{$set:{status:'done',endTime:date}},(err,result)=>{
+                if(err)
+                    rej(dbManipulationError);
+                else
+                    res();
+            });
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
+async function getOrderList(status){
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('order').find({status:status},{projection:{_id:0}}).toArray((err,result)=>{
                 if(err)
                     rej(dbManipulationError);
                 else
@@ -118,5 +134,6 @@ module.exports.getOrderData = getOrderData;
 module.exports.newOrder = newOrder;
 module.exports.orderStatusChange = orderStatusChange;
 module.exports.updateModifyAdvice = updateModifyAdvice;
+module.exports.orderDone = orderDone;
 module.exports.changeOrder = changeOrder;
-module.exports.getNewOrder = getNewOrder;
+module.exports.getOrderList = getOrderList;
