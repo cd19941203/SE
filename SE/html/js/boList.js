@@ -5,11 +5,12 @@ var STATUS='NEW';
 var onNotice = true;
 
 //--------------------------- Function about Action ---------------------------//
-function mesgNotice(title,message,tag,img){
+function mesgNotice(title,message,img){
 	if(!img)img="image/icon/Information.png";
     if(onNotice&&window.Notification && Notification.permission !== "denied") {
         Notification.requestPermission(function(status) {
-            var notice_ = new Notification(title, { body: message,tag:tag,icon:img});
+            var notice_ = new Notification(title, { body: message,icon:img});
+			setTimeout(function(){notice_.close();},2000);
             notice_.onclick = function() {
 				notice_.close();
             }
@@ -19,7 +20,7 @@ function mesgNotice(title,message,tag,img){
 
 function btnRemoveList(item, title = "Title", message = "", icon){
 	var id = $(item).parent().parent().parent().children('.information').html();
-	mesgNotice(title, "#" + id +" "+ message, "Button",icon);
+	mesgNotice(title, "#" + id +" "+ message,icon);
 	
 	item.parent().parent().parent().parent().fadeOut(400);
 	setTimeout(function(){item.parent().parent().parent().parent().remove();},1000);
@@ -47,7 +48,17 @@ function btnTrigger(){
 	for(var i=0;i<length;i++){
 		document.getElementsByClassName('myBtn')[i].innerHTML = btnStr[STATUS];
 	}
-	
+	$(".btnOrder").click(function(){
+		$(this).parent().parent().children(".myOrder").slideToggle("fast");
+		if( $(this).hasClass("fa-angle-down") ){
+			$(this).removeClass("fa-angle-down");
+			$(this).addClass("fa-angle-up");
+		}
+		else{
+			$(this).addClass("fa-angle-down");
+			$(this).removeClass("fa-angle-up");
+		}
+	});
 	if(STATUS=='NEW'){
 		$(".accept").click(function(){
 			btnRemoveList($(this),"accept");
@@ -129,6 +140,9 @@ function btnTrigger(){
 }
 function btnPage(){
 	$("#NEW").click(function(){
+		$("#NEW").addClass("list-group-item-info");
+		$("#ACCEPT").removeClass("list-group-item-info");
+		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("等待的訂單 &nbsp; ");
 		STATUS = "NEW";
 		addData(example);
@@ -136,11 +150,17 @@ function btnPage(){
 		document.getElementById("allaccept").style.display = "inline";
 	});
 	$("#ACCEPT").click(function(){
+		$("#NEW").removeClass("list-group-item-info");
+		$("#ACCEPT").addClass("list-group-item-info");
+		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("處理中");
 		STATUS = "ACCEPT";addData(example);
 		document.getElementById("allaccept").style.display = "none";
 	});
 	$("#WAIT").click(function(){
+		$("#NEW").removeClass("list-group-item-info");
+		$("#ACCEPT").removeClass("list-group-item-info");
+		$("#WAIT").addClass("list-group-item-info");
 		$("#title").html("待取餐");
 		STATUS = "WAIT";addData(example);
 		document.getElementById("allaccept").style.display = "none";
@@ -150,7 +170,25 @@ function btnPage(){
 function init(){
 	//All Trigger Button Action
 	$("#allaccept").click(function(){
-		$(".accept").click();
+		swal("確定接收所有的訂單？", {
+			buttons: {
+				ok: {
+					text: "確定",
+					value: "ok",
+				},
+				cancel: "Cancel"
+			},
+			})
+		.then((value) => {
+			switch(value){
+				case "ok":
+					$(".accept").click();
+					console.log("YES");
+					break;
+				default:
+					break;
+			};
+		});
 	})
 	btnPage();
 	btnTrigger();
@@ -160,6 +198,5 @@ function init(){
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
 	
 	//init
-	
 }
 addEventListener("load",init,false);

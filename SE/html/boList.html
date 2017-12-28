@@ -23,9 +23,12 @@
 	<!-- SweetAlert CSS -->
     <link href="css/sweetalert.min.css" rel="stylesheet">
 	
+	<!-- Font Awesome Directional Icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 	<!-- MyCSS -->
     <link href="css/sun.css" rel="stylesheet">
-
+	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -50,9 +53,9 @@
             <div class="col-md-3">
                 <p class="lead">Breakfast Store</p>
                 <div class="list-group">
-                    <a href="#" id = "NEW"    class="list-group-item">等待的訂單</a>
-                    <a href="#" id = "ACCEPT" class="list-group-item">處理中</a>
-                    <a href="#" id = "WAIT"   class="list-group-item">待取餐</a>
+                    <a href="#" id = "NEW"    class="list-group-item">等待的訂單<span class="badge">12</span></a>
+                    <a href="#" id = "ACCEPT" class="list-group-item">處理中<span class="badge">5</span></a>
+                    <a href="#" id = "WAIT"   class="list-group-item">待取餐<span class="badge">1</span></a>
                 </div>
             </div>
 
@@ -60,12 +63,15 @@
 	            <div class="row carousel-holder">
 
                     <div class="col-md-12">
-                        <h1 class = "mytitle" id = "title" style = "display : inline;">等待的訂單 &nbsp; </h1>
-						<button type="button" class="btn btn-success" id = "allaccept" style = "position:absolute; top: 2px;">All Accept</button>
-						<div class="pull-right">通知 <input id = "onNotice" type="checkbox" checked> </div>
+						<div>
+							<h1 class = "mytitle" id = "title" style = "display : inline;vertical-align:bottom;">等待的訂單 &nbsp; </h1>
+							<button type="button" class="btn btn-default" id = "sortTime" >Time up</button>
+							<button type="button" class="btn btn-default" id = "sortID" >ID up</button>
+							<button type="button" class="btn btn-success" id = "allaccept" >All Accept</button>
+							<div class="pull-right">通知 <input id = "onNotice" type="checkbox" checked> </div>
+						</div>
 					</div>
-
-                </div>
+				</div>
                 <div class="row" id = "DATA" >
 
                     <div class="col-sm-12 col-lg-12 col-md-12">
@@ -76,6 +82,7 @@
                             <div class="caption">
                                 
                                 <h4>
+									<i class="fa fa-angle-down btnOrder"></i>
 									<span>#123</span>
 									<a href="#">
 										吳先生
@@ -85,14 +92,14 @@
 									</span>
 									<span class="pull-right font-5">NT$ 105</span>
                                 </h4>
-								
-								<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
-								<p>火腿三明治 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-								<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
-									
+								<div class = "myOrder">
+									<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
+									<p>火腿三明治 <span class = "pull-right">NT$ 35</span></p>
+									<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
+									<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
+									<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
+									<p>紅茶 <span class = "pull-right">NT$ 35</span></p>
+								</div>
                             </div>
                             <div class="ratings" style = "height: 40px;">
                                 <div class = "pull-right ratings myBtn">

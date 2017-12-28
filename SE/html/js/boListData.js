@@ -43,6 +43,7 @@ function webMake(id,name,phone,total,order,star){
 	'		<div class="caption">                                                        '+
 	'			                                                                         '+
 	'			<h4>                                                                     '+
+	'				<i class="fa fa-angle-down btnOrder"></i>                            '+
 	'				<span>#'+id+'</span>                                                 '+
 	'				<a href="#">                                                         '+
 	'					'+name+'                                                         '+
@@ -52,7 +53,9 @@ function webMake(id,name,phone,total,order,star){
 	'				</span>                                                              '+
 	'				<span class="pull-right font-5">NT$ '+total+'</span>                 '+
 	'			</h4>                                                                    '+
-	'			                                                                         '+ web_order_str+
+	'			    <div class = "myOrder">                                              '+
+	web_order_str+
+	'			    </div>                                                               '+
 	'				                                                                     '+
 	'		</div>                                                                       '+
 	'		<div class="ratings" style = "height: 40px;">                                '+
