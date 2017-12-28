@@ -64,7 +64,29 @@ text-decoration:none;
 background-color:gray;
 color:#fafafa;
 }
-
+/* Eden style of SweetAlert */
+/*.swal-button {
+  background-color: #20B2AA;
+}
+.swal-button--cancel {
+	color : #eee;
+}*/
+/* My style of SweetAlert */
+.swal-button {
+  padding: 7px 19px;
+  border-radius: 5px;
+  background-color: #20B2AA;
+  font-family: 微軟正黑體;
+}
+.swal-footer {
+  background-color: rgb(245, 248, 250);
+  margin-top: 32px;
+  border-top: 1px solid #E9EEF1;
+  overflow: hidden;
+}
+.swal-button--cancel {
+	color : WhiteSmoke;
+}
 
 /*font size*/
 font-5
@@ -77,5 +99,18 @@ font-5
 }
 .information
 {
-	/*display:none;*/
+	display:none;
+}
+.btnOrder
+{
+	font-size:36px;
+	cursor:pointer;
+}
+ul li ul
+{
+	padding-left: 15px;
+}
+.del
+{
+	text-decoration:line-through;
 }
