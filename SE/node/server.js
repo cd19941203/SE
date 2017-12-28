@@ -13,7 +13,7 @@ var meal = require('./meal.js');
 var setting = require('./setting.js');
 var order = require('./order.js');
 
-var rootPath = '../www/';
+var rootPath = '../html/';
 var multipartyOptions = {
 	autoFiles: true
 };
@@ -35,7 +35,10 @@ async function init(){
 	app.use(bodyParser.urlencoded({extended: true}));
 	////////////////////////////////////////////////////////////
 	// web service and socket setting
-	app.use('/js',express.static(__dirname + '/../www/js'));
+	app.use('/js',express.static(__dirname + '/../html/js'));
+	app.use('/css',express.static(__dirname + '/../html/css'));
+	app.use('/image',express.static(__dirname + '/../html/image'));
+	app.use('/fonts',express.static(__dirname + '/../html/fonts'));
 	//app.use('/',express.static(__dirname + '/../www'));
 	////////////////////////////////////////////////////////////
 	//let we can get connection session from socket
@@ -270,21 +273,22 @@ async function init(){
 	// login and logout
 	app.post('/loginCheck',async(req,res)=>{
 		try{
-			var account = req.body.account;
+			var acc = req.body.account;
 			var password = req.body.password;
-			var status = await account.login(account,password);
+			var status = await account.login(acc,password);
 			if(status == true){
 				req.session.valid = true;
 				req.session.account = account;
 				if(account == 'boss')
-					res.sendFile('boss.html',{root:rootPath});
+					res.sendFile('boMenu.html',{root:rootPath});
 				else
-					res.sendFile('client.html',{root:rootPath});
+					res.sendFile('cuMunu.html',{root:rootPath});
 			}
 			else{
 				res.sendFile('login.html',{root:rootPath});
 			}
 		}catch(err){
+			console.log(err);
 			res.sendFile('login.html',{root:rootPath});
 		}
 	});
@@ -296,9 +300,9 @@ async function init(){
 		//console.log(req.session.account);
 		//res.send('hello');
         if(req.session.account == "boss")
-            res.sendFile('boss.html',{root:rootPath});
+            res.sendFile('boMenu.html',{root:rootPath});
         else
-            res.sendFile('client.html',{root:rootPath});
+            res.sendFile('cuMenu.html',{root:rootPath});
 	});
 	
 	app.get('/logout',(req,res)=>{
@@ -309,7 +313,7 @@ async function init(){
 	// route
 	app.get('/index',(req,res)=>{
 		var m = req.query.m;
-
+		res.sendFile(m+'.html',{root:rootPath});
 	});
 
 
