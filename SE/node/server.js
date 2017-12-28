@@ -7,7 +7,7 @@ var sio = require("socket.io")(server);
 var bodyParser = require('body-parser');
 var formData = require("express-form-data");
 var socket = require('./order.js');
-var account = require('./account.js');
+var d = require('./account.js');
 var database = require('./database.js');
 var meal = require('./meal.js');
 var setting = require('./setting.js');
@@ -37,6 +37,8 @@ async function init(){
 	// web service and socket setting
 	app.use('/js',express.static(__dirname + '/../html/js'));
 	app.use('/css',express.static(__dirname + '/../html/css'));
+	app.use('/image',express.static(__dirname + '/../html/image'));
+	app.use('/fonts',express.static(__dirname + '/../html/fonts'));
 	//app.use('/',express.static(__dirname + '/../www'));
 	////////////////////////////////////////////////////////////
 	//let we can get connection session from socket
@@ -286,6 +288,7 @@ async function init(){
 				res.sendFile('login.html',{root:rootPath});
 			}
 		}catch(err){
+			console.log(err);
 			res.sendFile('login.html',{root:rootPath});
 		}
 	});
