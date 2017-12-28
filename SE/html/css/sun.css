@@ -1,3 +1,4 @@
+ï»¿@charset "UTF-8";
 /*a  upload */
 .a-upload {
     padding: 4px 10px;
@@ -42,28 +43,50 @@
 	cursor:pointer;
 }
 .a-click:link{
-//³]©wÁÙ¨S¦³ÂsÄı¹Lªº³sµ²
+//è¨­å®šé‚„æ²’æœ‰ç€è¦½éçš„é€£çµ
 text-decoration:none;
 background-color:#ffffff;
 }
 .a-click:visited {
-//³]©w¤w¸gÂsÄı¹Lªº³sµ²
+//è¨­å®šå·²ç¶“ç€è¦½éçš„é€£çµ
 color:#ffffff;
 background-color:red;
 }
 .a-click:hover {
-//³]©w·Æ¹«²¾¸gªº³sµ²
+//è¨­å®šæ»‘é¼ ç§»ç¶“çš„é€£çµ
 text-decoration:underline;
 background-color:#fafafa;
 color:gray;
 }
 .a-click:active {
-//³]©w¥¿¦bÂI¿ïªº³sµ²
+//è¨­å®šæ­£åœ¨é»é¸çš„é€£çµ
 text-decoration:none;
 background-color:gray;
 color:#fafafa;
 }
-
+/* Eden style of SweetAlert */
+/*.swal-button {
+  background-color: #20B2AA;
+}
+.swal-button--cancel {
+	color : #eee;
+}*/
+/* My style of SweetAlert */
+.swal-button {
+  padding: 7px 19px;
+  border-radius: 5px;
+  background-color: #20B2AA;
+  font-family: å¾®è»Ÿæ­£é»‘é«”;
+}
+.swal-footer {
+  background-color: rgb(245, 248, 250);
+  margin-top: 32px;
+  border-top: 1px solid #E9EEF1;
+  overflow: hidden;
+}
+.swal-button--cancel {
+	color : WhiteSmoke;
+}
 
 /*font size*/
 font-5
@@ -72,5 +95,22 @@ font-5
 }
 .mytitle
 {
-	font-family: ·L³n¥¿¶ÂÅé;
+	font-family: å¾®è»Ÿæ­£é»‘é«”;
+}
+.information
+{
+	display:none;
+}
+.btnOrder
+{
+	font-size:36px;
+	cursor:pointer;
+}
+ul li ul
+{
+	padding-left: 15px;
+}
+.del
+{
+	text-decoration:line-through;
 }
