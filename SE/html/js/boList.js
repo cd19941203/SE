@@ -31,7 +31,7 @@ function btnRemoveList(item, title = "Title", message = "", icon){
 //EX.   addData(example);
 function addData(tmp){
 	clearData();
-	var tmp = JSON.parse(tmp);
+	//var tmp = JSON.parse(tmp);
 	for(var i = 0; i < tmp.length ; i++)
 	{
 		data[ tmp[i].orderNumber ] = tmp[i];
