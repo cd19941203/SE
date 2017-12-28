@@ -13,7 +13,7 @@ var meal = require('./meal.js');
 var setting = require('./setting.js');
 var order = require('./order.js');
 
-var rootPath = '../www/';
+var rootPath = '../html/';
 var multipartyOptions = {
 	autoFiles: true
 };
@@ -35,7 +35,7 @@ async function init(){
 	app.use(bodyParser.urlencoded({extended: true}));
 	////////////////////////////////////////////////////////////
 	// web service and socket setting
-	app.use('/js',express.static(__dirname + '/../www/js'));
+	app.use('/js',express.static(__dirname + '/../html/js'));
 	//app.use('/',express.static(__dirname + '/../www'));
 	////////////////////////////////////////////////////////////
 	//let we can get connection session from socket
@@ -305,7 +305,7 @@ async function init(){
 	// route
 	app.get('/index',(req,res)=>{
 		var m = req.query.m;
-
+		res.sendFile(m+'.html',{root:rootPath});
 	});
 
 
