@@ -15,7 +15,7 @@ async function login(account,password){
                     rej(dbManipulationError);
                 }
                 else{
-                    if(result['password'] == password)
+                    if(result && result['password'] == password)
                         res(true);
                     else
                         res(false);

@@ -276,7 +276,6 @@ async function init(){
 			var acc = req.body.account;
 			var password = req.body.password;
 			var status = await account.login(acc,password);
-			console.log(acc);
             if(status == true){
 				req.session.valid = true;
 				req.session.account = acc;
@@ -300,10 +299,10 @@ async function init(){
 		req.session.account = req.query.account;
 		//console.log(req.session.account);
 		//res.send('hello');
-        if(req.session.account == "boss")
-            res.sendFile('boMenu.html',{root:rootPath});
+		if(req.session.account == "boss")
+			res.redirect('/index?m=bomenu');
         else
-            res.sendFile('cuMenu.html',{root:rootPath});
+            res.redirect('/index?m=cuMenu');
 	});
 	
 	app.get('/logout',(req,res)=>{
@@ -314,7 +313,16 @@ async function init(){
 	// route
 	app.get('/index',(req,res)=>{
 		var m = req.query.m;
-		res.sendFile(m+'.html',{root:rootPath});
+		if(typeof m === "undefined"){
+			if(req.session.account == 'boss'){
+				res.sendFile('boMenu.html',{root:rootPath});
+			}
+			else{
+				res.sendFile('cuMenu.html',{root:rootPath});
+			}
+		}
+		else
+			res.sendFile(m+'.html',{root:rootPath});
 	});
 
 
