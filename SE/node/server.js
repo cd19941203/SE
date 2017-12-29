@@ -292,19 +292,7 @@ async function init(){
 			res.sendFile('login.html',{root:rootPath});
 		}
 	});
-	
-	// 用來假裝登入der
-	app.get('/loginCheck',(req,res)=>{
-		req.session.valid = true;
-		req.session.account = req.query.account;
-		//console.log(req.session.account);
-		//res.send('hello');
-		if(req.session.account == "boss")
-			res.redirect('/index?m=bomenu');
-        else
-            res.redirect('/index?m=cuMenu');
-	});
-	
+
 	app.get('/logout',(req,res)=>{
 		req.session.destroy();
 		res.sendFile('login.html',{root:rootPath});
@@ -353,6 +341,10 @@ async function init(){
 		}catch(err){
 			res.send({});
 		}
+	});
+
+	app.post('/createAccount',(req,res)=>{
+		console.log(req.body);
 	});
 
 	app.get('/getMenu',async(req,res)=>{
