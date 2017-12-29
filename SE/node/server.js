@@ -20,7 +20,9 @@ var multipartyOptions = {
 
 function getDate(){
 	var x = new Date();
-	return new Date(x.getTime() + 8*3600000);
+	x.setHours(x.getHours()+8);
+	return x;
+	//return new Date(x.getTime() + 8*3600000);
 }
 
 async function init(){
@@ -64,6 +66,7 @@ async function init(){
 			next();
 	});
 	
+	/*
 	var bossOnlyAPI = ['/getOrderList'];
 
 	app.use(bossOnlyAPI,(req,res,next)=>{
@@ -72,6 +75,8 @@ async function init(){
 		else
 			next();
 	});
+	*/
+
 	////////////////////////////////////////////////////////////
 	//---------------------- start here ----------------------//
 
