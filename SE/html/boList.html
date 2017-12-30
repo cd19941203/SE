@@ -26,7 +26,7 @@
 	<!-- Font Awesome Directional Icons -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<!-- MyCSS -->
+	<!-- Team CSS -->
     <link href="css/sun.css" rel="stylesheet">
 	
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -35,11 +35,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="js/navBoss.js"></script>
-	<script src="js/boListData.js"></script>
-	<script src="js/boList.js"></script>
-	<script src="js/boListConnect.js"></script>
+    
 </head>
 
 <body>
@@ -67,32 +63,42 @@
                     <div class="col-md-12">
 						<div>
 							<h1 class = "mytitle" id = "title" style = "display : inline;vertical-align:bottom;">等待的訂單 &nbsp; </h1>
-							<button type="button" class="btn btn-default" id = "sortTime" >Time up</button>
-							<button type="button" class="btn btn-default" id = "sortID" >ID up</button>
 							<button type="button" class="btn btn-success" id = "allaccept" >All Accept</button>
-							<div class="pull-right">通知 <input id = "onNotice" type="checkbox" checked> </div>
+
+							<div class="pull-right">
+								<span> 排序：</span>
+								<div class="btn-group" id = "btnSort" data-toggle="buttons">
+									<label class="btn btn-default">
+										<input type="radio" name="options" value = "Time" id = "sortTime" >Time</button>
+									</label>
+									<label class="btn btn-default">
+										<input type="radio" name="options" value = "ID" id = "sortID" >ID</button>
+									</label>
+								</div>
+								通知 <input id = "onNotice" type="checkbox" checked>
+							</div>
 						</div>
 					</div>
 				</div>
                 <div class="row" id = "DATA" >
 
-                    <!--div class="col-sm-12 col-lg-12 col-md-12">
+                    <div class="col-sm-12 col-lg-12 col-md-12">
                         <div class="thumbnail">
 						
 							<div class = "information">123</div>
 							
                             <div class="caption">
                                 
-                                <h4>
-									<i class="fa fa-angle-down btnOrder"></i>
-									<span>#123</span>
-									<a href="#">
+                                <h4 class = "spe01H4">
+									<i class="fa fa-angle-down btnOrder spe01I"></i>
+									<span class = "spe01Span">#123</span>
+									<a href="#" class = "spe01A">
 										吳先生
 									</a>
-									<span>
+									<span class = "spe01Span">
 										(0982547854)
 									</span>
-									<span class="pull-right font-5">NT$ 105</span>
+									<span class="spe01Span-1 font-5">NT$ 105</span>
                                 </h4>
 								<div class = "myOrder">
 									<p>起司蛋餅 <span class = "pull-right">NT$ 35</span></p>
@@ -105,7 +111,7 @@
                             </div>
                             <div class="ratings" style = "height: 40px;">
                                 <div class = "pull-right ratings myBtn">
-									<!-- btnTrigger(); >
+									<!-- btnTrigger(); -->
 								</div>
                                 <p>
                                     可信度：
@@ -143,7 +149,8 @@
     <!-- /.container -->
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--script src="js/jquery.js"></script-->
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
@@ -161,6 +168,12 @@
     <!-- Socket.io -->
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     
+	<!-- Team JS -->
+	<script src="js/navBoss.js"></script>
+	<script src="js/boListData.js"></script>
+	<script src="js/boList.js"></script>
+	<!--script src="js/boListConnect.js"></script-->
+	
 </body>
 
 </html>

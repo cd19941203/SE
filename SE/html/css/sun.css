@@ -114,3 +114,33 @@ ul li ul
 {
 	text-decoration:line-through;
 }
+
+/* special for boList.html*/
+.spe01H4
+{
+	display: table;width: 100%;
+}
+.spe01I
+{
+	display: table-cell;
+    vertical-align: middle;
+    width: 10px;
+}
+.spe01Span
+{
+	display:  table-cell;
+    vertical-align: middle;
+    width: 10px;
+}
+.spe01A
+{
+	display:  table-cell;
+    vertical-align: middle;
+    width: 10px;
+}
+.spe01Span-1
+{
+	display:  table-cell;
+    vertical-align: middle;
+    text-align: right;
+}

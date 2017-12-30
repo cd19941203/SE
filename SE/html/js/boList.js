@@ -1,6 +1,6 @@
 var data = [];
 var STATUS='NEW';
-
+var sortStatus = "Time";
 //the Switch to open Notice or not.
 var onNotice = true;
 
@@ -28,15 +28,29 @@ function btnRemoveList(item, title = "Title", message = "", icon){
 
 //--------------------------- Function about Data   ---------------------------//
 
-//EX.   addData(example);
-function addData(tmp){
+//EX.   updateData(example);
+function updateData(tmp = data){
+	//console.log(data);
 	clearData();
-	//var tmp = JSON.parse(tmp);
+	tmp = tmp.sort(function(a,b)
+	{
+		
+		//console.log(a.beginTime + " " + b.beginTime + " = " + (a.beginTime < b.beginTime).toString());
+		if(sortStatus == "Time")return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? -1 : 1;
+		else if (sortStatus == "ID")return a.orderNumber > b.orderNumber ? 1 : -1;
+	});
+	/*var tmp = JSON.parse(tmp);
 	for(var i = 0; i < tmp.length ; i++)
 	{
 		data[ tmp[i].orderNumber ] = tmp[i];
 		webMake(tmp[i].orderNumber,tmp[i].account,"0988452145","100",[[tmp[i].mealName,10,350],['起司蛋餅',10,350]],4);
+	}*/
+	for(var key in tmp)
+	{
+		//console.log(tmp[key].orderNumber);
+		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,"100",[[tmp[key].mealName,10,350],['起司蛋餅',10,350]],4);
 	}
+	data = tmp;
 }
 function clearData(){
 	$("#DATA").html("");
@@ -145,7 +159,7 @@ function btnPage(){
 		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("等待的訂單 &nbsp; ");
 		STATUS = "NEW";
-		//addData(example);
+		//updateData(example);
 		
 		document.getElementById("allaccept").style.display = "inline";
 	});
@@ -155,7 +169,7 @@ function btnPage(){
 		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("處理中");
 		STATUS = "ACCEPT";
-        //addData(example);
+        //updateData(example);
 		document.getElementById("allaccept").style.display = "none";
 	});
 	$("#WAIT").click(function(){
@@ -164,7 +178,7 @@ function btnPage(){
 		$("#WAIT").addClass("list-group-item-info");
 		$("#title").html("待取餐");
 		STATUS = "WAIT";
-        //addData(example);
+        //updateData(example);
 		document.getElementById("allaccept").style.display = "none";
 	});
 	
@@ -185,15 +199,32 @@ function boList_init(){
 			switch(value){
 				case "ok":
 					$(".accept").click();
-					console.log("YES");
+					//console.log("YES");
 					break;
 				default:
 					break;
 			};
 		});
 	})
+	$("#btnSort").mouseup(function(){
+		setTimeout(function(){
+		sortStatus = $('input[name="options"]:checked').val();
+		updateData();
+		},10);
+	});
+	/*window.setInterval(function(){
+		console.log( $('input[name="options"]:checked').val() );
+	}, 100); */
+	/*$(".bb").click(function(){
+		// 下面这行代码就是你要的ID属性
+		console.log($(this).attr("id"));
+	});*/
 	btnPage();
 	btnTrigger();
+	
+	///example is a variable       use test
+	example = JSON.parse(example);
+	data = example;
 	
 	//Notification
 	$("#onNotice").bootstrapSwitch({size:"mini"});
