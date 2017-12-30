@@ -169,7 +169,7 @@ function btnPage(){
 	});
 	
 }
-function init(){
+function boList_init(){
 	//All Trigger Button Action
 	$("#allaccept").click(function(){
 		swal("確定接收所有的訂單？", {
@@ -199,6 +199,6 @@ function init(){
 	$("#onNotice").bootstrapSwitch({size:"mini"});
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
 	
-	//init
+	//boList_init
 }
-addEventListener("load",init,false);
+addEventListener("load",boList_init,false);
