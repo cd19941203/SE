@@ -59,9 +59,6 @@ function clearData(){
 //--------------------------- Function about Trigger---------------------------//
 function btnTrigger(){
 	var length = document.getElementsByClassName('myBtn').length;
-	for(var i=0;i<length;i++){
-		document.getElementsByClassName('myBtn')[i].innerHTML = btnStr[STATUS];
-	}
 	$(".btnOrder").click(function(){
 		$(this).parent().parent().children(".myOrder").slideToggle("fast");
 		if( $(this).hasClass("fa-angle-down") ){
@@ -73,84 +70,6 @@ function btnTrigger(){
 			$(this).removeClass("fa-angle-up");
 		}
 	});
-	if(STATUS=='NEW'){
-		$(".accept").click(function(){
-			btnRemoveList($(this),"accept");
-		});
-		$(".refuse").click(function(){
-			btnRemoveList($(this),"refuse");
-		});
-		$(".edit").click(function(){
-			
-			swal("Why edit this order?", {
-				buttons: {
-					delay: {
-						text: "延期",
-						value: "time",
-					},
-					ofs: {
-						text: "缺貨",
-						value: "ofs",
-					},
-					cancel: "Cancel"
-				},
-				})
-			.then((value) => {
-				switch (value) {
-					case "time":
-						swal("When?", {
-							closeOnClickOutside: false,
-							buttons: {
-								time10: {
-									text: "10 Min",
-									value: "time10",
-								},
-								time20: {
-									text: "20 Min",
-									value: "time20",
-								},
-								time30: {
-									text: "30 Min",
-									value: "time30",
-								},
-								cancel: "Cancel"
-							},
-							})
-						.then((value) => {
-							switch (value) {
-							case "time10":
-							case "time20":
-							case "time30":
-								swal("Edit","延期請求已送出", {timer:1200,icon:"success"});
-								btnRemoveList($(this),"Edit","延遲"+value.substr(4)+"分鐘",ICON['alert']);
-								break;
-							default:
-								break;
-						}});
-						
-						break;
-					case "ofs":
-						//swal({
-						//	content: "input",
-						//});
-						swal("Edit", "缺貨請求已送出", {timer:1200,icon:"success"});
-						break;
-					default:
-						break;
-			}});
-		});
-	}
-	else if (STATUS == 'ACCEPT'){
-		$(".ok").click(function(){
-			btnRemoveList($(this),"ok");
-		});
-	}
-	else if(STATUS == 'WAIT'){
-		$(".ok").click(function(){
-			btnRemoveList($(this),"ok");
-		});
-	}
-	else {console.error("'STATUS' is error");}
 }
 function btnPage(){
 	$("#NEW").click(function(){
@@ -225,7 +144,7 @@ function boList_init(){
 	///example is a variable       use test
 	example = JSON.parse(example);
 	data = example;
-	
+	updateData(example);
 	//Notification
 	$("#onNotice").bootstrapSwitch({size:"mini"});
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
