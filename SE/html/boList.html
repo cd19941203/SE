@@ -35,7 +35,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+	
 </head>
 
 <body>
@@ -51,7 +51,7 @@
             <div class="col-md-3">
                 <p class="lead">Breakfast Store</p>
                 <div class="list-group">
-                    <a href="#" id = "NEW"    class="list-group-item">等待的訂單<span class="badge">12</span></a>
+                    <a href="#" id = "NEW"    class="list-group-item">等待中<span class="badge">12</span></a>
                     <a href="#" id = "ACCEPT" class="list-group-item">處理中<span class="badge">5</span></a>
                     <a href="#" id = "WAIT"   class="list-group-item">待取餐<span class="badge">1</span></a>
                 </div>
@@ -62,17 +62,17 @@
 
                     <div class="col-md-12">
 						<div>
-							<h1 class = "mytitle" id = "title" style = "display : inline;vertical-align:bottom;">等待的訂單 &nbsp; </h1>
-							<button type="button" class="btn btn-success" id = "allaccept" >All Accept</button>
+							<h1 class = "mytitle" id = "title" style = "display : inline;vertical-align:bottom;">等待中 &nbsp; </h1>
+							<button type="button" class="btn btn-success" id = "allaccept" title = "接受全部訂單">All Accept</button>
 
 							<div class="pull-right">
 								<span> 排序：</span>
 								<div class="btn-group" id = "btnSort" data-toggle="buttons">
-									<label class="btn btn-default">
-										<input type="radio" name="options" value = "Time" id = "sortTime" >Time</button>
-									</label>
-									<label class="btn btn-default">
+									<label class="btn btn-default" title = "根據點餐時間(ID)排序">
 										<input type="radio" name="options" value = "ID" id = "sortID" >ID</button>
+									</label>
+									<label class="btn btn-default" title = "根據預定取餐時間(Time)排序">
+										<input type="radio" name="options" value = "Time" id = "sortTime" >Time</button>
 									</label>
 								</div>
 								通知 <input id = "onNotice" type="checkbox" checked>
@@ -82,7 +82,7 @@
 				</div>
                 <div class="row" id = "DATA" >
 
-                    <div class="col-sm-12 col-lg-12 col-md-12">
+                    <!--div class="col-sm-12 col-lg-12 col-md-12">
                         <div class="thumbnail">
 						
 							<div class = "information">123</div>
@@ -111,11 +111,9 @@
                             </div>
                             <div class="ratings" style = "height: 40px;">
                                 <div class = "pull-right ratings myBtn">
-									<!-- btnTrigger(); -->
 								</div>
                                 <p>
-                                    可信度：
-									<span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
                                     <span >4</span>
                                 </p>
                             </div>

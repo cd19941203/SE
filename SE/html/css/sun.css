@@ -1,5 +1,5 @@
 ﻿@charset "UTF-8";
-/*a  upload */
+/*a  upload   use in uploadBtn*/
 .a-upload {
     padding: 4px 10px;
     height: 20px;
@@ -38,7 +38,7 @@
 
 
 
-/*like link style*/
+/*like link style   use in cusetting*/
 .a-click{
 	cursor:pointer;
 }
@@ -88,7 +88,7 @@ color:#fafafa;
 	color : WhiteSmoke;
 }
 
-/*font size*/
+/*font*/
 font-5
 {
 	font-size:200px;
@@ -97,6 +97,18 @@ font-5
 {
 	font-family: 微軟正黑體;
 }
+body
+{
+	font-family: Microsoft JhengHei;
+}
+.order_cht
+{
+	font-family: Microsoft JhengHei;
+	font-weight: bold;
+}
+
+
+
 .information
 {
 	display:none;
@@ -115,7 +127,7 @@ ul li ul
 	text-decoration:line-through;
 }
 
-/* special for boList.html*/
+/* special        use in boList.html*/
 .spe01H4
 {
 	display: table;width: 100%;
