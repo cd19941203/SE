@@ -270,7 +270,7 @@ function boList_init(){
 	///example is a variable       use test
 	example = JSON.parse(example);
 	data = example;
-	
+	updateData();
 	//Notification
 	$("#onNotice").bootstrapSwitch({size:"mini"});
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
