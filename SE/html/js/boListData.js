@@ -10,7 +10,11 @@ var btnStr = Object.freeze({
 	WAIT: 
 	'				<button type="button" class="btn btn-success ok">OK</button>         '+
 	'				<button type="button" class="btn btn-danger cancel">Cancel</button>  '});
-
+var statusNumber = Object.seal({
+	NEW:0,
+	ACCEPT:0,
+	WAIT:0
+});
 //ICON
 var ICON = Object.freeze({
 	alert:"image/icon/alert.png",

@@ -33,7 +33,14 @@ function addNoty(message, myType = notyType.info)
 		}).show();
 	}
 }
-
+function updateStatusNumber(New = 0,Accept = 0,Wait = 0){
+	statusNumber.NEW += New;
+	statusNumber.ACCEPT += Accept;
+	statusNumber.WAIT += Wait;
+	$("#newNumber").html(statusNumber.NEW);
+	$("#acceptNumber").html(statusNumber.ACCEPT);
+	$("#waitNumber").html(statusNumber.WAIT);
+}
 //function btnRemoveList(item, title = "Title", message = "", icon){
 function btnRemoveList(item, message, myType = notyType.info, runNoty = true){
 	var id = $(item).parent().parent().parent().children('.information').html();
@@ -92,11 +99,19 @@ function btnTrigger(){
 		}
 	});
 	if(STATUS=='NEW'){
+		//add NEW data
+		statusNumber.NEW=12;
+		updateStatusNumber();
+		
+		
 		$(".accept").click(function(){
 			btnRemoveList($(this),"接受",notyType.success,!eventAllAccept);
+			updateStatusNumber(-1,1,0);
+			updateStatusNumber();
 		});
 		$(".refuse").click(function(){
 			btnRemoveList($(this),"拒絕",notyType.error);
+			updateStatusNumber(-1);
 		});
 		$(".edit").click(function(){
 			
@@ -141,6 +156,7 @@ function btnTrigger(){
 							case "time30":
 								swal("Edit","延期請求已送出", {timer:1200,icon:"success"});
 								btnRemoveList($(this),"延遲"+value.substr(4)+"分鐘",notyType.warning);
+								updateStatusNumber(-1);
 								break;
 							default:
 								break;
@@ -152,6 +168,8 @@ function btnTrigger(){
 						//	content: "input",
 						//});
 						swal("Edit", "缺貨請求已送出", {timer:1200,icon:"success"});
+						btnRemoveList($(this),"缺貨請求已送出",notyType.warning);
+						updateStatusNumber(-1);
 						break;
 					default:
 						break;
@@ -161,11 +179,17 @@ function btnTrigger(){
 	else if (STATUS == 'ACCEPT'){
 		$(".ok").click(function(){
 			btnRemoveList($(this),"ok",notyType.success);
+			updateStatusNumber(0,-1,1);
 		});
 	}
 	else if(STATUS == 'WAIT'){
 		$(".ok").click(function(){
 			btnRemoveList($(this),"ok",notyType.success);
+			updateStatusNumber(0,0,-1);
+		});
+		$(".cancel").click(function(){
+			btnRemoveList($(this),"cancel",notyType.success);
+			updateStatusNumber(0,0,-1);
 		});
 	}
 	else {console.error("'STATUS' is error");}
