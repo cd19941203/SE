@@ -28,6 +28,17 @@ function btnRemoveList(item, title = "Title", message = "", icon){
 
 //--------------------------- Function about Data   ---------------------------//
 
+function addNoty(message, myType = "info")
+{
+	var noty = new Noty({
+		theme: 'bootstrap-v3',
+		text: message,
+		type: myType,
+		layout: 'bottomRight',
+		timeout: 5000
+	}).show();
+}
+
 //EX.   updateData(example);
 function updateData(tmp = data){
 	//console.log(data);
@@ -61,6 +72,7 @@ function btnTrigger(){
 	var length = document.getElementsByClassName('myBtn').length;
 	for(var i=0;i<length;i++){
 		document.getElementsByClassName('myBtn')[i].innerHTML = btnStr[STATUS];
+		
 	}
 	$(".btnOrder").click(function(){
 		$(this).parent().parent().children(".myOrder").slideToggle("fast");
