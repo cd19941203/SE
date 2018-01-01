@@ -60,7 +60,7 @@ function updateData(tmp = data){
 	{
 		
 		//console.log(a.beginTime + " " + b.beginTime + " = " + (a.beginTime < b.beginTime).toString());
-		if(sortStatus == "Time")return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? -1 : 1;
+		if(sortStatus == "Time")return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? 1 : -1;
 		else if (sortStatus == "ID")return a.orderNumber > b.orderNumber ? 1 : -1;
 	});
 	/*var tmp = JSON.parse(tmp);
