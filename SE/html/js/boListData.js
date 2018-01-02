@@ -35,8 +35,10 @@ function webMake(id,name,phone,date,total,order,star){
 		web_order_str +=
 			'			<p>'+order[i][0] + plural + ' <span class = "pull-right">NT$ '+order[i][2]+'</span></p>                 \n';
 	}
-	date = new Date(date);
-	date = date.getHours()+":"+date.getMinutes();
+	//date.substr(0,date.length-1) is use delete 'Z'
+	date = new Date(date.substr(0,date.length-1));
+	//paddingLeft is include "myMath.js"
+	date = paddingLeft(date.getHours()+"",2) + ":" + paddingLeft(date.getMinutes()+"",2);
 	var web = 
 	'<div class="col-sm-12 col-lg-12 col-md-12">                                         '+
 	'	<div class="thumbnail">                                                          '+
