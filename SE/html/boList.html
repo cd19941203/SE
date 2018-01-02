@@ -36,6 +36,16 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 	
+	<!--TEST-->
+	<link href="css/noty.css" rel="stylesheet">
+	<script src="js/noty.min.js" type="text/javascript"></script>
+	
+	
+	
+	
+	
+	
+	
 </head>
 
 <body>
@@ -51,9 +61,9 @@
             <div class="col-md-3">
                 <p class="lead">Breakfast Store</p>
                 <div class="list-group">
-                    <a href="#" id = "NEW"    class="list-group-item">等待中<span class="badge">12</span></a>
-                    <a href="#" id = "ACCEPT" class="list-group-item">處理中<span class="badge">5</span></a>
-                    <a href="#" id = "WAIT"   class="list-group-item">待取餐<span class="badge">1</span></a>
+                    <a href="#" id = "NEW"    class="list-group-item">等待中<span class="badge" id = "newNumber">0</span></a>
+                    <a href="#" id = "ACCEPT" class="list-group-item">處理中<span class="badge" id = "acceptNumber">0</span></a>
+                    <a href="#" id = "WAIT"   class="list-group-item">待取餐<span class="badge" id = "waitNumber">0</span></a>
                 </div>
             </div>
 
@@ -161,7 +171,7 @@
     <script src="js/bootstrap-switch.min.js"></script>
 	
 	<!-- Bootstrap-Switch -->
-    <script src="js/bootstrap-notify.min.js"></script>
+    <!--script src="js/bootstrap-notify.min.js"></script-->
     
     <!-- Socket.io -->
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>

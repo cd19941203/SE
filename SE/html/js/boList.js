@@ -3,9 +3,12 @@ var STATUS='NEW';
 var sortStatus = "Time";
 //the Switch to open Notice or not.
 var onNotice = true;
-
+var eventAllAccept = false;
 //--------------------------- Function about Action ---------------------------//
-function mesgNotice(title,message,img){
+
+//window.Notification       replace by addNoty()
+/*function mesgNotice(title,message,img){
+	
 	if(!img)img="image/icon/Information.png";
     if(onNotice&&window.Notification && Notification.permission !== "denied") {
         Notification.requestPermission(function(status) {
@@ -16,12 +19,33 @@ function mesgNotice(title,message,img){
             }
         });
     }
-}
+}*/
 
-function btnRemoveList(item, title = "Title", message = "", icon){
+function addNoty(message, myType = notyType.info)
+{
+	if(onNotice){
+		var noty = new Noty({
+			theme: 'bootstrap-v3',
+			text: message,
+			type: myType,
+			layout: 'bottomRight',
+			timeout: 4000
+		}).show();
+	}
+}
+function updateStatusNumber(New = 0,Accept = 0,Wait = 0){
+	statusNumber.NEW += New;
+	statusNumber.ACCEPT += Accept;
+	statusNumber.WAIT += Wait;
+	$("#newNumber").html(statusNumber.NEW);
+	$("#acceptNumber").html(statusNumber.ACCEPT);
+	$("#waitNumber").html(statusNumber.WAIT);
+}
+//function btnRemoveList(item, title = "Title", message = "", icon){
+function btnRemoveList(item, message, myType = notyType.info, runNoty = true){
 	var id = $(item).parent().parent().parent().children('.information').html();
-	mesgNotice(title, "#" + id +" "+ message,icon);
-	
+	//mesgNotice(title, "#" + id +" "+ message,icon);
+	if(runNoty)addNoty("#" + id +" "+ message,myType);
 	item.parent().parent().parent().parent().fadeOut(400);
 	setTimeout(function(){item.parent().parent().parent().parent().remove();},1000);
 }
@@ -36,7 +60,7 @@ function updateData(tmp = data){
 	{
 		
 		//console.log(a.beginTime + " " + b.beginTime + " = " + (a.beginTime < b.beginTime).toString());
-		if(sortStatus == "Time")return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? -1 : 1;
+		if(sortStatus == "Time")return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? 1 : -1;
 		else if (sortStatus == "ID")return a.orderNumber > b.orderNumber ? 1 : -1;
 	});
 	/*var tmp = JSON.parse(tmp);
@@ -61,6 +85,7 @@ function btnTrigger(){
 	var length = document.getElementsByClassName('myBtn').length;
 	for(var i=0;i<length;i++){
 		document.getElementsByClassName('myBtn')[i].innerHTML = btnStr[STATUS];
+		
 	}
 	$(".btnOrder").click(function(){
 		$(this).parent().parent().children(".myOrder").slideToggle("fast");
@@ -74,11 +99,19 @@ function btnTrigger(){
 		}
 	});
 	if(STATUS=='NEW'){
+		//add NEW data
+		statusNumber.NEW=12;
+		updateStatusNumber();
+		
+		
 		$(".accept").click(function(){
-			btnRemoveList($(this),"accept");
+			btnRemoveList($(this),"接受",notyType.success,!eventAllAccept);
+			updateStatusNumber(-1,1,0);
+			updateStatusNumber();
 		});
 		$(".refuse").click(function(){
-			btnRemoveList($(this),"refuse");
+			btnRemoveList($(this),"拒絕",notyType.error);
+			updateStatusNumber(-1);
 		});
 		$(".edit").click(function(){
 			
@@ -122,7 +155,8 @@ function btnTrigger(){
 							case "time20":
 							case "time30":
 								swal("Edit","延期請求已送出", {timer:1200,icon:"success"});
-								btnRemoveList($(this),"Edit","延遲"+value.substr(4)+"分鐘",ICON['alert']);
+								btnRemoveList($(this),"延遲"+value.substr(4)+"分鐘",notyType.warning);
+								updateStatusNumber(-1);
 								break;
 							default:
 								break;
@@ -134,6 +168,8 @@ function btnTrigger(){
 						//	content: "input",
 						//});
 						swal("Edit", "缺貨請求已送出", {timer:1200,icon:"success"});
+						btnRemoveList($(this),"缺貨請求已送出",notyType.warning);
+						updateStatusNumber(-1);
 						break;
 					default:
 						break;
@@ -142,12 +178,18 @@ function btnTrigger(){
 	}
 	else if (STATUS == 'ACCEPT'){
 		$(".ok").click(function(){
-			btnRemoveList($(this),"ok");
+			btnRemoveList($(this),"ok",notyType.success);
+			updateStatusNumber(0,-1,1);
 		});
 	}
 	else if(STATUS == 'WAIT'){
 		$(".ok").click(function(){
-			btnRemoveList($(this),"ok");
+			btnRemoveList($(this),"ok",notyType.success);
+			updateStatusNumber(0,0,-1);
+		});
+		$(".cancel").click(function(){
+			btnRemoveList($(this),"cancel",notyType.success);
+			updateStatusNumber(0,0,-1);
 		});
 	}
 	else {console.error("'STATUS' is error");}
@@ -198,7 +240,10 @@ function boList_init(){
 		.then((value) => {
 			switch(value){
 				case "ok":
+					eventAllAccept = true;
 					$(".accept").click();
+					setTimeout(function(){eventAllAccept = false;},10);
+					addNoty("已接受全部訂單",notyType.success);
 					//console.log("YES");
 					break;
 				default:
@@ -225,7 +270,7 @@ function boList_init(){
 	///example is a variable       use test
 	example = JSON.parse(example);
 	data = example;
-	
+	updateData();
 	//Notification
 	$("#onNotice").bootstrapSwitch({size:"mini"});
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
