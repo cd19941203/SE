@@ -172,6 +172,7 @@ async function init(){
 				var orderNumber;
 				try{
 					var orderDone = JSON.parse(data);
+                    console.log(orderDone['orderNumber']);
 					orderNumber = orderDone['orderNumber'];
 					Promise.all([
 						order.getOrderData(orderNumber),

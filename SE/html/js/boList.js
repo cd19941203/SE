@@ -1,9 +1,11 @@
 var data = [];
+var table = {};
 var STATUS='NEW';
 var sortStatus = "Time";
 //the Switch to open Notice or not.
 var onNotice = true;
 var eventAllAccept = false;
+var socket;
 //--------------------------- Function about Action ---------------------------//
 
 //window.Notification       replace by addNoty()
@@ -72,20 +74,26 @@ function updateData(tmp = data){
 	for(var key in tmp)
 	{
 		//console.log(tmp[key].orderNumber);
-		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,"100",[[tmp[key].mealName,10,350],['起司蛋餅',10,350]],4);
+        table[tmp[key]["orderNumber"].toString()] = tmp[key];
+        if(tmp[key]["status"].includes(STATUS.toLocaleLowerCase()) || (STATUS == "WAIT" && tmp[key]["status"] == "completed"))
+        {
+		  webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,"100",[[tmp[key].mealName,10,350],['起司蛋餅',10,350]],4);
+        }
 	}
 	data = tmp;
 }
 function clearData(){
 	$("#DATA").html("");
+    table = {};
 }
 
 //--------------------------- Function about Trigger---------------------------//
 function btnTrigger(){
 	var length = document.getElementsByClassName('myBtn').length;
 	for(var i=0;i<length;i++){
-		document.getElementsByClassName('myBtn')[i].innerHTML = btnStr[STATUS];
-		
+        var element = document.getElementsByClassName('myBtn')[i];
+		element.innerHTML = btnStr[STATUS];
+		element.setAttribute("value", element.parentElement.parentElement.firstElementChild.textContent);
 	}
 	$(".btnOrder").click(function(){
 		$(this).parent().parent().children(".myOrder").slideToggle("fast");
@@ -105,9 +113,11 @@ function btnTrigger(){
 		
 		
 		$(".accept").click(function(){
+            socket.emit('orderAccept',JSON.stringify(table[this.parentElement.attributes.value.value]));
 			btnRemoveList($(this),"接受",notyType.success,!eventAllAccept);
 			updateStatusNumber(-1,1,0);
 			updateStatusNumber();
+            update();
 		});
 		$(".refuse").click(function(){
 			btnRemoveList($(this),"拒絕",notyType.error);
@@ -178,14 +188,18 @@ function btnTrigger(){
 	}
 	else if (STATUS == 'ACCEPT'){
 		$(".ok").click(function(){
+            socket.emit('orderComplete',JSON.stringify(table[this.parentElement.attributes.value.value]));
 			btnRemoveList($(this),"ok",notyType.success);
 			updateStatusNumber(0,-1,1);
+            update();
 		});
 	}
 	else if(STATUS == 'WAIT'){
 		$(".ok").click(function(){
+            socket.emit('orderDone',JSON.stringify(table[this.parentElement.attributes.value.value]));
 			btnRemoveList($(this),"ok",notyType.success);
 			updateStatusNumber(0,0,-1);
+            update();
 		});
 		$(".cancel").click(function(){
 			btnRemoveList($(this),"cancel",notyType.success);
@@ -201,6 +215,7 @@ function btnPage(){
 		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("等待中 &nbsp; ");
 		STATUS = "NEW";
+        update();
 		//updateData(example);
 		
 		document.getElementById("allaccept").style.display = "inline";
@@ -211,6 +226,7 @@ function btnPage(){
 		$("#WAIT").removeClass("list-group-item-info");
 		$("#title").html("處理中");
 		STATUS = "ACCEPT";
+        update();
         //updateData(example);
 		document.getElementById("allaccept").style.display = "none";
 	});
@@ -220,12 +236,14 @@ function btnPage(){
 		$("#WAIT").addClass("list-group-item-info");
 		$("#title").html("待取餐");
 		STATUS = "WAIT";
+        update();
         //updateData(example);
 		document.getElementById("allaccept").style.display = "none";
 	});
 	
 }
 function boList_init(){
+    socket = io.connect('localhost:8787');
 	//All Trigger Button Action
 	$("#allaccept").click(function(){
 		swal("確定接收所有的訂單？", {

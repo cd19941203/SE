@@ -1,14 +1,19 @@
-function init()
+function update()
 {
     $.ajax({
         url: "/getOrderList",
         type: "get",
+        cache: false,
         data:{},
         success: function(data)
         {
-            addData(data);
+            updateData(data);
         },
     });
 }
 
+function init()
+{
+    update();
+}
 addEventListener("load",init,false);
