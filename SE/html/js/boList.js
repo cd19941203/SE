@@ -72,6 +72,8 @@ function updateData(tmp = data){
 	for(var key in tmp)
 	{
 		//console.log(tmp[key].orderNumber);
+		var aOrder = new 
+		
 		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,"100",[[tmp[key].mealName,10,350],['起司蛋餅',10,350]],4);
 	}
 	data = tmp;
