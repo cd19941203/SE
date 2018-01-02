@@ -124,7 +124,6 @@ function btnTrigger(){
 			btnRemoveList($(this),"拒絕",notyType.error);
 			updateStatusNumber(-1);
             updateStatusNumber();
-            update();
 		});
 		$(".edit").click(function(){
 			
@@ -249,9 +248,24 @@ function boList_init(){
     socket = io.connect('localhost:8787');
 
     socket.on('newOrder',(data)=>{
-        addNoty("有新訂單!! #"+data["orderNumber"]);
+        swal("有新訂單!!", "訂單編號 #"+data["orderNumber"], {timer:10000,icon:"info"});
         update();
     });
+    
+    socket.on('orderAccept',(data)=>{
+        swal("訂單已確認!!", "訂單編號 #"+data["orderNumber"], {timer:10000,icon:"info"});
+        update();
+    });
+    
+    socket.on('orderComplete',(data)=>{
+        swal("訂單已完成!!", "訂單編號 #"+data["orderNumber"], {timer:10000,icon:"info"});
+        update();
+    });
+    
+    socket.on('orderCancel',(data)=>{
+		swal("訂單取消!!", "訂單編號 #"+data["orderNumber"], {timer:10000,icon:"success"});
+        update();
+	});
 	//All Trigger Button Action
 	$("#allaccept").click(function(){
 		swal("確定接收所有的訂單？", {
