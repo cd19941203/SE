@@ -56,28 +56,18 @@ function btnRemoveList(item, message, myType = notyType.info, runNoty = true){
 
 //EX.   updateData(example);
 function updateData(tmp = data){
-	//console.log(data);
 	clearData();
 	tmp = tmp.sort(function(a,b)
 	{
-		
-		//console.log(a.beginTime + " " + b.beginTime + " = " + (a.beginTime < b.beginTime).toString());
 		if(sortStatus == "Time")return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? 1 : -1;
 		else if (sortStatus == "ID")return a.orderNumber > b.orderNumber ? 1 : -1;
 	});
-	/*var tmp = JSON.parse(tmp);
-	for(var i = 0; i < tmp.length ; i++)
-	{
-		data[ tmp[i].orderNumber ] = tmp[i];
-		webMake(tmp[i].orderNumber,tmp[i].account,"0988452145","100",[[tmp[i].mealName,10,350],['起司蛋餅',10,350]],4);
-	}*/
 	for(var key in tmp)
-	{
-		//console.log(tmp[key].orderNumber);
+	{	
         table[tmp[key]["orderNumber"].toString()] = tmp[key];
         if(tmp[key]["status"].includes(STATUS.toLocaleLowerCase()) || (STATUS == "WAIT" && tmp[key]["status"] == "completed"))
         {
-		  webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,"100",[[tmp[key].mealName,10,350],['起司蛋餅',10,350]],4);
+		  webMake(new Order(tmp[key].orderNumber, tmp[key].account, "0988452145", tmp[key].beginTime, "100", [[tmp[key].mealName,10,350],['起司蛋餅',10,350]]));
         }
 	}
 	data = tmp;
@@ -176,9 +166,6 @@ function btnTrigger(){
 						
 						break;
 					case "ofs":
-						//swal({
-						//	content: "input",
-						//});
 						swal("Edit", "缺貨請求已送出", {timer:1200,icon:"success"});
 						btnRemoveList($(this),"缺貨請求已送出",notyType.warning);
 						updateStatusNumber(-1);
@@ -297,13 +284,7 @@ function boList_init(){
 		updateData();
 		},10);
 	});
-	/*window.setInterval(function(){
-		console.log( $('input[name="options"]:checked').val() );
-	}, 100); */
-	/*$(".bb").click(function(){
-		// 下面这行代码就是你要的ID属性
-		console.log($(this).attr("id"));
-	});*/
+
 	btnPage();
 	btnTrigger();
 	

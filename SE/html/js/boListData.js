@@ -24,40 +24,55 @@ var ICON = Object.freeze({
 	
 var example = '[{"mealName":"蛋餅","account":"87","orderNumber":34,"status":"new","beginTime":"2017-12-27T11:48:20.460Z"},{"mealName":{"蛋餅":1},"account":"87","orderNumber":42,"status":"new","beginTime":"2017-12-25T13:45:02.074Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":43,"status":"new","beginTime":"2017-12-25T14:37:37.632Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":46,"status":"new","beginTime":"2017-12-27T07:23:36.695Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":47,"status":"new","beginTime":"2017-12-27T07:23:56.084Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":48,"status":"new","beginTime":"2017-12-27T07:24:58.431Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":49,"status":"new","beginTime":"2017-12-27T07:25:43.102Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":50,"status":"new","beginTime":"2017-12-27T07:26:05.574Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":53,"status":"new","beginTime":"2017-12-27T07:53:38.664Z"},{"mealName":[{"蛋餅":1}],"account":"client","orderNumber":59,"status":"new","beginTime":"2017-12-27T09:19:26.199Z"},{"mealName":[{"蛋餅":1}],"account":"87","orderNumber":61,"status":"new","beginTime":"2017-12-27T17:44:47.682Z"}]';
 
-function webMake(id,name,phone,date,total,order,star){
+class Order {
+	constructor(id, name, phone, date, total, order) {
+		this.id = id;
+		this.name = name;
+		this.phone = phone;
+		this.date = date;
+		this.total = total;
+		this.order = order;
+		//this.star = star;
+	}
+};
+
+//function webMake(id,name,phone,date,total,order,star){
+function webMake(myOrder){
 	var web_order_str="";
-	for(var i=0;i<order.length;i++)
+	for(var i=0;i<myOrder.order.length;i++)
 	{
 		var plural = "";
-		if(order[i][1]>1){
-			plural = "x"+order[i][1];
+		if(myOrder.order[i][1]>1){
+			plural = "x"+myOrder.order[i][1];
 		}
 		web_order_str +=
-			'			<p>'+order[i][0] + plural + ' <span class = "pull-right">NT$ '+order[i][2]+'</span></p>                 \n';
+			'			<p>'+myOrder.order[i][0] + plural + ' <span class = "pull-right">NT$ '+myOrder.order[i][2]+'</span></p>                 \n';
 	}
-	date = new Date(date);
-	date = date.getHours()+":"+date.getMinutes();
+	//date.substr(0,date.length-1) is use delete 'Z'
+	date = new Date(myOrder.date.substr(0,myOrder.date.length-1));
+	//paddingLeft is include "myMath.js"
+	date = paddingLeft(date.getHours()+"",2) + ":" + paddingLeft(date.getMinutes()+"",2);
 	var web = 
 	'<div class="col-sm-12 col-lg-12 col-md-12">                                         '+
 	'	<div class="thumbnail">                                                          '+
 	'	                                                                                 '+
-	'		<div class = "information">'+id+'</div>                                      '+
+	'		<div class = "information">'+myOrder.id+'</div>                                      '+
 	'		                                                                             '+
 	'		<div class="caption">                                                        '+
 	'			                                                                         '+
 	'			<h4 class = "spe01H4">                                                   '+
 	'				<i class="fa fa-angle-down btnOrder spe01I"></i>                     '+
-	'				<span class = "spe01Span">#'+id+'</span>                             '+
+	'				<span class = "spe01Span">#'+myOrder.id+'</span>                             '+
 	'				<a href="#" class = "spe01A">                                        '+
-	'					'+name+'                                                         '+
+	'					'+myOrder.name+'                                                         '+
 	'				</a>                                                                 '+
 	'				<span class = "spe01Span">                                           '+
-	'					('+phone+')                                                      '+
+	'					('+myOrder.phone+')                                                      '+
 	'				</span>                                                              '+
 	'				<span class = "spe01Span">                                           '+
 	'					                                                      '+
 	'				</span>                                                              '+
-	'				<span class="spe01Span-1 font-5">NT$ '+total+'</span>                '+
+	'				<span class="spe01Span-1 font-5">NT$ '+myOrder.total+'</span>                '+
 	'			</h4>                                                                    '+
 	'			    <div class = "myOrder">                                              '+
 	web_order_str+
