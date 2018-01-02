@@ -101,7 +101,8 @@ async function init(){
 					newOrder['orderNumber'] = await setting.getOrderNumber();
 					newOrder['status'] = 'new';
 					newOrder['beginTime'] = getDate();
-					order.newOrder(newOrder);
+					await order.newOrder(newOrder);
+					newOrder['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete newOrder['_id'];
 					// ack customer
 					sio.to(socket.request.session.account).emit('newOrder',{orderNumber:newOrder['orderNumber'],status:'success'});
@@ -128,7 +129,7 @@ async function init(){
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderAccept',{orderNumber:orderNumber,status:'success'});
-						sio.to(account).emit('orderAccept',{orderNumber:orderNumber});
+						sio.to(account).emit('orderAccept',{orderNumber:orderNumber,meal:values[0]['meal'],totalPrice:values[0]['totalPrice']});
 					}).catch(err=>{
 						throw(err);
 					});
@@ -154,7 +155,7 @@ async function init(){
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderComplete',{orderNumber:orderNumber,status:'success'});
-						sio.to(account).emit('orderComplete',{orderNumber:orderNumber});
+						sio.to(account).emit('orderComplete',{orderNumber:orderNumber,meal:values[0]['meal'],totalPrice:values[0]['totalPrice']});
 					}).catch(err=>{
 						throw(err);
 					});
@@ -175,11 +176,11 @@ async function init(){
 					orderNumber = orderDone['orderNumber'];
 					Promise.all([
 						order.getOrderData(orderNumber),
-						order.orderDone(orderDone['orderNumber'],getDate())
+						order.orderDone(orderNumber,getDate())
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderDone',{orderNumber:orderNumber,status:'success'})
-						sio.to(account).emit('orderDone',{orderNumber:orderNumber});
+						sio.to(account).emit('orderDone',{orderNumber:orderNumber,meal:values[0]['meal'],totalPrice:values[0]['totalPrice']});
 					}).catch(err=>{
 						throw(err);
 					});
@@ -200,14 +201,16 @@ async function init(){
 					var orderModify = JSON.parse(data);
 					orderNumber = orderModify['orderNumber'];
 					var advice = orderModify['advice'];
+					var newMeal = orderModify['meal'];
 					Promise.all([
 						order.getOrderData(orderNumber),
 						order.orderStatusChange(orderNumber,order.orderStatus['pending']),
-						order.updateModifyAdvice(orderNumber,advice)
+						order.updateModifyAdvice(orderNumber,advice),
+						order.updateOrder(orderNumber,{meal:newMeal})
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderModify',{orderNumber:orderNumber,status:'success'})
-						sio.to(account).emit('orderModify',{orderNumber:orderNumber,advice:advice});
+						sio.to(account).emit('orderModify',{orderNumber:orderNumber,meal:newMeal,advice:advice});
 					}).catch(err=>{
 						throw(err);
 					});
@@ -228,7 +231,8 @@ async function init(){
 					orderNumber = orderRes['orderNumber'];
 					orderRes['status'] = 'new';
 					orderRes['beginTime'] = new Date();
-					await order.changeOrder(orderRes);
+					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:['expectTime'],beginTime:orderRes['beginTime']});
+					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete orderRes['_id'];
 					sio.to(socket.request.session.account).emit('orderRes',{orderNumber:orderNumber,status:'success'});
 					sio.to('boss').emit('newOrder',orderRes);
@@ -254,9 +258,17 @@ async function init(){
 						target = orderData['account'];
 					else 
 						target = 'boss';
-
 					await order.orderStatusChange(orderNumber,order.orderStatus['canceled']);
-					sio.to(target).emit('orderCancel',{account:orderData['account'],orderNumber:orderNumber});
+					
+					delete orderData['status'];
+					delete orderData['expectTime'];
+					delete orderData['advice'];
+
+					if(target == 'boss'){
+						orderData['userInfo'] = account.getUserInfo(orderData['account']);
+					}
+
+					sio.to(target).emit('orderCancel',orderData);
 					sio.to(source).emit('orderCancel',{orderNumber:orderNumber,status:'success'});
 				}catch(err){
 					if(err instanceof SyntaxError){
@@ -338,13 +350,13 @@ async function init(){
 			var status = req.query.status;
 			var query;
 			if(typeof status === "undefined")
-				qeury={};
+				query={};
 			else
 				query={status:status};
-
 			var data = await order.getOrderList(query);
 			res.send(data);
 		}catch(err){
+			console.log(err);
 			res.send({});
 		}
 	});
@@ -360,6 +372,10 @@ async function init(){
 		}catch(err){
 			res.send({});
 		}
+	});
+
+	app.get('/whoAmI',(req,res)=>{
+		res.send(req.session.account);
 	});
 	
 	server.listen(8787,()=>{
