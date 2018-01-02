@@ -120,8 +120,11 @@ function btnTrigger(){
             update();
 		});
 		$(".refuse").click(function(){
+            socket.emit('orderCancel',JSON.stringify(table[this.parentElement.attributes.value.value]));
 			btnRemoveList($(this),"拒絕",notyType.error);
 			updateStatusNumber(-1);
+            updateStatusNumber();
+            update();
 		});
 		$(".edit").click(function(){
 			

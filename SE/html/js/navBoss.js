@@ -15,7 +15,7 @@ var str =
 '				<ul class="nav navbar-nav navbar-right">'+
 '                    <!--li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>'+
 '                    <li><a data-toggle="tab" href="#">Log out</a></li>'+
-'                    <li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li-->'+
+'                    <li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-user"></span> Boss</a></li-->'+
 '					<li class="dropdown">'+
 '						<a class="dropdown-toggle" data-toggle="dropdown" href="#">'+
 '							<span class="glyphicon glyphicon-user"></span>'+
@@ -42,7 +42,7 @@ var str =
 '                        <a href="/index?m=boMenuList">Menu</a>'+
 '                    </li>'+
 '                    <li>'+
-'                        <a href="#">History</a>'+
+'                        <a href="/index?m=boHistory">History</a>'+
 '                    </li>'+
 '                </ul>'+
 '            </div>'+
