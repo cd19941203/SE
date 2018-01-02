@@ -263,9 +263,11 @@ async function init(){
 					delete orderData['status'];
 					delete orderData['expectTime'];
 					delete orderData['advice'];
+					delete orderData['beginTime'];
+					delete orderData['endTime'];
 
 					if(target == 'boss'){
-						orderData['userInfo'] = account.getUserInfo(orderData['account']);
+						orderData['userInfo'] = await account.getUserInfo(orderData['account']);
 					}
 
 					sio.to(target).emit('orderCancel',orderData);
