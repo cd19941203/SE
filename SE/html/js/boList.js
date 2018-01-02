@@ -244,6 +244,11 @@ function btnPage(){
 }
 function boList_init(){
     socket = io.connect('localhost:8787');
+
+    socket.on('newOrder',(data)=>{
+        addNoty("有新訂單!! #"+data["orderNumber"]);
+        update();
+    });
 	//All Trigger Button Action
 	$("#allaccept").click(function(){
 		swal("確定接收所有的訂單？", {

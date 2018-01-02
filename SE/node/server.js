@@ -181,7 +181,6 @@ async function init(){
 						sio.to('boss').emit('orderDone',{orderNumber:orderNumber,status:'success'})
 						sio.to(account).emit('orderDone',{orderNumber:orderNumber});
 					}).catch(err=>{
-                        console.lof(err);
 						throw(err);
 					});
 				}catch(err){

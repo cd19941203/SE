@@ -27,7 +27,7 @@ var str =
 '								<span class="glyphicon glyphicon glyphicon-cog"></span>'+
 '								Setting'+
 '							</a></li>'+
-'							<li><a href="#">'+
+'							<li><a href="/lougut">'+
 '								<span class="glyphicon glyphicon-log-out"></span>'+
 '								Logout'+
 '							</a></li>'+
