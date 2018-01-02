@@ -172,19 +172,20 @@ async function init(){
 				var orderNumber;
 				try{
 					var orderDone = JSON.parse(data);
-                    console.log(orderDone['orderNumber']);
 					orderNumber = orderDone['orderNumber'];
 					Promise.all([
 						order.getOrderData(orderNumber),
-						order.orderDone(orderNumner,getDate())
+						order.orderDone(orderDone['orderNumber'],getDate())
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderDone',{orderNumber:orderNumber,status:'success'})
 						sio.to(account).emit('orderDone',{orderNumber:orderNumber});
 					}).catch(err=>{
+                        console.lof(err);
 						throw(err);
 					});
 				}catch(err){
+                    console.log(err);
 					if(err instanceof SyntaxError){
 						sio.to('boss').emit('orderDone',{status:'Data format error'});
 					}
