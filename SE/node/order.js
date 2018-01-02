@@ -127,6 +127,22 @@ async function getOrderList(query){
     }
 }
 
+async function updateOrder(num,newOrder){
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('order').updateOne({orderNumber:number},{$set:newOrder},(err,result)=>{
+                if(err)
+                    rej(dbManipulationError);
+                else
+                    res();
+            });
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
 
 module.exports.orderStatus = orderStatus;
 module.exports.dbConnectionError = dbConnectionError;
@@ -138,3 +154,4 @@ module.exports.updateModifyAdvice = updateModifyAdvice;
 module.exports.orderDone = orderDone;
 module.exports.changeOrder = changeOrder;
 module.exports.getOrderList = getOrderList;
+module.exports.updateOrder = updateOrder;

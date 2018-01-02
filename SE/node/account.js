@@ -50,6 +50,30 @@ async function login(account,password){
     }
 }
 
+async function getUserInfo(account){
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('user'),findOne({account:account},(err,result)=>{
+                if(err)
+                    rej(dbManipulationError);
+                else{
+                    if(result){
+                        res(result);
+                    }
+                    else{
+                        rej("do not find the user");
+                    }
+                }
+            });
+        });
+    }
+    catch(err){
+        throw(dbConnectionError);
+    }
+}
+
 module.exports.getAccountType = getAccountType;
 module.exports.createUser = createUser;
 module.exports.login = login;
+module.exports.getUserInfo =  getUserInfo;
