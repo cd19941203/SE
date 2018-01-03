@@ -25,5 +25,9 @@ async function getOrderNumber(){
     }
 }
 
+async function getStoreSetting(){
+
+}
 
 module.exports.getOrderNumber = getOrderNumber;
+module.exports.getStoreSetting = getStoreSetting;
