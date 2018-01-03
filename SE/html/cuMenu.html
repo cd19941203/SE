@@ -45,7 +45,7 @@
 
         <div class="row">
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <p class="lead">Breakfast Store</p>
                 <div class="list-group">
                     <a href="#" class="list-group-item">蛋餅</a>
@@ -55,11 +55,11 @@
                 </div>
             </div>
 
-            <div class="col-md-9" style = "font-family : Microsoft JhengHei;">
+            <div class="col-md-7" style = "font-family : Microsoft JhengHei;">
 
                 <div class="row carousel-holder">
 
-                    <div class="col-md-12">
+                    <!--div class="col-md-12">
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                             <ol class="carousel-indicators">
                                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -78,7 +78,7 @@
                                 <span class="glyphicon glyphicon-chevron-right"></span>
                             </a>
                         </div>
-                    </div>
+                    </div-->
 
                 </div>
 
@@ -89,7 +89,9 @@
                             <img src="image/null.jpg" alt="">
                             <div class="caption">
                                 <h4 class="pull-right">NT$ 35</h4>
-                                <h4><a href="#">起司蛋餅</a>
+                                <h4>
+									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>
+									<a href="#">起司蛋餅</a>
                                 </h4>
                                 <p>
 									熱量：375大卡<br>
@@ -98,14 +100,12 @@
 								</p>
                             </div>
                             <div class="ratings">
-                                <p class="pull-right">15 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                </p>
+                                <p style="display: none;">15 reviews</p>
+								<p>
+									<button class = "btn btn-success" style = "height:30px;padding:0px;width:30px;">＋</button>
+									<input type = "number" id = "起司蛋餅" style = "width:30px;text-align: right;" min=1 value=0></input>
+									<button class = "btn btn-danger" style = "height:30px;padding:0px;width:30px;">－</button>
+								</p>
                             </div>
                         </div>
                     </div>
@@ -198,17 +198,76 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <h4><a href="#">Like this template?</a>
-                        </h4>
-                        <p>If you like this template, then check out <a target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this tutorial</a> on how to build a working review system for your online store!</p>
-                        <a class="btn btn-primary" target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">View Tutorial</a>
-                    </div>
-
                 </div>
 
             </div>
-
+			
+			
+			
+			<div class="col-md-3">
+				<div class="panel panel-info mytitle">
+					<div class="panel-heading">
+						<h3 class="panel-title">缺貨清單</h3>
+					</div>
+					<div class="panel-body">
+						<ul>
+							<li class = "top-li">
+								蛋餅
+								<ul>
+									<li>原味蛋餅</li>
+									<li>起司蛋餅</li>
+									<li>玉米蛋餅</li>
+									<li>培根蛋餅</li>
+								</ul>
+							</li>
+							<li class = "top-li">
+								吐司
+								<ul>
+									<li>烤土司</li>
+									<li>草莓吐司</li>
+									<li>藍莓吐司</li>
+									<li>花生吐司</li>
+									<li>綜合吐司</li>
+								</ul>
+							</li>
+							<li class = "top-li">
+								飲料
+								<ul>
+									<li>紅茶</li>
+									<li>綠茶</li>
+									<li>冬瓜茶</li>
+									<li>奶茶</li>
+									<li>咖啡</li>
+									<li>豆漿</li>
+									<li>豆漿紅茶</li>
+								</ul>
+							</li>
+							<li class = "top-li">
+								套餐
+								<ul>
+									<li>學生套餐
+										<ul>
+											<li></li>
+											<li>綠茶</li>
+											<li>冬瓜茶</li>
+											<li>奶茶</li>
+											<li>咖啡</li>
+											<li>豆漿</li>
+											<li>豆漿紅茶</li>
+										</ul>
+									</li>
+									<li>綠茶</li>
+									<li>冬瓜茶</li>
+									<li>奶茶</li>
+									<li>咖啡</li>
+									<li>豆漿</li>
+									<li>豆漿紅茶</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+            </div>
         </div>
 
     </div>
