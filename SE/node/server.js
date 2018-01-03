@@ -60,9 +60,10 @@ async function init(){
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
 	
 	app.use(/^(?:(?!index).)*$/,(req,res,next)=>{
-		if(!(req.session.valid==true))
+		if(!(req.session.valid==true)){
 			res.sendFile('login.html',{root:rootPath});
-		else
+            return;
+        }else
 			next();
 	});
 	
@@ -321,6 +322,9 @@ async function init(){
 	// route
 	app.get('/index',(req,res)=>{
 		var m = req.query.m;
+        if(req.session.valid != true){
+            res.sendFile('login.html',{root:rootPath});
+        }
 		if(typeof m === "undefined"){
 			if(req.session.account == 'boss'){
 				res.sendFile('boMenu.html',{root:rootPath});
