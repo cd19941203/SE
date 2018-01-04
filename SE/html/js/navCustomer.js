@@ -27,7 +27,7 @@ var str =
 '								<span class="glyphicon glyphicon glyphicon-cog"></span>'+
 '								Setting'+
 '							</a></li>'+
-'							<li><a href="#">'+
+'							<li><a href="/logout">'+
 '								<span class="glyphicon glyphicon-log-out"></span>'+
 '								Logout'+
 '							</a></li>'+
@@ -50,6 +50,14 @@ var str =
 '        </div>'+
 '        <!-- /.container -->';
 function navinit(){
-	document.getElementById("nav").innerHTML = str;
+    $.ajax({
+        url: "/whoAmI",
+        type: "get",
+        success: function(user)
+        {
+            document.getElementById("nav").innerHTML = str.replace(/Admin/g,user);
+        }
+    });
+	
 }
 window.addEventListener("load",navinit,false);
