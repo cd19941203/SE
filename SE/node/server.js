@@ -325,7 +325,7 @@ async function init(){
         if(req.session.valid != true){
             res.sendFile('login.html',{root:rootPath});
         }
-		if(typeof m === "undefined"){
+		else if(typeof m === "undefined"){
 			if(req.session.account == 'boss'){
 				res.sendFile('boMenu.html',{root:rootPath});
 			}
