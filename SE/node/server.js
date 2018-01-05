@@ -6,6 +6,10 @@ var server = Server(app);
 var sio = require("socket.io")(server);
 var bodyParser = require('body-parser');
 var formData = require("express-form-data");
+var fs = require('fs');
+//var multer  = require('multer');
+//var upload = multer({ dest: '../user_image/'});
+
 var socket = require('./order.js');
 var account = require('./account.js');
 var database = require('./database.js');
@@ -14,6 +18,7 @@ var setting = require('./setting.js');
 var order = require('./order.js');
 
 var rootPath = '../html/';
+
 var multipartyOptions = {
 	autoFiles: true
 };
@@ -41,6 +46,7 @@ async function init(){
 	app.use('/css',express.static(__dirname + '/../html/css'));
 	app.use('/image',express.static(__dirname + '/../html/image'));
 	app.use('/fonts',express.static(__dirname + '/../html/fonts'));
+	app.use('/userImage',express.static(__dirname + '/../user_image'));
 	//app.use('/',express.static(__dirname + '/../www'));
 	////////////////////////////////////////////////////////////
 	//let we can get connection session from socket
@@ -58,15 +64,14 @@ async function init(){
 	
 	// middleware for checking user authentication
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
-	
-	app.use(/^(?:(?!index).)*$/,(req,res,next)=>{
+	///^(?:(?!index).)*$/
+	app.use(!['index','createAccount'],(req,res,next)=>{
 		if(!(req.session.valid==true)){
 			res.sendFile('login.html',{root:rootPath});
-            return;
         }else
 			next();
 	});
-	
+
 	/*
 	var bossOnlyAPI = ['/getOrderList'];
 
@@ -367,8 +372,13 @@ async function init(){
 		}
 	});
 
-	app.post('/createAccount',(req,res)=>{
-		console.log(req.body);
+	app.post('/createAccount',async(req,res)=>{
+		try{
+			await account.createAccount(req.body,req.files.image.path);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
 	});
 
 	app.get('/getMenu',async(req,res)=>{
