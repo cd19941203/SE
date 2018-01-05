@@ -66,7 +66,7 @@ async function init(){
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
 	///^(?:(?!index).)*$/
 	
-	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI'];
+	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -388,7 +388,15 @@ async function init(){
 		}
 	});
 
-	app.post('/getSetting',(req,res)=>{
+	app.post('/updateMenu',(req,res)=>{
+
+	});
+
+	app.get('/getSetting',(req,res)=>{
+
+	});
+
+	app.post('/updateSetting',(req,res)=>{
 
 	});
 
