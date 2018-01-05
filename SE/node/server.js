@@ -65,12 +65,16 @@ async function init(){
 	// middleware for checking user authentication
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
 	///^(?:(?!index).)*$/
-	app.use(!['index','createAccount'],(req,res,next)=>{
+	
+	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI'];
+
+	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
 			res.sendFile('login.html',{root:rootPath});
         }else
 			next();
 	});
+	
 
 	/*
 	var bossOnlyAPI = ['/getOrderList'];
@@ -295,7 +299,11 @@ async function init(){
 
 	////////////////////////////////////////////////////////////
 	// about web server
-	
+
+	app.get('/',async(req,res)=>{
+		res.redirect('/index');
+	});
+
 	// login and logout
 	app.post('/index',async(req,res)=>{
 		try{
@@ -343,16 +351,6 @@ async function init(){
 	});
 
 
-	// testing socket
-
-	app.get('/client',(req,res)=>{
-		res.sendFile('client.html',{root:rootPath});
-
-	});
-
-	app.get('/boss',(req,res)=>{
-		res.sendFile('boss.html',{root:rootPath});
-	});
 
 	// API
 
@@ -388,6 +386,10 @@ async function init(){
 		}catch(err){
 			res.send({});
 		}
+	});
+
+	app.post('/getSetting',(req,res)=>{
+
 	});
 
 	app.get('/whoAmI',(req,res)=>{

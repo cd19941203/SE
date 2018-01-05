@@ -73,9 +73,6 @@ async function getUserInfo(account){
         throw(dbConnectionError);
     }
 }
-
-		
-        //
         
 async function createAccount(data,imagePath){
     try{
