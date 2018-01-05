@@ -372,7 +372,9 @@ async function init(){
 
 	app.post('/createAccount',async(req,res)=>{
 		try{
-			await account.createAccount(req.body,req.files.image.path);
+			if(typeof req.body.account === 'undefined' || typeof req.body.password === 'undefined')
+				throw('data format err');
+			await account.createAccount(req.body,req.files.image);
 			res.send('success');
 		}catch(err){
 			res.send(err);
