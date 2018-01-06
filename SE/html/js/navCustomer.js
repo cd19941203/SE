@@ -13,9 +13,9 @@ var str =
 '            <!-- Collect the nav links, forms, and other content for toggling -->'+
 '            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">'+
 '				<ul class="nav navbar-nav navbar-right">'+
-'                    <!--li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>'+
+/*'                    <!--li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-log-in"></span> Log in</a></li>'+
 '                    <li><a data-toggle="tab" href="#">Log out</a></li>'+
-'                    <li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li-->'+
+'                    <li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li-->'+*/
 '					<li class="dropdown">'+
 '						<a class="dropdown-toggle" data-toggle="dropdown" href="#">'+
 '							<span class="glyphicon glyphicon-user"></span>'+
@@ -23,7 +23,7 @@ var str =
 '							<span class="caret"></span>'+
 '						</a>'+
 '						<ul class="dropdown-menu">'+
-'							<li><a href="#">'+
+'							<li><a href="/index?m=cuSetting">'+
 '								<span class="glyphicon glyphicon glyphicon-cog"></span>'+
 '								Setting'+
 '							</a></li>'+
@@ -55,7 +55,16 @@ function navinit(){
         type: "get",
         success: function(user)
         {
+            str = str.replace(/Admin/g,user);
             document.getElementById("nav").innerHTML = str.replace(/Admin/g,user);
+             $.ajax({
+                url: "/userImage/"+user+".jpg",
+                type: "get",
+                success: function(data)
+                {
+                    document.getElementById("nav").innerHTML = str.replace('<span class="glyphicon glyphicon-user"></span>','<img style="width: 40px; height: 40px;" src="/userImage/'+user+'.jpg">');
+                }
+            });
         }
     });
 	
