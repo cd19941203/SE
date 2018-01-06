@@ -46,7 +46,8 @@ async function init(){
 	app.use('/css',express.static(__dirname + '/../html/css'));
 	app.use('/image',express.static(__dirname + '/../html/image'));
 	app.use('/fonts',express.static(__dirname + '/../html/fonts'));
-	app.use('/userImage',express.static(__dirname + '/../user_image'));
+	app.use('/userImage',express.static(__dirname + '/../userImage'));
+	app.use('/mealImage',express.static(__dirname + '/../mealImage'))
 	//app.use('/',express.static(__dirname + '/../www'));
 	////////////////////////////////////////////////////////////
 	//let we can get connection session from socket
@@ -66,7 +67,10 @@ async function init(){
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
 	///^(?:(?!index).)*$/
 	
-	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting'];
+	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
+						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut'];
+
+	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime','/soldOut'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -75,6 +79,12 @@ async function init(){
 			next();
 	});
 	
+	app.use(bossOnly,(req,res,next)=>{
+		if(req.session.account != 'boss')
+			res.sendStatus(404);
+		else
+			next();
+	});
 
 	/*
 	var bossOnlyAPI = ['/getOrderList'];
@@ -99,6 +109,11 @@ async function init(){
 		if(typeof(user) === "undefined")
 			return ;
 
+			
+		if(user != 'boss'){
+			socket.join('customer');
+		}
+
 		// 把各個user加入個別的room,即可一次對該user的所有socket emit
 		// unfortunately socket.join is asynchronous... 
 		socket.join(socket.request.session.account,()=>{
@@ -114,6 +129,8 @@ async function init(){
 					await order.newOrder(newOrder);
 					newOrder['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete newOrder['_id'];
+					delete newOrder['userInfo']['_id'];
+					delete newOrder['userInfo']['password'];
 					// ack customer
 					sio.to(socket.request.session.account).emit('newOrder',{orderNumber:newOrder['orderNumber'],status:'success'});
 					// to boss
@@ -243,6 +260,8 @@ async function init(){
 					orderRes['beginTime'] = new Date();
 					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
+					delete orderRes['userInfo']['_id'];
+					delete orderRes['userInfo']['password'];
 					delete orderRes['_id'];
 					sio.to(socket.request.session.account).emit('orderRes',{orderNumber:orderNumber,status:'success'});
 					sio.to('boss').emit('newOrder',orderRes);
@@ -278,6 +297,8 @@ async function init(){
 
 					if(target == 'boss'){
 						orderData['userInfo'] = await account.getUserInfo(orderData['account']);
+						delete orderData['userInfo']['_id'];
+						delete orderData['userInfo']['password'];
 					}
 
 					sio.to(target).emit('orderCancel',orderData);
@@ -362,6 +383,8 @@ async function init(){
 				query={};
 			else
 				query={status:status};
+			if(req.session.account != 'boss')
+				query['account'] = req.session.account;
 			var data = await order.getOrderList(query);
 			res.send(data);
 		}catch(err){
@@ -390,22 +413,94 @@ async function init(){
 		}
 	});
 
-	app.post('/updateMenu',(req,res)=>{
-
+	app.post('/updateMenu',async(req,res)=>{
+		try{
+			var menu = req.body;
+			if(typeof menu === 'undefined')
+				throw('no data');
+			await meal.updateMenu(menu);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
 	});
 
-	app.get('/getSetting',(req,res)=>{
+	app.post('/setMealImage',async(req,res)=>{
+		try{
+			if(typeof req.body.name === 'undefined' || typeof req.files.image === 'undefined')
+				throw('no data');
+			await setMealImage(req.body.name,req.files.image);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
+	});
 
+	app.get('/getSetting',async(req,res)=>{
+		try{
+			var settingData = await setting.getSetting();
+			res.send(settingData);
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.post('/updateOrderTime',async(req,res)=>{
+		try{
+			var newTime = req.body;
+			await setting.updateOrderTime(newTime);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
 	});
 
 	app.post('/updateSetting',(req,res)=>{
 
 	});
 
+	app.get('/getUserInfo',async(req,res)=>{
+		try{
+			var acc = req.session.account;
+			if(req.session.account == 'boss'){
+				if(typeof req.query.account !== 'undefined')
+					acc = req.query.account;
+			}
+			var data = await account.getUserInfo(acc);
+			delete data['_id'];
+			delete data['password'];
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
+
 	app.get('/whoAmI',(req,res)=>{
 		res.send(req.session.account);
 	});
 	
+	app.post('/soldOut',async(req,res)=>{
+		try{
+			var soldOutMeal = req.body;
+			console.log(soldOutMeal);
+			for(var m of soldOutMeal){
+				await meal.setMealStatus(m,false);
+			}
+			var dbNoMeal = await meal.getSoldOut();
+			for(var m of dbNoMeal){
+				if(soldOutMeal.indexOf(m.name) == -1){
+					await meal.setMealStatus(m.name,true);
+				}
+			}
+			sio.to('customer').emit('menuStatusUpdate','yoyo');
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	
+
 	server.listen(8787,()=>{
 		console.log('server gogo OUO!');
 	});

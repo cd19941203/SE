@@ -85,7 +85,7 @@ async function createAccount(data,image){
                 }
                 else{
                     if(typeof data['image'] !== 'undefined'){
-                        data['image'] = data.account + '.jpg';
+                        data['image'] = '/userImage/' + data.account + '.jpg';
                         hasImage = true;
                     }
                     else{
@@ -98,7 +98,7 @@ async function createAccount(data,image){
                             rej(dbManipulationError);
                         else{
                             if(hasImage)
-                                fs.renameSync(image.path,'../user_image/'+data.account+'.jpg');
+                                fs.renameSync(image.path,'../userImage/'+data.account+'.jpg');
                             res();
                         }
                     });
@@ -110,7 +110,44 @@ async function createAccount(data,image){
     }
 }
 
+async function updateAccountInfo(data,image){
+    var hasImage = false;
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('user').findOne({account:data.account},(err,result)=>{
+                if(result){
+                    rej('account already exists');
+                }
+                else{
+                    if(typeof data['image'] !== 'undefined'){
+                        data['image'] = '/userImage/' + data.account + '.jpg';
+                        hasImage = true;
+                    }
+                    else{
+                        data['image'] = null;
+                    }
+                    if(typeof data['birth'] !== 'undefined')
+                        data['birth'] = new Date(data['birth']);
+                    db.collection('user').insertOne(data,(err,result)=>{
+                        if(err)
+                            rej(dbManipulationError);
+                        else{
+                            if(hasImage)
+                                fs.renameSync(image.path,'../userImage/'+data.account+'.jpg');
+                            res();
+                        }
+                    });
+                }
+            });
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    } 
+}
+
 module.exports.getAccountType = getAccountType;
 module.exports.createAccount = createAccount;
 module.exports.login = login;
 module.exports.getUserInfo =  getUserInfo;
+module.exports.updateAccountInfo = updateAccountInfo;
