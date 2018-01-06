@@ -68,9 +68,9 @@ async function init(){
 	///^(?:(?!index).)*$/
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
-						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime'];
+						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut'];
 
-	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime'];
+	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime','/soldOut'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -108,6 +108,11 @@ async function init(){
 	
 		if(typeof(user) === "undefined")
 			return ;
+
+			
+		if(user != 'boss'){
+			socket.join('customer');
+		}
 
 		// 把各個user加入個別的room,即可一次對該user的所有socket emit
 		// unfortunately socket.join is asynchronous... 
@@ -474,6 +479,28 @@ async function init(){
 		res.send(req.session.account);
 	});
 	
+	app.post('/soldOut',async(req,res)=>{
+		try{
+			var soldOutMeal = req.body;
+			console.log(soldOutMeal);
+			for(var m of soldOutMeal){
+				await meal.setMealStatus(m,false);
+			}
+			var dbNoMeal = await meal.getSoldOut();
+			for(var m of dbNoMeal){
+				if(soldOutMeal.indexOf(m.name) == -1){
+					await meal.setMealStatus(m.name,true);
+				}
+			}
+			sio.to('customer').emit('menuStatusUpdate','yoyo');
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	
+
 	server.listen(8787,()=>{
 		console.log('server gogo OUO!');
 	});
