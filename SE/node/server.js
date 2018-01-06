@@ -68,7 +68,9 @@ async function init(){
 	///^(?:(?!index).)*$/
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
-						'/setMealImage'];
+						'/setMealImage','/getUserInfo','/updateAccountInfo'];
+
+	var bossOnly = ['/updateMenu','/updateSetting'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -77,6 +79,12 @@ async function init(){
 			next();
 	});
 	
+	app.use(bossOnly,(req,res,next)=>{
+		if(req.session.account != 'boss')
+			res.sendStatus(404);
+		else
+			next();
+	});
 
 	/*
 	var bossOnlyAPI = ['/getOrderList'];
@@ -116,6 +124,8 @@ async function init(){
 					await order.newOrder(newOrder);
 					newOrder['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete newOrder['_id'];
+					delete newOrder['userInfo']['_id'];
+					delete newOrder['userInfo']['password'];
 					// ack customer
 					sio.to(socket.request.session.account).emit('newOrder',{orderNumber:newOrder['orderNumber'],status:'success'});
 					// to boss
@@ -245,6 +255,8 @@ async function init(){
 					orderRes['beginTime'] = new Date();
 					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
+					delete orderRes['userInfo']['_id'];
+					delete orderRes['userInfo']['password'];
 					delete orderRes['_id'];
 					sio.to(socket.request.session.account).emit('orderRes',{orderNumber:orderNumber,status:'success'});
 					sio.to('boss').emit('newOrder',orderRes);
@@ -280,6 +292,8 @@ async function init(){
 
 					if(target == 'boss'){
 						orderData['userInfo'] = await account.getUserInfo(orderData['account']);
+						delete orderData['userInfo']['_id'];
+						delete orderData['userInfo']['password'];
 					}
 
 					sio.to(target).emit('orderCancel',orderData);
@@ -364,6 +378,8 @@ async function init(){
 				query={};
 			else
 				query={status:status};
+			if(req.session.account != 'boss')
+				query['account'] = req.session.account;
 			var data = await order.getOrderList(query);
 			res.send(data);
 		}catch(err){
@@ -421,6 +437,22 @@ async function init(){
 
 	app.post('/updateSetting',(req,res)=>{
 
+	});
+
+	app.get('/getUserInfo',async(req,res)=>{
+		try{
+			var acc = req.session.account;
+			if(req.session.account == 'boss'){
+				if(typeof req.query.account !== 'undefined')
+					acc = req.query.account;
+			}
+			var data = await account.getUserInfo(acc);
+			delete data['_id'];
+			delete data['password'];
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
 	});
 
 	app.get('/whoAmI',(req,res)=>{
