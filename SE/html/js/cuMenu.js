@@ -95,6 +95,36 @@ function addOrder(isEdit = false){
 		myOrder[myType][myName] = parseInt($('#singleOrder').html());
 	}
 }
+function updateOrderList(){
+	if(isSort)
+	{
+		var myStr = "";
+		var arrI = Object.getOwnPropertyNames(myOrder);
+		for(var i=1;i<arrI.length;i++){
+			myStr+=
+				'<li class = "top-li">'+
+					'<span class = "order_Category">'+arrI[i]+'</span>'+
+					'<ul>';
+			var arrJ = Object.getOwnPropertyNames(myOrder[ arrI[i] ]);
+			for(var j=1;j<arrJ.length;j++)
+			{
+				myStr+='<li>';
+				myStr+=	'<span class = "order_name">'+
+						'	'+arrJ[j]+
+						'	<span>x<B>'+ myOrder[ arrI[i] ][ arrJ[j] ] +'</B></span>'+
+						'</span>'+
+						'<div class = "pull-right">'+
+						'	<div class = "information" hidden>'+arrI[i]+','+myOrder[ arrI[i] ]+','+myOrder[ arrI[i] ][ arrJ[j] ]+'</div>'+
+						'	<span class = "glyphicon glyphicon-edit cuMenu-btn cuMenu-btn-edit"></span>'+
+						'	<span class = "glyphicon glyphicon-remove cuMenu-btn cuMenu-btn-remove"></span> '+
+						'</div>';
+				myStr+='</li>';
+			}
+			myStr+='</ul>';
+		}
+		$('#order_list').html(myStr);
+	}
+}
 //--------------------------- Function about Trigger---------------------------//
 function btnTrigger(){
 	$('.btn-elect').unbind('click');
@@ -162,6 +192,7 @@ function init(){
 	{
 		myOrder = [];
 		myOrderIndex = [];
+		$('#order_list').html("");
 	});
 	btnTrigger();
 	
