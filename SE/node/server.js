@@ -68,9 +68,9 @@ async function init(){
 	///^(?:(?!index).)*$/
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
-						'/setMealImage','/getUserInfo','/updateAccountInfo'];
+						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime'];
 
-	var bossOnly = ['/updateMenu','/updateSetting'];
+	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -431,8 +431,23 @@ async function init(){
 		}
 	});
 
-	app.get('/getSetting',(req,res)=>{
+	app.get('/getSetting',async(req,res)=>{
+		try{
+			var settingData = await setting.getSetting();
+			res.send(settingData);
+		}catch(err){
+			res.send(err);
+		}
+	});
 
+	app.post('/updateOrderTime',async(req,res)=>{
+		try{
+			var newTime = req.body;
+			await setting.updateOrderTime(newTime);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
 	});
 
 	app.post('/updateSetting',(req,res)=>{
