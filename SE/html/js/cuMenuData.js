@@ -3,7 +3,7 @@ var data = [];
 var category = [];
 var menu = [];
 var myOrder = [];
-
+var myOrderIndex = [];
 function updateMenu(){
 	var str="";
 	for (var categoryList in menu[ category[viewCategory] ]){

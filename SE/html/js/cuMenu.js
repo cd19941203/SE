@@ -82,7 +82,10 @@ function addOrder(isEdit = false){
 	var myName = data[ $('#OP_id').html() ].name;
 	var myType = data[ $('#OP_id').html() ].type;
 	if(myOrder[myType]==undefined){myOrder[myType]=[];}
-	if(myOrder[myType][myName]==undefined){myOrder[myType][myName]=0;}
+	if(myOrder[myType][myName]==undefined){
+		myOrder[myType][myName]=0;
+		myOrderIndex.push([myType,myName]);
+	}
 	if(!isEdit)
 	{
 		myOrder[myType][myName]+= parseInt($('#singleOrder').html());
@@ -117,6 +120,27 @@ function btnTrigger(){
 		updateSumPrice();
 	});
 	//addOrder.click    in cuMenuData [function updateOption]
+	$('.cuMenu-btn-remove').unbind('click');
+	$('.cuMenu-btn-remove').click(function(){
+		if(debugMode)console.log("remove button click");
+		var info = ($(this).siblings('.information').html()).split(',');
+		if(debugMode)console.log(info);
+		for(var i = 0 ; i < myOrderIndex.length ;i++)
+		{
+			if(myOrderIndex[i][0] == info[0] && myOrderIndex[i][1] == info[1])
+			{
+				myOrderIndex.splice(i, 1);
+				if(debugMode)console.log("Remove item ["+info[0]+","+info[1]+"] from myOrderIndex");
+				break;
+			}
+		}
+		delete myOrder[ info[0] ][ info[1] ];
+		$(this).parent().parent().hide();
+	});
+	$('.cuMenu-btn-edit').unbind('click');
+	$('.cuMenu-btn-edit').click(function(){
+		
+	});
 }
 
 function init(){
@@ -137,6 +161,7 @@ function init(){
 	$('#clearAll').click(function()
 	{
 		myOrder = [];
+		myOrderIndex = [];
 	});
 	btnTrigger();
 	
