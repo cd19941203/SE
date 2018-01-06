@@ -32,7 +32,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script src="js/navCustomer.js"></script>
+	<!--script src="js/navCustomer.js"></script-->
 </head>
 
 <body>
@@ -45,21 +45,22 @@
 
         <div class="row">
 
-            <div class="col-md-3">
-                <p class="lead">Breakfast Store</p>
+            <div class="col-md-2">
+                <p class="lead">Breakfast</p>
                 <div class="list-group">
                     <a href="#" class="list-group-item">蛋餅</a>
                     <a href="#" class="list-group-item">漢堡</a>
                     <a href="#" class="list-group-item">飲品</a>
 					<a href="#" class="list-group-item">套餐</a>
-                </div>
+                </div
+>
             </div>
 
-            <div class="col-md-9" style = "font-family : Microsoft JhengHei;">
+            <div class="col-md-7" style = "font-family : Microsoft JhengHei;">
 
                 <div class="row carousel-holder">
 
-                    <div class="col-md-12">
+                    <!--div class="col-md-12">
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                             <ol class="carousel-indicators">
                                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -78,34 +79,31 @@
                                 <span class="glyphicon glyphicon-chevron-right"></span>
                             </a>
                         </div>
-                    </div>
+                    </div-->
 
                 </div>
 
-                <div class="row">
+                <div class="row" id = "MenuPage">
 
                     <div class="col-sm-4 col-lg-4 col-md-4">
                         <div class="thumbnail">
                             <img src="image/null.jpg" alt="">
                             <div class="caption">
                                 <h4 class="pull-right">NT$ 35</h4>
-                                <h4><a href="#">起司蛋餅</a>
+                                <h4>
+									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>
+									<a href="#">起司蛋餅</a>
                                 </h4>
                                 <p>
 									熱量：375大卡<br>
 									好吃<br>
 									超好吃XD
 								</p>
+								<hr style = "margin:0px;">
                             </div>
                             <div class="ratings">
-                                <p class="pull-right">15 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                </p>
+								<button class = "btn btn-success pull-right btn-elect" id = "起司蛋餅">訂購</button>
+								<br><br>
                             </div>
                         </div>
                     </div>
@@ -132,83 +130,122 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$74.99</h4>
-                                <h4><a href="#">Third Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">31 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$84.99</h4>
-                                <h4><a href="#">Fourth Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">6 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$94.99</h4>
-                                <h4><a href="#">Fifth Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">18 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <h4><a href="#">Like this template?</a>
-                        </h4>
-                        <p>If you like this template, then check out <a target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this tutorial</a> on how to build a working review system for your online store!</p>
-                        <a class="btn btn-primary" target="_blank" href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">View Tutorial</a>
-                    </div>
-
                 </div>
-
+                <div class="row" id = "orderPage" style="display:none;">
+					
+					<div class="col-sm-12 col-lg-12 col-md-12">
+                        <div class="thumbnail">
+                            <img src="image/null.jpg" style = "width:50%;margin-left:unset;"alt="">
+                            <div class="caption">
+                                <h4 class="pull-right">
+									
+									NT$ 35
+								</h4>
+                                <h4>
+									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>
+									<a href="#">起司蛋餅</a>
+                                </h4>
+								<hr>
+								<table>
+									<tbody>
+										<tr>
+										</tr>
+									</tbody>
+								</table>
+								
+								<div id = "orderOption">
+								
+									<hr>
+									
+									<span>
+										<span class = "mytitle" id = "單點">單點</span>：<br>
+										<div style = "padding : 5px;">
+											<button class = "btn btn-success btn-add" style = "height:30px;padding:0px;width:30px;">＋</button>
+											<span class = "panel panel-default order-number" id = "number" style = "margin-left:10px;margin-right:10px;width:30px;text-align: right;">1</span>
+											<button class = "btn btn-danger btn-reduce" style = "height:30px;padding:0px;width:30px;">－</button>
+										</div>
+									</span>
+								</div>
+                            </div>
+                            <div class="ratings">
+                                <p class="pull-right">
+									<button class = "btn btn-success" id = "addOrder">加入餐車</button>
+									<button class = "btn btn-danger btn-reduce">取消</button>
+								</p>
+								<br><br>
+								
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
+			
+			
+			
+			<div class="col-md-3">
+				<div class="panel panel-info mytitle">
+					<div class="panel-heading">
+						<h3 class="panel-title">點選清單</h3>
+					</div>
+					<div class="panel-body">
+						<ul>
+							<li class = "top-li">
+								蛋餅
+								<ul>
+									<li>原味蛋餅</li>
+									<li>起司蛋餅</li>
+									<li>玉米蛋餅</li>
+									<li>培根蛋餅</li>
+								</ul>
+							</li>
+							<li class = "top-li">
+								吐司
+								<ul>
+									<li>烤土司</li>
+									<li>草莓吐司</li>
+									<li>藍莓吐司</li>
+									<li>花生吐司</li>
+									<li>綜合吐司</li>
+								</ul>
+							</li>
+							<li class = "top-li">
+								飲料
+								<ul>
+									<li>紅茶</li>
+									<li>綠茶</li>
+									<li>冬瓜茶</li>
+									<li>奶茶</li>
+									<li>咖啡</li>
+									<li>豆漿</li>
+									<li>豆漿紅茶</li>
+								</ul>
+							</li>
+							<li class = "top-li">
+								套餐
+								<ul>
+									<li>學生套餐
+										<ul>
+											<li></li>
+											<li>綠茶</li>
+											<li>冬瓜茶</li>
+											<li>奶茶</li>
+											<li>咖啡</li>
+											<li>豆漿</li>
+											<li>豆漿紅茶</li>
+										</ul>
+									</li>
+									<li>綠茶</li>
+									<li>冬瓜茶</li>
+									<li>奶茶</li>
+									<li>咖啡</li>
+									<li>豆漿</li>
+									<li>豆漿紅茶</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+            </div>
         </div>
 
     </div>
@@ -242,6 +279,9 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
     <script src="js/cuHandler.js"></script>
+	
+	<!-- My JavaScript -->
+	<script src="js/cuMenu.js"></script>
 
 </body>
 

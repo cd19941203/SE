@@ -101,11 +101,6 @@ body
 {
 	font-family: Microsoft JhengHei;
 }
-.order_cht
-{
-	font-family: Microsoft JhengHei;
-	font-weight: bold;
-}
 
 
 
@@ -155,4 +150,15 @@ ul li ul
 	display:  table-cell;
     vertical-align: middle;
     text-align: right;
+}
+
+/* Let input type="number" noButton       NOW NOT USE
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}*/
+
+.order-number{
+	padding: 5px;
 }
