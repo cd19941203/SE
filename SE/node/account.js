@@ -73,11 +73,9 @@ async function getUserInfo(account){
         throw(dbConnectionError);
     }
 }
-
-		
-        //
         
-async function createAccount(data,imagePath){
+async function createAccount(data,image){
+    var hasImage = false;
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
@@ -86,13 +84,21 @@ async function createAccount(data,imagePath){
                     rej('account already exists');
                 }
                 else{
-                    data['image'] = data.account + '.jpg';
-                    data['birth'] = new Date(data['birth']);
+                    if(typeof data['image'] !== 'undefined'){
+                        data['image'] = data.account + '.jpg';
+                        hasImage = true;
+                    }
+                    else{
+                        data['image'] = null;
+                    }
+                    if(typeof data['birth'] !== 'undefined')
+                        data['birth'] = new Date(data['birth']);
                     db.collection('user').insertOne(data,(err,result)=>{
                         if(err)
                             rej(dbManipulationError);
                         else{
-                            fs.renameSync(imagePath,'../user_image/'+data.account+'.jpg');
+                            if(hasImage)
+                                fs.renameSync(image.path,'../user_image/'+data.account+'.jpg');
                             res();
                         }
                     });
