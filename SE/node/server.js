@@ -46,7 +46,8 @@ async function init(){
 	app.use('/css',express.static(__dirname + '/../html/css'));
 	app.use('/image',express.static(__dirname + '/../html/image'));
 	app.use('/fonts',express.static(__dirname + '/../html/fonts'));
-	app.use('/userImage',express.static(__dirname + '/../user_image'));
+	app.use('/userImage',express.static(__dirname + '/../userImage'));
+	app.use('/mealImage',express.static(__dirname + '/../mealImage'))
 	//app.use('/',express.static(__dirname + '/../www'));
 	////////////////////////////////////////////////////////////
 	//let we can get connection session from socket
@@ -66,7 +67,8 @@ async function init(){
 	// 路徑不包含loginCheck的request 都會跑這個function檢查有沒有登入OUO
 	///^(?:(?!index).)*$/
 	
-	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting'];
+	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
+						'/setMealImage'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -390,8 +392,27 @@ async function init(){
 		}
 	});
 
-	app.post('/updateMenu',(req,res)=>{
+	app.post('/updateMenu',async(req,res)=>{
+		try{
+			var menu = req.body;
+			if(typeof menu === 'undefined')
+				throw('no data');
+			await meal.updateMenu(menu);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
+	});
 
+	app.post('/setMealImage',async(req,res)=>{
+		try{
+			if(typeof req.body.name === 'undefined' || typeof req.files.image === 'undefined')
+				throw('no data');
+			await setMealImage(req.body.name,req.files.image);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
 	});
 
 	app.get('/getSetting',(req,res)=>{

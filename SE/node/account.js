@@ -85,7 +85,7 @@ async function createAccount(data,image){
                 }
                 else{
                     if(typeof data['image'] !== 'undefined'){
-                        data['image'] = data.account + '.jpg';
+                        data['image'] = '/userImage/' + data.account + '.jpg';
                         hasImage = true;
                     }
                     else{
@@ -98,7 +98,7 @@ async function createAccount(data,image){
                             rej(dbManipulationError);
                         else{
                             if(hasImage)
-                                fs.renameSync(image.path,'../user_image/'+data.account+'.jpg');
+                                fs.renameSync(image.path,'../userImage/'+data.account+'.jpg');
                             res();
                         }
                     });
