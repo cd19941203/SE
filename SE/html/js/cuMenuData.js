@@ -31,6 +31,7 @@ function updateMenu(){
 		'                    </div>                                                                                           ';
 	}
 	$('#MenuPage').html(str);
+	btnTrigger();
 }
 
 //function about Order Page

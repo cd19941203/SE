@@ -18,8 +18,13 @@ function updateData(myData)
 		}
 		menu[ myData[i].type ][ myData[i].name ] = i;
 	}
-	
-	updateMenu(viewCategory);
+	var myCategory = "";
+	for(var i=0;i<category.length;i++)
+	{
+		myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+category[i]+'</a>';
+	}
+	$('#categoryList').html(myCategory);
+	updateMenu();
 	btnTrigger();
 }
 function viewOrderPage(orderID, isEdit = false, myEdit = []){
@@ -94,6 +99,7 @@ function addOrder(isEdit = false){
 	{
 		myOrder[myType][myName] = parseInt($('#singleOrder').html());
 	}
+	updateOrderList();
 }
 function updateOrderList(){
 	if(isSort)
@@ -113,14 +119,43 @@ function updateOrderList(){
 						'	'+arrJ[j]+
 						'	<span>x<B>'+ myOrder[ arrI[i] ][ arrJ[j] ] +'</B></span>'+
 						'</span>'+
-						'<div class = "pull-right">'+
+						'<span>'+
 						'	<div class = "information" hidden>'+arrI[i]+','+myOrder[ arrI[i] ]+','+myOrder[ arrI[i] ][ arrJ[j] ]+'</div>'+
 						'	<span class = "glyphicon glyphicon-edit cuMenu-btn cuMenu-btn-edit"></span>'+
 						'	<span class = "glyphicon glyphicon-remove cuMenu-btn cuMenu-btn-remove"></span> '+
-						'</div>';
+						'</span>';
 				myStr+='</li>';
 			}
-			myStr+='</ul>';
+			myStr+='</ul></li>';
+		}
+		$('#order_list').html(myStr);
+	}
+	else
+	{
+		var myStr = "";
+		for(var i=0;i<myOrderIndex.length;i++){
+			myStr+='<li class = "top-li">';
+			myStr+=	'<span class = "order_name">'+
+					'	'+myOrderIndex[i][1]+
+					'	<span>x<B>'+ myOrder[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ] +'</B></span>'+
+					'</span>'+
+					'<span>'+
+					'	<div class = "information" hidden>'+myOrderIndex[i][0]+','+myOrderIndex[i][1]+','+myOrder[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ]+'</div>'+
+					'	<span class = "glyphicon glyphicon-edit cuMenu-btn cuMenu-btn-edit"></span>'+
+					'	<span class = "glyphicon glyphicon-remove cuMenu-btn cuMenu-btn-remove"></span> '+
+					'</span>';
+					
+			if(myOrderIndex[i][1] == "套餐"){
+				myStr+='<ul>';
+				/*for(var j=1;j<arrJ.length;j++)
+				{
+					myStr+='<li>';
+					myStr+=	
+					myStr+='</li>';
+				}*/
+				myStr+='</ul>';
+			}
+			myStr+='</li>';
 		}
 		$('#order_list').html(myStr);
 	}
@@ -171,6 +206,13 @@ function btnTrigger(){
 	$('.cuMenu-btn-edit').click(function(){
 		
 	});
+	
+	$('.category').unbind('click');
+	$('.category').click(function(){
+		if(debugMode)console.log('categoryItem click');
+		viewCategory = parseInt($(this).attr('id').substr(2));
+		updateMenu();
+	});
 }
 
 function init(){
@@ -187,6 +229,7 @@ function init(){
 			$(this).removeClass('btn-info');
 			$(this).addClass('btn-default');
 		}
+		updateOrderList();
 	});
 	$('#clearAll').click(function()
 	{
@@ -198,7 +241,7 @@ function init(){
 	
 	
 	data = example;
-	viewCategory = 1;
+	viewCategory = 0;
 	updateData(data);
 }
 addEventListener('load', init, false);
