@@ -1,4 +1,5 @@
 var database = require('./database.js');
+var fs = require('fs');
 var dbConnectionError = database.dbConnectionError;
 var dbManipulationError = database.dbManipulationError;
 
@@ -54,7 +55,7 @@ async function getUserInfo(account){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            db.collection('user'),findOne({account:account},(err,result)=>{
+            db.collection('user').findOne({account:account},(err,result)=>{
                 if(err)
                     rej(dbManipulationError);
                 else{
@@ -72,8 +73,44 @@ async function getUserInfo(account){
         throw(dbConnectionError);
     }
 }
+        
+async function createAccount(data,image){
+    var hasImage = false;
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('user').findOne({account:data.account},(err,result)=>{
+                if(result){
+                    rej('account already exists');
+                }
+                else{
+                    if(typeof data['image'] !== 'undefined'){
+                        data['image'] = data.account + '.jpg';
+                        hasImage = true;
+                    }
+                    else{
+                        data['image'] = null;
+                    }
+                    if(typeof data['birth'] !== 'undefined')
+                        data['birth'] = new Date(data['birth']);
+                    db.collection('user').insertOne(data,(err,result)=>{
+                        if(err)
+                            rej(dbManipulationError);
+                        else{
+                            if(hasImage)
+                                fs.renameSync(image.path,'../user_image/'+data.account+'.jpg');
+                            res();
+                        }
+                    });
+                }
+            });
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
 
 module.exports.getAccountType = getAccountType;
-module.exports.createUser = createUser;
+module.exports.createAccount = createAccount;
 module.exports.login = login;
 module.exports.getUserInfo =  getUserInfo;

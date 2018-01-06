@@ -66,7 +66,7 @@ async function updateModifyAdvice(num,advice){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            db.collection('order').updateOne({orderNumner:num},{$set:{advice:advice}},(err,result)=>{
+            db.collection('order').updateOne({orderNumber:num},{$set:{advice:advice}},(err,result)=>{
                 if(err)
                     rej(dbManipulationError);
                 else
