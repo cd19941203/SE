@@ -31,7 +31,7 @@ var registerDom = '<div class="login">' +
     '<input id="image" type="text" name="image" placeholder="Image" required="required" onfocus="(this.type=\'file\')">' +
     '<div style=" display: inline-flex;width:  100%;">' +
     '<button type="button" class="btn btn-primary btn-block btn-large" onclick="register()">Register</button>' +
-    '<button type="button" class="btn btn-primary btn-block btn-large" onclick="(window.location = \'/login\')">Back</button></div></form>' +
+    '<button type="button" class="btn btn-primary btn-block btn-large" onclick="(window.location = \'/index\')">Back</button></div></form>' +
     '</div>';
 
 function registerPage()

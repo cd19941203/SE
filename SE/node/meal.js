@@ -1,5 +1,3 @@
-import { lchmod } from 'fs';
-
 var database = require('./database.js');
 var fs = require('fs');
 var dbConnectionError = database.dbConnectionError;
