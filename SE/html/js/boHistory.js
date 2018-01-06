@@ -142,9 +142,21 @@ function boList_init(){
 	btnTrigger();
 	
 	///example is a variable       use test
-	example = JSON.parse(example);
-	data = example;
-	updateData(example);
+	/*example = JSON.parse(example);
+	data = example;*/
+    $.ajax({
+        url: "/getOrderList",
+        type: "get",
+        cache: false,
+        data:{
+            status:"done"
+        },
+        success: function(data)
+        {
+            updateData(data);
+        },
+    });
+	//updateData(example);
 	//Notification
 	$("#onNotice").bootstrapSwitch({size:"mini"});
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
