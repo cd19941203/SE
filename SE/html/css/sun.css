@@ -162,3 +162,13 @@ input::-webkit-inner-spin-button {
 .order-number{
 	padding: 5px;
 }
+.cuMenu-btn{
+	font-size:17px;
+	cursor: pointer;
+}
+.cuMenu-btn-edit{
+	color:green;
+}
+.cuMenu-btn-remove{
+	color:Crimson;
+}
