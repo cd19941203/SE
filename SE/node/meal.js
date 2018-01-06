@@ -77,7 +77,7 @@ async function setMealImage(mealName,image){
 	try{
 		var db = await database.connect();
 		return new Promise((res,rej)=>{
-			db.collection.updateOne({name:mealName},{$set:{image:'/mealImage' + mealName + '.jpg'}},(err,result)=>{
+			db.collection('menu').updateOne({name:mealName},{$set:{image:'/mealImage' + mealName + '.jpg'}},(err,result)=>{
 				if(err)
 					rej(dbManipulationError);
 				else{
@@ -91,6 +91,40 @@ async function setMealImage(mealName,image){
 	}
 }
 
+async function setMealStatus(mealName,status){
+	try{
+		var db = await database.connect();
+		return new Promise((res,rej)=>{
+			db.collection('menu').updateOne({name:mealName},{$set:{inventory:status}},(err,result)=>{
+				if(err)
+					rej(dbManipulationError);
+				else
+					res();
+			});
+		});
+	}catch(err){
+		throw(dbConnectionError);
+	}
+}
+
+async function getSoldOut(){
+	try{
+		var db = await database.connect();
+		return new Promise((res,rej)=>{
+			db.collection('menu').find({inventory:false},{projection:{_id:0}}).toArray((err,result)=>{
+				if(err)
+					rej(err);
+				else
+					res(result);
+			});
+		});
+	}catch(err){
+		throw(dbConnectionError);
+	}
+}
+
 module.exports.getMenu = getMenu;
 module.exports.updateMenu = updateMenu;
 module.exports.setMealImage = setMealImage;
+module.exports.setMealStatus = setMealStatus;
+module.exports.getSoldOut = getSoldOut;
