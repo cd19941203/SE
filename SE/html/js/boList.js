@@ -232,6 +232,7 @@ function btnPage(){
 	
 }
 function boList_init(){
+	//Socket.io
     socket = io.connect('140.121.197.192:9487');
 
     socket.on('newOrder',(data)=>{

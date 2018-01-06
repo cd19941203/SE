@@ -102,8 +102,10 @@
 								<hr style = "margin:0px;">
                             </div>
                             <div class="ratings">
-								<button class = "btn btn-success pull-right btn-elect" id = "起司蛋餅">訂購</button>
-								<br><br>
+							<button class = "btn btn-success pull-right btn-elect" id = "起司蛋餅">訂購</button>
+							<B>NT$ 35</B>
+							<br><br>
+								
                             </div>
                         </div>
                     </div>
@@ -149,7 +151,7 @@
                             </div>
                             <div class="ratings">
                                 <p class="pull-right">
-									<span style="color:blue;"> 小計：$<B id = "OP_sumPrice" style="font-size:25px;">10,000</B> </span>
+									<span style="color:blue; font-size:25px;"> 小計：$<B id = "OP_sumPrice">10,000</B> </span>
 									<button class = "btn btn-success" id = "addOrder">加入餐車</button>
 									<button class = "btn btn-danger btn-reduce">取消</button>
 								</p>
@@ -167,14 +169,26 @@
 			<div class="col-md-3">
 				<div class="panel panel-info mytitle">
 					<div class="panel-heading">
-						<h3 class="panel-title">點選清單</h3>
+						<div class = "pull-right">
+							<button class="btn btn-default" id = "sortOrder">分類</button>
+							<button class="btn btn-default" id = "clearAll">清除</button>
+						</div>
+						<div style = "height:30px;line-height:30px;padding-top:6.5px;">
+							<h3 class="panel-title">點選清單</h3>
+						</div>
 					</div>
 					<div class="panel-body">
-						<ul>
+						<ul id = "order_list">
 							<li class = "top-li">
-								蛋餅
+								<span class = "order_Category">蛋餅</span>
 								<ul>
-									<li>原味蛋餅</li>
+									<li>
+										<span class = "order_name">原味蛋餅</span>
+										<div class = "pull-right">
+											<span class = "glyphicon glyphicon-edit cuMenu-btn cuMenu-btn-edit"></span>
+											<span class = "glyphicon glyphicon-remove cuMenu-btn cuMenu-btn-remove"></span>
+										</div>
+									</li>
 									<li>起司蛋餅</li>
 									<li>玉米蛋餅</li>
 									<li>培根蛋餅</li>
