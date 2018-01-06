@@ -27,14 +27,14 @@ function updateData(myData)
 	updateMenu();
 	btnTrigger();
 }
-function viewOrderPage(orderID, isEdit = false, myEdit = []){
+function viewOrderPage(orderID, myOption = [['單點','singleOrder']]  , isEdit = false, myEdit = []){
 	if(debugMode)console.log("click " + orderID + " 訂購");
 	viewStatus = "order";
 	
 	$('#OP_id').html(orderID);
 	$('#OP_name').html(data[orderID].name);
 	$('#OP_price').html( (data[orderID].price).toLocaleString('en-US') );
-	updateOption();
+	updateOption(myOption,isEdit,myEdit);
 	updateSumPrice();
 	
 	$('#MenuPage').hide();
@@ -159,6 +159,7 @@ function updateOrderList(){
 		}
 		$('#order_list').html(myStr);
 	}
+	btnTrigger();
 }
 //--------------------------- Function about Trigger---------------------------//
 function btnTrigger(){
@@ -204,7 +205,10 @@ function btnTrigger(){
 	});
 	$('.cuMenu-btn-edit').unbind('click');
 	$('.cuMenu-btn-edit').click(function(){
-		
+		if(debugMode)console.log("edit button click");
+		var info = ($(this).siblings('.information').html()).split(',');
+		if(debugMode)console.log(info);
+		viewOrderPage(menu[ info[0] ][ info[1] ],[['單點','singleOrder']],true, [ myOrder[info[0]][info[1]] ]);
 	});
 	
 	$('.category').unbind('click');
