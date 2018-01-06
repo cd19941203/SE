@@ -92,7 +92,7 @@
                                 <h4 class="pull-right">NT$ 35</h4>
                                 <h4>
 									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>
-									<a href="#">起司蛋餅</a>
+									<span>起司蛋餅</span>
                                 </h4>
                                 <p>
 									熱量：375大卡<br>
@@ -108,42 +108,25 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <img src="http://placehold.it/320x150" alt="">
-                            <div class="caption">
-                                <h4 class="pull-right">$64.99</h4>
-                                <h4><a href="#">Second Product</a>
-                                </h4>
-                                <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </div>
-                            <div class="ratings">
-                                <p class="pull-right">12 reviews</p>
-                                <p>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+				
+				
+				
+				<!-----------------------  Order Page  ----------------------->
                 <div class="row" id = "orderPage" style="display:none;">
 					
 					<div class="col-sm-12 col-lg-12 col-md-12">
                         <div class="thumbnail">
-                            <img src="image/null.jpg" style = "width:50%;margin-left:unset;"alt="">
+							<span id = "OP_id" hidden>100</span>
+                            <img id = "OP_image" src="image/null.jpg" style = "width:50%;margin-left:unset;"alt="">
                             <div class="caption">
                                 <h4 class="pull-right">
 									
-									NT$ 35
+									NT$ <span id = "OP_price">35<span>
 								</h4>
                                 <h4>
 									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>
-									<a href="#">起司蛋餅</a>
+									<B id = "OP_name">起司蛋餅</B>
                                 </h4>
 								<hr>
 								<table>
@@ -154,9 +137,6 @@
 								</table>
 								
 								<div id = "orderOption">
-								
-									<hr>
-									
 									<span>
 										<span class = "mytitle" id = "單點">單點</span>：<br>
 										<div style = "padding : 5px;">
@@ -169,14 +149,16 @@
                             </div>
                             <div class="ratings">
                                 <p class="pull-right">
+									<span style="color:blue;"> 小計：$<B id = "OP_sumPrice" style="font-size:25px;">10,000</B> </span>
 									<button class = "btn btn-success" id = "addOrder">加入餐車</button>
 									<button class = "btn btn-danger btn-reduce">取消</button>
 								</p>
-								<br><br>
+								<br><br><br>
 								
                             </div>
                         </div>
                     </div>
+					
                 </div>
             </div>
 			
@@ -282,6 +264,7 @@
 	
 	<!-- My JavaScript -->
 	<script src="js/cuMenu.js"></script>
+	<script src="js/cuMenuData.js"></script>
 
 </body>
 
