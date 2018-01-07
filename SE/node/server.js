@@ -424,7 +424,7 @@ async function init(){
 
 	app.post('/updateAccountInfo',async(req,res)=>{
 		try{
-			if(typeof req.body.account === 'undefined' || typeof req.body.password === 'undefined')
+			if(typeof req.body.password === 'undefined')
 				throw('data format err');
 			await account.updateAccountInfo(req.session.account,req.body,req.files.image);
 			res.send('success');
