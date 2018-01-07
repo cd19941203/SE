@@ -25,6 +25,9 @@
     <![endif]-->
 	<link href="css/sun.css" rel="stylesheet">
 	<script src="js/navCustomer.js"></script>
+    <!-- SweetAlert CSS -->
+    <link href="css/sweetalert.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -74,7 +77,7 @@
                                 <input id="nPassword" class="form-control" type="password" name="nPassword" placeholder="New Password" required="required">
                                 <label for="name">請在輸入一次新密碼</label>
                                 <br>
-                                <input id="nnPassword" class="form-control" type="password" name="password" placeholder="New Password Again" required="required">
+                                <input id="nnPassword" class="form-control" type="password" name="nnPassword" placeholder="New Password Again" required="required">
 							</div>
                             <div class="form-group">
 								<label for="name">Username</label>
@@ -94,7 +97,7 @@
 							<div class="form-group">
 								<label for="name">Phone</label>
 								<!--input type="text" class="form-control" id="name" placeholder="Input your Cellphone number."/-->
-                                <input id="phone" class="form-control" type="text" name="phon" placeholder="Phone" required="required">
+                                <input id="phone" class="form-control" type="text" name="phone" placeholder="Phone" required="required">
 							</div>
 							<div class="form-group">
 								<label for="name">Email</label>
@@ -110,10 +113,10 @@
 							</div>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox">我同意。早餐店老闆很辛苦做早餐，我會乖乖不棄單。</input>
+									<input id="check" type="checkbox" onclick="checkAgree()">我同意。早餐店老闆很辛苦做早餐，我會乖乖不棄單。</input>
 								</label>
 							</div>
-								<button type="button" class="btn btn-default" onclick="submitSetting()">Submit</button>
+								<button id="button" type="button" class="btn btn-default" onclick="submitSetting()" disabled>Submit</button>
 						</form>
 						
                     </div>
