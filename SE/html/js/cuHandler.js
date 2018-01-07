@@ -56,4 +56,5 @@ function submitOrder()
     $('#order_list').html("");
 }
 
+
 addEventListener("load",init,false);
