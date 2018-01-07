@@ -27,6 +27,11 @@ function updateData(myData)
 	updateMenu();
 	btnTrigger();
 }
+function viewMenuPage(){
+	updateMenu();
+	$('#MenuPage').show();
+	$('#orderPage').hide();
+}
 function viewOrderPage(orderID, myOption = [['單點','singleOrder']]  , isEdit = false, myEdit = []){
 	if(debugMode)console.log("click " + orderID + " 訂購");
 	viewStatus = "order";
@@ -34,6 +39,7 @@ function viewOrderPage(orderID, myOption = [['單點','singleOrder']]  , isEdit 
 	$('#OP_id').html(orderID);
 	$('#OP_name').html(data[orderID].name);
 	$('#OP_price').html( (data[orderID].price).toLocaleString('en-US') );
+	$('#OP_image')[0].src='image/mealImage/'+data[orderID].name+'.jpg';
 	updateOption(myOption,isEdit,myEdit);
 	updateSumPrice();
 	
@@ -216,6 +222,10 @@ function btnTrigger(){
 		if(debugMode)console.log('categoryItem click');
 		viewCategory = parseInt($(this).attr('id').substr(2));
 		updateMenu();
+	});
+	$('#cancelOrder').unbind('click');
+	$('#cancelOrder').click(function(){
+		viewMenuPage();
 	});
 }
 
