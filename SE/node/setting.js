@@ -62,6 +62,25 @@ async function updateOrderTime(newTime){
     }
 }
 
+async function checkCanOrder(){
+    try{
+        var data = await getSetting();
+        var now = new Date();
+        var day = now.getDay();
+        var min = now.getMinutes();
+        var hr = now.getHours();
+        var nowStr = hr + ':' + min;
+        var orderTime = data['orderTime'][day];
+        if(nowStr < orderTime['begin'] || nowStr > orderTime['end'])
+            return false;
+        else
+            return true;        
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
 module.exports.getOrderNumber = getOrderNumber;
 module.exports.getSetting = getSetting;
 module.exports.updateOrderTime = updateOrderTime;
+module.exports.checkCanOrder = checkCanOrder;

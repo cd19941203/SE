@@ -44,4 +44,28 @@ async function mealAnalyze(beginTime,endTime){
     }
 }
 
+async function genderAnalyze(beginTime,endTime){
+    try{
+        var db = database.connect();
+        return new Promise((res,rej)=>{
+
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
+async function ageAnalyze(beginTime,endTime){
+    try{
+        var db = database.connect();
+        return new Promise((res,rej)=>{
+
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
 module.exports.mealAnalyze = mealAnalyze;
+module.exports.genderAnalyze = genderAnalyze;
+module.exports.ageAnalyze = ageAnalyze;
