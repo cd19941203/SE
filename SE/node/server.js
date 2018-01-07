@@ -76,7 +76,7 @@ async function init(){
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
 						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze'];
 
-	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime','/soldOut','/mealAnalyze'];
+	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -337,6 +337,9 @@ async function init(){
 	// about web server
 
 	app.get('/',async(req,res)=>{
+		var x = getDate();
+		console.log(x);
+		console.log(x.getHours());
 		res.redirect('/index');
 	});
 
