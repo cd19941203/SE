@@ -16,6 +16,7 @@ var database = require('./database.js');
 var meal = require('./meal.js');
 var setting = require('./setting.js');
 var order = require('./order.js');
+var analyze = require('./analyze.js');
 
 var rootPath = '../html/';
 
@@ -28,6 +29,11 @@ function getDate(){
 	x.setHours(x.getHours()+8);
 	return x;
 	//return new Date(x.getTime() + 8*3600000);
+}
+
+function datePlus8(x){
+	x.setHours(x.getHours()+8);
+	return x;
 }
 
 async function init(){
@@ -68,9 +74,9 @@ async function init(){
 	///^(?:(?!index).)*$/
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
-						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut'];
+						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze'];
 
-	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime','/soldOut'];
+	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime','/soldOut','/mealAnalyze'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -126,6 +132,7 @@ async function init(){
 					newOrder['orderNumber'] = await setting.getOrderNumber();
 					newOrder['status'] = 'new';
 					newOrder['beginTime'] = getDate();
+					newOrder['expectTime']  = datePlus8(new Date(newOrder['expectTime']));
 					await order.newOrder(newOrder);
 					newOrder['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete newOrder['_id'];
@@ -379,13 +386,24 @@ async function init(){
 		try{
 			var status = req.query.status;
 			var query;
+			var time;
 			if(typeof status === "undefined")
 				query={};
 			else
 				query={status:status};
-			if(req.session.account != 'boss')
+			if(req.session.account != 'boss'){
 				query['account'] = req.session.account;
-			var data = await order.getOrderList(query);
+			}
+			var beginTime = req.query.beginTime;
+			var endTime = req.query.endTime;
+			if(typeof beginTime !== 'undefined' && typeof endTime !== 'endefined'){
+				console.log(beginTime);
+				beginTime = datePlus8(new Date(beginTime));
+				endTime = datePlus8(new Date(endTime));
+				query[$or] = [{endTime:{$gte:beginTime}},{beginTime:{$lte:endTime}}];
+			}
+
+			var data = await order.getOrderList(query,time);
 			res.send(data);
 		}catch(err){
 			console.log(err);
@@ -398,6 +416,17 @@ async function init(){
 			if(typeof req.body.account === 'undefined' || typeof req.body.password === 'undefined')
 				throw('data format err');
 			await account.createAccount(req.body,req.files.image);
+			res.send('success');
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.post('/updateAccountInfo',async(req,res)=>{
+		try{
+			if(typeof req.body.password === 'undefined')
+				throw('data format err');
+			await account.updateAccountInfo(req.session.account,req.body,req.files.image);
 			res.send('success');
 		}catch(err){
 			res.send(err);
@@ -499,7 +528,16 @@ async function init(){
 		}
 	});
 
-	
+	app.get('/mealAnalyze',async(req,res)=>{
+		try{
+			var beginTime = datePlus8(new Date(req.query.beginTime));
+			var endTime = datePlus8(new Date(req.query.endTime));
+			var data = await analyze.mealAnalyze(beginTime,endTime);
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
 
 	server.listen(8787,()=>{
 		console.log('server gogo OUO!');

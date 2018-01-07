@@ -110,34 +110,28 @@ async function createAccount(data,image){
     }
 }
 
-async function updateAccountInfo(data,image){
+async function updateAccountInfo(acc,data,image){
     var hasImage = false;
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            db.collection('user').findOne({account:data.account},(err,result)=>{
-                if(result){
-                    rej('account already exists');
-                }
+            if(typeof data['image'] !== 'undefined'){
+                data['image'] = '/userImage/' + acc + '.jpg';
+                hasImage = true;
+            }
+            else{
+                delete data['image'];
+            }
+            if(typeof data['birth'] !== 'undefined')
+                data['birth'] = new Date(data['birth']);
+
+            db.collection('user').updateOne({account:acc},{$set:data},(err,result)=>{
+                if(err)
+                    rej(dbManipulationError);
                 else{
-                    if(typeof data['image'] !== 'undefined'){
-                        data['image'] = '/userImage/' + data.account + '.jpg';
-                        hasImage = true;
-                    }
-                    else{
-                        data['image'] = null;
-                    }
-                    if(typeof data['birth'] !== 'undefined')
-                        data['birth'] = new Date(data['birth']);
-                    db.collection('user').insertOne(data,(err,result)=>{
-                        if(err)
-                            rej(dbManipulationError);
-                        else{
-                            if(hasImage)
-                                fs.renameSync(image.path,'../userImage/'+data.account+'.jpg');
-                            res();
-                        }
-                    });
+                    if(hasImage)
+                        fs.renameSync(image.path,'../UserImage/' + acc + '.jpg');
+                    res();
                 }
             });
         });
