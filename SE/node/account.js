@@ -129,8 +129,13 @@ async function updateAccountInfo(acc,data,image){
                 if(err)
                     rej(dbManipulationError);
                 else{
-                    if(hasImage)
-                        fs.renameSync(image.path,'../UserImage/' + acc + '.jpg');
+                    if(hasImage){
+                        try{
+                            fs.copyFileSync(image.path,'../userImage/'+acc+'.jpg');
+                        }catch(err){
+                            console.log(err);
+                        }
+                    }
                     res();
                 }
             });
