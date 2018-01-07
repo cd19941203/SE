@@ -154,6 +154,8 @@ async function init(){
 			// from boss
 			socket.on('orderAccept',data=>{
 				var orderNumber;
+				if(socket.request.session.account != 'boss')
+					return ;
 				try{
 					var orderAccept = JSON.parse(data);
 					orderNumber = orderAccept['orderNumber'];
@@ -180,6 +182,8 @@ async function init(){
 			// from boss
 			socket.on('orderComplete',data=>{
 				var orderNumber;
+				if(socket.request.session.account != 'boss')
+					return ;
 				try{
 					var orderComplete = JSON.parse(data);
 					orderNumber = orderComplete['orderNumber'];
@@ -205,6 +209,8 @@ async function init(){
 
 			socket.on('orderDone',data=>{
 				var orderNumber;
+				if(socket.request.session.account != 'boss')
+					return ;
 				try{
 					var orderDone = JSON.parse(data);
 					orderNumber = orderDone['orderNumber'];
@@ -231,6 +237,8 @@ async function init(){
 
 			socket.on('orderModify',data=>{
 				var orderNumber;
+				if(socket.request.session.account != 'boss')
+					return ;
 				try{
 					var orderModify = JSON.parse(data);
 					orderNumber = orderModify['orderNumber'];
@@ -497,7 +505,8 @@ async function init(){
 			}
 			var data = await account.getUserInfo(acc);
 			delete data['_id'];
-			delete data['password'];
+			if(req.session.account == 'boss')
+				delete data['password'];
 			res.send(data);
 		}catch(err){
 			res.send(err);
