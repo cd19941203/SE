@@ -232,7 +232,8 @@ function btnPage(){
 	
 }
 function boList_init(){
-    socket = io.connect('140.121.197.192:9487');
+    //socket = io.connect('140.121.197.192:9487');
+    socket = io.connect('localhost:8787');
 
     socket.on('newOrder',(data)=>{
         swal("有新訂單!!", "訂單編號 #"+data["orderNumber"], {timer:10000,icon:"info"});
