@@ -74,9 +74,10 @@ async function init(){
 	///^(?:(?!index).)*$/
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
-						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze'];
+						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze',
+						'/genderAnalyze'];
 
-	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze'];
+	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -127,21 +128,26 @@ async function init(){
 			// from customer
 			socket.on('newOrder',async(data)=>{
 				try{
-					var newOrder = JSON.parse(data);
-					newOrder['account'] = socket.request.session.account;
-					newOrder['orderNumber'] = await setting.getOrderNumber();
-					newOrder['status'] = 'new';
-					newOrder['beginTime'] = getDate();
-					newOrder['expectTime']  = datePlus8(new Date(newOrder['expectTime']));
-					await order.newOrder(newOrder);
-					newOrder['userInfo'] = account.getUserInfo(socket.request.session.account);
-					delete newOrder['_id'];
-					delete newOrder['userInfo']['_id'];
-					delete newOrder['userInfo']['password'];
-					// ack customer
-					sio.to(socket.request.session.account).emit('newOrder',{orderNumber:newOrder['orderNumber'],status:'success'});
-					// to boss
-					sio.to('boss').emit('newOrder',newOrder);
+					if(await setting.checkCanOrder() == false){
+						sio.to(socket.request.session.account).emit('newOrder','cant order now');
+					}
+					else{
+						var newOrder = JSON.parse(data);
+						newOrder['account'] = socket.request.session.account;
+						newOrder['orderNumber'] = await setting.getOrderNumber();
+						newOrder['status'] = 'new';
+						newOrder['beginTime'] = getDate();
+						newOrder['expectTime']  = datePlus8(new Date(newOrder['expectTime']));
+						await order.newOrder(newOrder);
+						newOrder['userInfo'] = account.getUserInfo(socket.request.session.account);
+						delete newOrder['_id'];
+						delete newOrder['userInfo']['_id'];
+						delete newOrder['userInfo']['password'];
+						// ack customer
+						sio.to(socket.request.session.account).emit('newOrder',{orderNumber:newOrder['orderNumber'],status:'success'});
+						// to boss
+						sio.to('boss').emit('newOrder',newOrder);
+					}
 				}catch(err){
 					if(err instanceof SyntaxError){
 						sio.to(socket.request.session.account).emit('newOrder',{status:'Data format error'});
@@ -149,6 +155,7 @@ async function init(){
 						sio.to(socket.request.session.account).emit('newOrder',{status:err});	
 					}
 				}
+			
 			});
 
 			// from boss
@@ -337,9 +344,29 @@ async function init(){
 	// about web server
 
 	app.get('/',async(req,res)=>{
-		var x = getDate();
-		console.log(x);
-		console.log(x.getHours());
+		/*
+		try{
+			var data = await setting.getSetting();
+			var now = new Date();
+			var day = now.getDay();
+			var min = now.getMinutes();
+			var hr = now.getHours();
+			var nowStr = hr + ':' + min;
+			var orderTime = data['orderTime'][day];
+			console.log(nowStr);
+			console.log(orderTime['begin']);
+			console.log(orderTime['end']);
+			if(nowStr < orderTime['begin'] || nowStr > orderTime['end'])
+				console.log('!');
+			else
+				console.log('~');        
+		}catch(err){
+			console.log(err);
+		}*/
+		var data = await analyze.getGenderAccount('男');
+		console.log(data);
+		var dd = await analyze.calculateByAccount(data,datePlus8(new Date('2017-12-01')),datePlus8(new Date('2018-02-01')));
+		console.log(dd);
 		res.redirect('/index');
 	});
 
@@ -541,6 +568,17 @@ async function init(){
 			var beginTime = datePlus8(new Date(req.query.beginTime));
 			var endTime = datePlus8(new Date(req.query.endTime));
 			var data = await analyze.mealAnalyze(beginTime,endTime);
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.get('/genderAnalyze',async(req,res)=>{
+		try{
+			var beginTime = datePlus8(new Date(req.query.beginTime));
+			var endTime = datePlus8(new Date(req.query.endTime));
+			var data = await analyze.genderAnalyze(beginTime,endTime);
 			res.send(data);
 		}catch(err){
 			res.send(err);

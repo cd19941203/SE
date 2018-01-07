@@ -143,7 +143,6 @@ async function updateOrder(num,newOrder){
     }
 }
 
-
 module.exports.orderStatus = orderStatus;
 module.exports.dbConnectionError = dbConnectionError;
 module.exports.dbManipulationError = dbManipulationError;
