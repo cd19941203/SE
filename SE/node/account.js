@@ -120,7 +120,7 @@ async function updateAccountInfo(acc,data,image){
                 hasImage = true;
             }
             else{
-                data['image'] = null;
+                delete data['image'];
             }
             if(typeof data['birth'] !== 'undefined')
                 data['birth'] = new Date(data['birth']);
@@ -129,7 +129,8 @@ async function updateAccountInfo(acc,data,image){
                 if(err)
                     rej(dbManipulationError);
                 else{
-                    fs.renameSync(image.path,'../UserImage/' + acc + '.jpg');
+                    if(hasImage)
+                        fs.renameSync(image.path,'../UserImage/' + acc + '.jpg');
                     res();
                 }
             });
