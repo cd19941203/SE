@@ -45,10 +45,13 @@ function updateData(tmp = data){
 		data[ tmp[i].orderNumber ] = tmp[i];
 		webMake(tmp[i].orderNumber,tmp[i].account,"0988452145","100",[[tmp[i].mealName,10,350],['起司蛋餅',10,350]],4);
 	}*/
+    
 	for(var key in tmp)
 	{
-		//console.log(tmp[key].orderNumber);
-		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,"100",[[tmp[key].mealName,10,350],['起司蛋餅',10,350]],4);
+		var mealTemp = [];
+        for(var meal of tmp[key].meal)
+            mealTemp.push([meal.name,meal.amount,meal.price*meal.amount]);
+		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,tmp[key].totalPrice,mealTemp,4);
 	}
 	data = tmp;
 }
