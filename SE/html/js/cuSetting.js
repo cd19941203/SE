@@ -11,12 +11,16 @@ function init()
         {
             oldUserData = data;
             document.getElementById('birth').value = data.birth.substr(0,10);
-            //document.getElementById('username').attributes.value = data.username;
             document.getElementById('gender').value = data.gender;
             document.getElementById('email').value = data.email;
             document.getElementById('phone').value = data.phone;
             document.getElementById('username').value = data.username;
         },
+    });
+    $('#image').change(function(){
+        var tmp = ($(this).val()).split('\\');
+        tmp = tmp[tmp.length-1];
+        $('#filename').html(tmp);
     });
 }
 
