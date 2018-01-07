@@ -22,6 +22,8 @@ async function getMenu(){
 async function updateMenu(menu){
 	try{
 		var db = await database.connect();
+		var oldMenu = await getMenu();
+		console.log(oldMenu);
 		return new Promise((res,rej)=>{
 			db.collection('menu').deleteMany({},(err,result)=>{
 				if(err)
@@ -32,12 +34,15 @@ async function updateMenu(menu){
 							rej(dbManipulationError);
 						else{
 							var currentImage = fs.readdirSync('../mealImage');
-							var selectedImage = [];
+							var selectedImage = ['default.jpg'];
 							// update image path
 							for(meal of menu){
 								if(currentImage.indexOf(meal.name + '.jpg') > -1){
 									selectedImage.push(meal.name + '.jpg');
-									await updateImagePath(meal.name);
+									await updateImagePath(meal.name,meal.name);
+								}
+								else{
+									await updateImagePath(meal.name,'default');
 								}
 							}
 							// delete the image no longer use
@@ -57,11 +62,11 @@ async function updateMenu(menu){
 	}
 }
 
-async function updateImagePath(mealName){
+async function updateImagePath(mealName,image){
 	try{
 		var db = await database.connect();
 		return new Promise((res,rej)=>{
-			db.collection('menu').updateOne({name:mealName},{$set:{image:'/mealImage/' + mealName + '.jpg'}},(err,result)=>{
+			db.collection('menu').updateOne({name:mealName},{$set:{image:'/mealImage/' + image + '.jpg'}},(err,result)=>{
 				if(err)
 					rej(err);
 				else
