@@ -251,6 +251,7 @@ function init(){
 		myOrderIndex = [];
 		$('#order_list').html("");
 	});
+    $('#submitOrder').click(submitOrder);
 	btnTrigger();
 	
 	

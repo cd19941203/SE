@@ -26,7 +26,7 @@ var registerDom = '<div class="login">' +
     '<input id="username" type="text" name="username" placeholder="Username" required="required">' +
     '<input placeholder="Birthday" class="textbox-n" type="textbox-n" onfocus="(this.type=\'date\')" id="birth" required="required" name="birth">' +
     '<input id="gender" type="text" name="gender" placeholder="Gender" required="required"><input id="email" type="email" name="email" placeholder="Email" required="required">' +
-    '<input id="phone" type="text" name="phon" placeholder="Phone" required="required">' +
+    '<input id="phone" type="text" name="phone" placeholder="Phone" required="required">' +
     '<input id="type" type="text" name="type" placeholder="Type" required="required" style="display: none;" value="client">' +
     '<input id="image" type="text" name="image" placeholder="Image" required="required" onfocus="(this.type=\'file\')">' +
     '<div style=" display: inline-flex;width:  100%;">' +
