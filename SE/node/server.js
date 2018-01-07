@@ -74,9 +74,10 @@ async function init(){
 	///^(?:(?!index).)*$/
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
-						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze'];
+						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze',
+						'/genderAnalyze'];
 
-	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze'];
+	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -343,6 +344,7 @@ async function init(){
 	// about web server
 
 	app.get('/',async(req,res)=>{
+		/*
 		try{
 			var data = await setting.getSetting();
 			var now = new Date();
@@ -360,7 +362,11 @@ async function init(){
 				console.log('~');        
 		}catch(err){
 			console.log(err);
-		}
+		}*/
+		var data = await analyze.getGenderAccount('男');
+		console.log(data);
+		var dd = await analyze.calculateByAccount(data,datePlus8(new Date('2017-12-01')),datePlus8(new Date('2018-02-01')));
+		console.log(dd);
 		res.redirect('/index');
 	});
 
@@ -562,6 +568,17 @@ async function init(){
 			var beginTime = datePlus8(new Date(req.query.beginTime));
 			var endTime = datePlus8(new Date(req.query.endTime));
 			var data = await analyze.mealAnalyze(beginTime,endTime);
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.get('/genderAnalyze',async(req,res)=>{
+		try{
+			var beginTime = datePlus8(new Date(req.query.beginTime));
+			var endTime = datePlus8(new Date(req.query.endTime));
+			var data = await analyze.genderAnalyze(beginTime,endTime);
 			res.send(data);
 		}catch(err){
 			res.send(err);
