@@ -1,4 +1,5 @@
 var socket;
+var openTime;
 
 function init()
 {
@@ -19,6 +20,17 @@ function init()
 		swal("訂單已送出", "", {timer:30000,icon:"success"});
 	});
     update();
+    
+    $.ajax({
+        url: "/getSetting",
+        type: "get",
+        cache: false,
+        data:{},
+        success: function(data)
+        {
+            openTime = data.orderTime;
+        },
+    });
 }
 
 function update()
@@ -37,6 +49,20 @@ function update()
 
 function submitOrder()
 {
+    var now = new Date();
+    var begin = openTime[now.getDay()].begin.split(':');
+    var end = openTime[now.getDay()].end.split(':');
+    begin[0] = parseInt(begin[0]);
+    begin[1] = parseInt(begin[1]);
+    end[0] = parseInt(end[0]);
+    end[1] = parseInt(end[1]);
+    begin = new Date(now.getFullYear(),now.getMonth(),now.getDate(),begin[0],begin[1]);
+    end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
+    if(now < begin || now > end)
+    {
+        swal("非點餐時間", '', {timer:10000,icon:"info"});
+        return;
+    }
     var meal = [];
     var totalPrice = 0;
     var submitObject = {};
