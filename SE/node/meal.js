@@ -60,7 +60,7 @@ async function updateMenu(menu){
 									}
 									for(meal of menu){
 										if(meal.name in dic){
-											if(dic[meal.name]['inventory']==false)
+											if(meal.inventory==false)
 												await setMealStatus(meal.name,false);
 										}
 									}

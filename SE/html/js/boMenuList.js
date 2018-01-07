@@ -21,6 +21,7 @@ function updateData(myData)
 	}
     var str = "";
     var tmpName=[];
+    var counter = 0;
     for(var i=0;i<category.length;i++){
         str+=
         '<div class="col-md-3">                                                  '+
@@ -31,7 +32,15 @@ function updateData(myData)
         tmpName = Object.getOwnPropertyNames(menu[category[i]]);
         for(var j=1;j<tmpName.length;j++)
         {
-            str+='	    <a href="#" class="list-group-item" id = "'+ category[i] +'_'+ j +'">'+ tmpName[j] +'</a>';
+            if(allData[counter].inventory)
+                str+='	    <a href="#" class="list-group-item" id = "'+ category[i] +'_'+ j +'">'+ tmpName[j] +'</a>';
+            else
+            {
+                str+='	    <a href="#" style="text-decoration:line-through" class="list-group-item list-group-item-danger" id = "'+ category[i] +'_'+ j +'">'+ tmpName[j] +'</a>';
+                if(inventory[category[i]]==undefined){inventory[category[i]] = [];}
+                if(inventory[category[i]][tmpName[j]]==undefined)inventory[category[i]][tmpName[j]] = menu[category[i]][tmpName[j]];
+            }
+            counter++;
         }
 
         str+=
@@ -112,7 +121,7 @@ function updateInventory()
     }
     for(var type in inventory)
     {
-        for(var meal of inventory[type])
+        for(var meal in inventory[type])
         {
             allData[menu[type][meal]].inventory = false;
         }
@@ -123,7 +132,7 @@ function updateInventory()
         cache: false,
         dataType: 'json',
         data:{
-            body: JSON.stringify(allData)
+            meal: JSON.stringify(allData)
         },
         success: function(data)
         {
