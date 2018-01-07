@@ -16,6 +16,7 @@ var database = require('./database.js');
 var meal = require('./meal.js');
 var setting = require('./setting.js');
 var order = require('./order.js');
+var analyze = require('./analyze.js');
 
 var rootPath = '../html/';
 
@@ -28,6 +29,11 @@ function getDate(){
 	x.setHours(x.getHours()+8);
 	return x;
 	//return new Date(x.getTime() + 8*3600000);
+}
+
+function datePlus8(x){
+	x.setHours(x.getHours()+8);
+	return x;
 }
 
 async function init(){
@@ -126,6 +132,7 @@ async function init(){
 					newOrder['orderNumber'] = await setting.getOrderNumber();
 					newOrder['status'] = 'new';
 					newOrder['beginTime'] = getDate();
+					newOrder['expectTime']  = datePlus8(new Date(newOrder['expectTime']));
 					await order.newOrder(newOrder);
 					newOrder['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete newOrder['_id'];
@@ -499,7 +506,16 @@ async function init(){
 		}
 	});
 
-	
+	app.get('/mealAnalyze',async(req,res)=>{
+		try{
+			var beginTime = datePlus8(new Date(req.query.beginTime));
+			var endTime = datePlus8(new Date(req.query.endTime));
+			var data = await analyze.mealAnalyze(beginTime,endTime);
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
 
 	server.listen(8787,()=>{
 		console.log('server gogo OUO!');
