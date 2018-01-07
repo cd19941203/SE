@@ -19,7 +19,10 @@ function update()
                 else if(doc.status == 'completed')
                     waitAmount++;
             }
-            updateStatusNumber(newAmount, acceptAmount, waitAmount);
+            statusNumber.NEW = newAmount;
+            statusNumber.ACCEPT = acceptAmount;
+            statusNumber.WAIT = waitAmount;
+            updateStatusNumber(0,0,0);
         },
     });
 }
