@@ -3,6 +3,18 @@ var isSort = false;
 var viewStatus = "menu";
 var viewCategory = 0;
 
+//--------------------------- Function about Action ---------------------------//
+function addNoty(message, myType = notyType.info)
+{
+	var noty = new Noty({
+		theme: 'bootstrap-v3',
+		text: message,
+		type: myType,
+		layout: 'bottomRight',
+		timeout: 4000
+	}).show();
+}
+
 //--------------------------- Function about Data   ---------------------------//
 function updateData(myData)
 {
@@ -126,7 +138,7 @@ function updateOrderList(){
 						'	<span>x<B>'+ myOrder[ arrI[i] ][ arrJ[j] ] +'</B></span>'+
 						'</span>'+
 						'<span>'+
-						'	<div class = "information" hidden>'+arrI[i]+','+myOrder[ arrI[i] ]+','+myOrder[ arrI[i] ][ arrJ[j] ]+'</div>'+
+						'	<div class = "information" id = "info_'+menu[ arrI[i] ][ myOrder[ arrI[i] ] ]+'"hidden>'+arrI[i]+','+myOrder[ arrI[i] ]+','+myOrder[ arrI[i] ][ arrJ[j] ]+'</div>'+
 						'	<span class = "glyphicon glyphicon-edit cuMenu-btn cuMenu-btn-edit"></span>'+
 						'	<span class = "glyphicon glyphicon-remove cuMenu-btn cuMenu-btn-remove"></span> '+
 						'</span>';
@@ -146,7 +158,7 @@ function updateOrderList(){
 					'	<span>x<B>'+ myOrder[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ] +'</B></span>'+
 					'</span>'+
 					'<span>'+
-					'	<div class = "information" hidden>'+myOrderIndex[i][0]+','+myOrderIndex[i][1]+','+myOrder[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ]+'</div>'+
+					'	<div class = "information" id = "info_'+menu[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ]+'"hidden>'+myOrderIndex[i][0]+','+myOrderIndex[i][1]+','+myOrder[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ]+'</div>'+
 					'	<span class = "glyphicon glyphicon-edit cuMenu-btn cuMenu-btn-edit"></span>'+
 					'	<span class = "glyphicon glyphicon-remove cuMenu-btn cuMenu-btn-remove"></span> '+
 					'</span>';
@@ -222,6 +234,7 @@ function btnTrigger(){
 		if(debugMode)console.log('categoryItem click');
 		viewCategory = parseInt($(this).attr('id').substr(2));
 		updateMenu();
+		$('#cancelOrder').click();
 	});
 	$('#cancelOrder').unbind('click');
 	$('#cancelOrder').click(function(){
@@ -229,6 +242,12 @@ function btnTrigger(){
 	});
 }
 
+function timelyCategoryDelete(index)
+{
+	if($('#info_'+index).length==0)return;
+	addNoty('[缺貨通知] ' + data[index].name + ' 已從清單中移除', notyType.error);
+	$('#info_'+index).siblings('.cuMenu-btn-remove').click();
+}
 function init(){
 	//All Trigger Button Action
 	$('#sortOrder').click(function()

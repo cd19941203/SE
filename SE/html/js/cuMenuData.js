@@ -1,4 +1,7 @@
-var example = [{"type":"套餐","name":"蛋餅套餐","item":["起司蛋餅","紅茶(大杯)"],"price":40,"inventory":true,"image":null},{"type":"蛋餅","name":"起司蛋餅","price":25,"inventory":true,"image":null},{"type":"蛋餅","name":"原味蛋餅","price":20,"inventory":true,"image":null}];
+//The List Button
+var notyType = Object.freeze({alert: 'alert', success: 'success', warning: 'warning', error: 'error', info: 'info'});
+
+var example = [{"type":"套餐","name":"蛋餅套餐","item":["起司蛋餅","紅茶(大杯)"],"price":40,"inventory":true,"image":null},{"type":"蛋餅","name":"起司蛋餅","price":25,"inventory":true,"image":null},{"type":"蛋餅","name":"原味蛋餅","price":20,"inventory":false,"image":null}];
 var data = [];
 var category = [];
 var menu = [];
@@ -8,6 +11,14 @@ function updateMenu(){
 	var str="";
 	for (var categoryList in menu[ category[viewCategory] ]){
 		var mydata = menu[ category[viewCategory] ][ categoryList ];
+		if(data[mydata].inventory)
+		{
+			myInventoryStr = '								<button class = "btn btn-danger pull-right disabled" id = "'+mydata+'">缺貨</button>';
+		}
+		else
+		{
+			myInventoryStr = '								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'">訂購</button>';
+		}
 		str += 
 		'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 		'                        <div class="thumbnail">                                                                      '+
@@ -23,7 +34,7 @@ function updateMenu(){
 		'								<hr style = "margin:0px;">                                                            '+
 		'                            </div>                                                                                   '+
 		'                            <div class="ratings">                                                                    '+
-		'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'">訂購</button>'+
+		myInventoryStr+
 		'								<span style = "font-size:20px;">NT<B>$ '+ (data[mydata].price).toLocaleString('en-US') +'</B></span>                                                                              '+
 		'								<br><br>                                                                              '+
 		'                            </div>                                                                                   '+
