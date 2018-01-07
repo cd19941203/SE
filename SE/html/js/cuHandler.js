@@ -40,9 +40,10 @@ function update()
         type: "get",
         cache: false,
         data:{},
-        success: function(data)
+        success: function(a)
         {
-            updateData(data);
+            data = a;
+            updateData(a);
         },
     });
 }

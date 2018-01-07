@@ -234,6 +234,7 @@ function btnTrigger(){
 		if(debugMode)console.log('categoryItem click');
 		viewCategory = parseInt($(this).attr('id').substr(2));
 		updateMenu();
+        update();
 		$('#cancelOrder').click();
 	});
 	$('#cancelOrder').unbind('click');
@@ -272,7 +273,7 @@ function init(){
 	});
     $('#submitOrder').click(submitOrder);
 	btnTrigger();
-	
+ 
 	
 	data = example;
 	viewCategory = 0;

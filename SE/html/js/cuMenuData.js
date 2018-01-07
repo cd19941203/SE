@@ -11,7 +11,7 @@ function updateMenu(){
 	var str="";
 	for (var categoryList in menu[ category[viewCategory] ]){
 		var mydata = menu[ category[viewCategory] ][ categoryList ];
-		if(data[mydata].inventory)
+		if(!data[mydata].inventory)
 		{
 			myInventoryStr = '								<button class = "btn btn-danger pull-right disabled" id = "'+mydata+'">缺貨</button>';
 		}
