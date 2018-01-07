@@ -72,9 +72,9 @@ async function ageAnalyze(beginTime,endTime){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            
+            res();
 
-            
+
         });
     }catch(err){
         throw(dbConnectionError);
