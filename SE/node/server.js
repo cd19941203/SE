@@ -520,7 +520,6 @@ async function init(){
 	app.post('/soldOut',async(req,res)=>{
 		try{
 			var soldOutMeal = req.body;
-			console.log(soldOutMeal);
 			for(var m of soldOutMeal){
 				await meal.setMealStatus(m,false);
 			}
