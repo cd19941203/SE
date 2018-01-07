@@ -76,7 +76,7 @@ async function init(){
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
 						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze'];
 
-	var bossOnly = ['/updateMenu','/updateSetting','/getSetting','/updateOrderTime','/soldOut','/mealAnalyze'];
+	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(!(req.session.valid==true)){
@@ -337,6 +337,9 @@ async function init(){
 	// about web server
 
 	app.get('/',async(req,res)=>{
+		var x = getDate();
+		console.log(x);
+		console.log(x.getHours());
 		res.redirect('/index');
 	});
 
@@ -394,24 +397,21 @@ async function init(){
 		try{
 			var status = req.query.status;
 			var query;
-			var time;
+			var beginTime = req.query.beginTime;
+			var endTime = req.query.endTime;
+			if(typeof beginTime !== 'undefined' && typeof endTime !== 'endefined'){
+				beginTime = datePlus8(new Date(beginTime));
+				endTime = datePlus8(new Date(endTime));
+				query = {$and:[{beginTime:{$lte:endTime}},{beginTime:{$gte:beginTime}}]};
+			}
 			if(typeof status === "undefined")
-				query={};
+				;
 			else
 				query={status:status};
 			if(req.session.account != 'boss'){
 				query['account'] = req.session.account;
 			}
-			var beginTime = req.query.beginTime;
-			var endTime = req.query.endTime;
-			if(typeof beginTime !== 'undefined' && typeof endTime !== 'endefined'){
-				console.log(beginTime);
-				beginTime = datePlus8(new Date(beginTime));
-				endTime = datePlus8(new Date(endTime));
-				query[$or] = [{endTime:{$gte:beginTime}},{beginTime:{$lte:endTime}}];
-			}
-
-			var data = await order.getOrderList(query,time);
+			var data = await order.getOrderList(query);
 			res.send(data);
 		}catch(err){
 			console.log(err);
@@ -520,7 +520,6 @@ async function init(){
 	app.post('/soldOut',async(req,res)=>{
 		try{
 			var soldOutMeal = req.body;
-			console.log(soldOutMeal);
 			for(var m of soldOutMeal){
 				await meal.setMealStatus(m,false);
 			}

@@ -110,7 +110,7 @@ async function orderDone(number,date){
     }
 }
 
-async function getOrderList(query,time){
+async function getOrderList(query){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{

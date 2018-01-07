@@ -23,7 +23,6 @@ async function updateMenu(menu){
 	try{
 		var db = await database.connect();
 		var oldMenu = await getMenu();
-		console.log(oldMenu);
 		return new Promise((res,rej)=>{
 			db.collection('menu').deleteMany({},(err,result)=>{
 				if(err)
@@ -33,25 +32,41 @@ async function updateMenu(menu){
 						if(err)
 							rej(dbManipulationError);
 						else{
-							var currentImage = fs.readdirSync('../mealImage');
-							var selectedImage = ['default.jpg'];
-							// update image path
-							for(meal of menu){
-								if(currentImage.indexOf(meal.name + '.jpg') > -1){
-									selectedImage.push(meal.name + '.jpg');
-									await updateImagePath(meal.name,meal.name);
-								}
+							db.collection('menu').updateMany({},{$set:{inventory:true}},async(err,result)=>{
+								if(err)
+									rej(dbManipulationError);
 								else{
-									await updateImagePath(meal.name,'default');
+									var currentImage = fs.readdirSync('../mealImage');
+									var selectedImage = ['default.jpg'];
+									// update image path
+									for(meal of menu){
+										if(currentImage.indexOf(meal.name + '.jpg') > -1){
+											selectedImage.push(meal.name + '.jpg');
+											await updateImagePath(meal.name,meal.name);
+										}
+										else{
+											await updateImagePath(meal.name,'default');
+										}
+									}
+									// delete the image no longer use
+									for(meal of currentImage){
+										if(selectedImage.indexOf(meal) == -1){
+											fs.unlinkSync('../mealImage/' + meal);
+										}
+									}
+									var dic = {};
+									for(meal of oldMenu){
+										dic[meal['name']]=meal;
+									}
+									for(meal of menu){
+										if(meal.name in dic){
+											if(dic[meal.name]['inventory']==false)
+												await setMealStatus(meal.name,false);
+										}
+									}
+									res();
 								}
-							}
-							// delete the image no longer use
-							for(meal of currentImage){
-								if(selectedImage.indexOf(meal) == -1){
-									fs.unlinkSync('../mealImage/' + meal);
-								}
-							}
-							res();
+							});
 						}
 					});
 				}
