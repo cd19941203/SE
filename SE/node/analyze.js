@@ -10,7 +10,7 @@ async function mealAnalyze(beginTime,endTime){
         var db = await database.connect();
         var record = {};
         return new Promise((res,rej)=>{
-            db.collection('order').find({status:'done',$or:[{endTime:{$gte:beginTime}},{beginTime:{$lte:endTime}}]},
+            db.collection('order').find({status:'done',$and:[{beginTime:{$gte:beginTime}},{beginTime:{$lte:endTime}}]},
             {projection:{_id:0,advice:0,reason:0,expectTime:0}}).toArray((err,result)=>{
                 if(err)
                     rej(dbManipulationError);

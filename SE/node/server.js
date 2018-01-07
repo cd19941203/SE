@@ -394,24 +394,21 @@ async function init(){
 		try{
 			var status = req.query.status;
 			var query;
-			var time;
+			var beginTime = req.query.beginTime;
+			var endTime = req.query.endTime;
+			if(typeof beginTime !== 'undefined' && typeof endTime !== 'endefined'){
+				beginTime = datePlus8(new Date(beginTime));
+				endTime = datePlus8(new Date(endTime));
+				query = {$and:[{beginTime:{$lte:endTime}},{beginTime:{$gte:beginTime}}]};
+			}
 			if(typeof status === "undefined")
-				query={};
+				;
 			else
 				query={status:status};
 			if(req.session.account != 'boss'){
 				query['account'] = req.session.account;
 			}
-			var beginTime = req.query.beginTime;
-			var endTime = req.query.endTime;
-			if(typeof beginTime !== 'undefined' && typeof endTime !== 'endefined'){
-				console.log(beginTime);
-				beginTime = datePlus8(new Date(beginTime));
-				endTime = datePlus8(new Date(endTime));
-				query[$or] = [{endTime:{$gte:beginTime}},{beginTime:{$lte:endTime}}];
-			}
-
-			var data = await order.getOrderList(query,time);
+			var data = await order.getOrderList(query);
 			res.send(data);
 		}catch(err){
 			console.log(err);
