@@ -65,9 +65,12 @@ function updateData(tmp = data){
 	for(var key in tmp)
 	{	
         table[tmp[key]["orderNumber"].toString()] = tmp[key];
+        var mealTemp = [];
+        for(var meal of tmp[key].meal)
+            mealTemp.push([meal.name,meal.amount,meal.price*meal.amount]);
         if(tmp[key]["status"].includes(STATUS.toLocaleLowerCase()) || (STATUS == "WAIT" && tmp[key]["status"] == "completed"))
         {
-		  webMake(new Order(tmp[key].orderNumber, tmp[key].account, "0988452145", tmp[key].beginTime, "100", [[tmp[key].mealName,10,350],['起司蛋餅',10,350]]));
+		  webMake(new Order(tmp[key].orderNumber, tmp[key].account, "0988452145", tmp[key].beginTime, tmp[key].totalPrice, mealTemp));
         }
 	}
 	data = tmp;
@@ -98,7 +101,6 @@ function btnTrigger(){
 	});
 	if(STATUS=='NEW'){
 		//add NEW data
-		statusNumber.NEW=12;
 		updateStatusNumber();
 		
 		
