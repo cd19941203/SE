@@ -482,7 +482,7 @@ async function init(){
 			var menu = req.body;
 			if(typeof menu === 'undefined')
 				throw('no data');
-			await meal.updateMenu(menu);
+			await meal.updateMenu(JSON.parse(menu));
 			res.send('success');
 		}catch(err){
 			res.send(err);
