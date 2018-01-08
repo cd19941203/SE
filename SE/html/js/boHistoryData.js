@@ -22,7 +22,7 @@ function webMake(id,name,phone,date,total,order,star){
 	'		<div class="caption">                                                        '+
 	'			                                                                         '+
 	'			<h4 class = "spe01H4">                                                   '+
-	'				<i class="fa fa-angle-up btnOrder spe01I"></i>                       '+
+	'				<i class="fa fa-angle-down btnOrder spe01I"></i>                       '+
 	'				<span class = "spe01Span">'+'訂餐時間'+'</span>                      '+
 	'				<a href="#" class = "spe01A">                                        '+
 	'					'+name+'                                                         '+
