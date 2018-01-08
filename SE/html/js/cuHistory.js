@@ -71,8 +71,19 @@ function cuHistory_init(){
 	//All Trigger Button Action
 	btnTrigger();
 
-	
+	$.ajax({
+        url: "/getOrderList",
+        type: "get",
+        cache: false,
+        data:{
+        },
+        success: function(data)
+        {
+			console.log(data);
+            updateData(data);
+        },
+    });
 	//cuHistory_init
-	updateData(example);
+	//updateData(example);
 }
 addEventListener("load",cuHistory_init,false);
