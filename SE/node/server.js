@@ -81,7 +81,7 @@ async function init(){
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(req.session.valid == 'notValid'){
-			res.sendFile('emailConfirm.html',{root:rootPath});
+			next();
 		}
 		else if(!(req.session.valid==true)){
 			res.sendFile('login.html',{root:rootPath});
@@ -371,17 +371,18 @@ async function init(){
 	});
 
 	app.post('/emailConfirm',async(req,res)=>{
-		var account = req.session.account;
+		var acc = req.session.account;
 		var code = req.body.code;
 		try{
-			var res = await account.emailConfirm(account,code);
-			if(res){
+			var re = await account.emailConfirm(acc,code);
+			if(re){
 				req.session.valid = true;
 				res.redirect('/index');
 			}else{
 				res.send('err');
 			}
 		}catch(err){
+			console.log(err);
 			res.sendStatus(404);
 		}
 	});
@@ -413,6 +414,7 @@ async function init(){
 			}
 			else if(status == 'notValid'){
 				req.session.valid = 'notValid';
+				req.session.account = acc;
 				res.sendFile('emailConfirm.html',{root:rootPath});
 			}
 			else{
