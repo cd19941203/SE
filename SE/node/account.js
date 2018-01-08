@@ -39,8 +39,12 @@ async function login(account,password){
                     rej(dbManipulationError);
                 }
                 else{
-                    if(result && result['password'] == password)
-                        res(true);
+                    if(result && result['password'] == password){
+                        if(result['validate']!=true)
+                            res('notValid');
+                        else
+                            res(true);
+                    }
                     else
                         res(false);
                 }
