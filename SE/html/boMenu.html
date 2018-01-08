@@ -46,8 +46,10 @@
         <div class="row">
 
             <div class="col-md-3">
-                
-				<button type="button" class="btn btn-success pull-right" id = "edit" style = "border:0px;">編輯</button>
+                <div class = "pull-right">
+				<button type="button" class="btn btn-success" id = "edit" style = "border:0px;">編輯</button>
+				<button type="button" class="btn btn-success" id = "editCancel" style = "display:none; border:0px;">取消</button>
+				</div>
                 <p class="lead">Breakfast</p>
 				<div class="list-group" id = "categoryList">
                     <a href="#" class="list-group-item category">無資料</a>
@@ -106,7 +108,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4 col-lg-4 col-md-4">
+					<div class="col-sm-4 col-lg-4 col-md-4" id = "addMealItem">
                         <div class="thumbnail">
                             <img src="image/null.jpg" alt="">
                             <div class="caption">
