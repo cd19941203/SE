@@ -62,7 +62,7 @@ function btnRemoveList(item, message, myType = notyType.info, runNoty = true) {
 function updateData(tmp = data) {
     clearData();
     tmp = tmp.sort(function (a, b) {
-        if (sortStatus == "Time") return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? 1 : -1;
+        if (sortStatus == "Time") return (Date.parse(a.expectTime)).valueOf() < (Date.parse(b.expectTime)).valueOf() ? -1 : 1;
         else if (sortStatus == "ID") return a.orderNumber > b.orderNumber ? 1 : -1;
     });
     for (var key in tmp) {
