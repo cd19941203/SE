@@ -75,12 +75,15 @@ async function init(){
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
 						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze',
-						'/genderAnalyze'];
+						'/genderAnalyze','/emailConfirm'];
 
 	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze'];
 
 	app.use(needLoginPath,(req,res,next)=>{
-		if(!(req.session.valid==true)){
+		if(req.session.valid == 'notValid'){
+			res.sendFile('emailConfirm.html',{root:rootPath});
+		}
+		else if(!(req.session.valid==true)){
 			res.sendFile('login.html',{root:rootPath});
         }else
 			next();
@@ -115,8 +118,6 @@ async function init(){
 	
 		if(typeof(user) === "undefined")
 			return ;
-
-			
 		if(user != 'boss'){
 			socket.join('customer');
 		}
@@ -365,11 +366,34 @@ async function init(){
 		console.log(data);
 		var dd = await analyze.calculateByAccount(data,datePlus8(new Date('2017-12-01')),datePlus8(new Date('2018-02-01')));
 		console.log(dd);
+		//await account.sendMail('eden851104@gmail.com');
 		res.redirect('/index');
 	});
 
 	app.post('/emailConfirm',async(req,res)=>{
+		var account = req.session.account;
+		var code = req.body.code;
+		try{
+			var res = await account.emailConfirm(account,code);
+			if(res){
+				req.session.valid = true;
+				res.redirect('/index');
+			}else{
+				res.send('err');
+			}
+		}catch(err){
+			res.sendStatus(404);
+		}
+	});
 
+	app.get('/getNewCode',async(req,res)=>{
+		var account = req.session.account;
+		try{
+			await account.getNewVerificationCodes(account);
+			res.send('success');
+		}catch(err){
+			res.send('err');
+		}
 	});
 
 	// login and logout
@@ -378,7 +402,7 @@ async function init(){
 			var acc = req.body.account;
 			var password = req.body.password;
 			var status = await account.login(acc,password);
-            if(status == true){
+			if(status == true){
 				req.session.valid = true;
 				req.session.account = acc;
 				if(acc == 'boss')
@@ -387,6 +411,7 @@ async function init(){
 					res.sendFile('cuMenu.html',{root:rootPath});
 			}
 			else if(status == 'notValid'){
+				req.session.valid = 'notValid';
 				res.sendFile('emailConfirm.html',{root:rootPath});
 			}
 			else{
@@ -406,7 +431,9 @@ async function init(){
 	// route
 	app.get('/index',(req,res)=>{
 		var m = req.query.m;
-        if(req.session.valid != true){
+		if(req.session.valid == 'notValid')
+			res.sendFile('emailConfirm.html',{root:rootPath});
+        else if(req.session.valid != true){
             res.sendFile('login.html',{root:rootPath});
         }
 		else if(typeof m === "undefined"){
