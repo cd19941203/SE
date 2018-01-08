@@ -42,7 +42,7 @@ var str =
 '                        <a href="#">Menu</a>'+
 '                    </li>'+
 '                    <li>'+
-'                        <a href="#">History</a>'+
+'                        <a href="/index?m=cuHistory">History</a>'+
 '                    </li>'+
 '                </ul>'+
 '            </div>'+
