@@ -144,10 +144,25 @@ function init(){
 		$('#order_list').html("");
 	});
 	btnTrigger();
+	update();
+	//data = example;
 	
-	
-	data = example;
-	viewCategory = 0;
-	updateData(data);
+	//updateData(data);
+}
+
+function update()
+{
+	$.ajax({
+		url: "/getMenu",
+		type: "get",
+		cache: false,
+		data:{},
+		success: function(a)
+		{
+			data = a;
+			viewCategory = 0;
+			updateData(a);
+		},
+    });
 }
 addEventListener('load', init, false);

@@ -8,10 +8,11 @@ function updateMenu(){
 	var str="";
 	for (var categoryList in menu[ category[viewCategory] ]){
 		var mydata = menu[ category[viewCategory] ][ categoryList ];
+		console.log('mydata' + mydata + "::::" + data[mydata].image);
 		str += 
 		'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 		'                        <div class="thumbnail">                                                                      '+
-		'                            <img src="image/mealImage/'+data[mydata].name+'.jpg" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
+		'                            <img src="'+ data[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
 		'                            <div class="caption">                                                                    '+
 		'                                <h4>                                                                                 '+
 		'									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>        '+
