@@ -306,6 +306,7 @@ function boList_init() {
         swal("修改訂單!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "success"});
         update();
     });
+
     //All Trigger Button Action
     $("#allaccept").click(function () {
         swal("確定接收所有的訂單？", {

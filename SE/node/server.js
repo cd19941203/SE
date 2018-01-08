@@ -75,9 +75,10 @@ async function init(){
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
 						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze',
-						'/genderAnalyze'];
+						'/genderAnalyze','/orderBan'];
 
-	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze'];
+	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze',
+				   '/orderBan'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(req.session.valid == 'notValid'){
@@ -621,6 +622,14 @@ async function init(){
 			var endTime = datePlus8(new Date(req.query.endTime));
 			var data = await analyze.genderAnalyze(beginTime,endTime);
 			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.post('/orderBan',async(req,res)=>{
+		try{
+			
 		}catch(err){
 			res.send(err);
 		}
