@@ -15,7 +15,7 @@ function updateMenu(){
 		'                            <img src="'+ data[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
 		'                            <div class="caption">                                                                    '+
 		'                                <h4>                                                                                 '+
-		'									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>        '+
+		'									<span class = "glyphicon glyphicon-search"></span>                      '+
 		'									<B>' + data[mydata].name + '</B>                                               '+
 		'                                </h4>                                                                                '+
 		'                                <p>                                                                                  '+
