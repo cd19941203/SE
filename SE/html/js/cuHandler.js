@@ -19,18 +19,27 @@ function init()
     socket.on('newOrder',(data)=>{
 		swal("訂單已送出", "", {timer:30000,icon:"success"});
 	});
-    update();
     
-    $.ajax({
-        url: "/getSetting",
-        type: "get",
-        cache: false,
-        data:{},
-        success: function(data)
-        {
-            openTime = data.orderTime;
-        },
-    });
+    socket.on('orderModify',(data)=>{
+		swal("訂單請求修改", "訂單編號 #"+data["orderNumber"] + '\n' + data.advice, {timer:30000,icon:"success"});
+	});
+    
+    var url = new URL(window.location.href);
+    m = url.searchParams.get('m');
+    if(m==null || m=='cuMenu')
+    {
+        update();
+        $.ajax({
+            url: "/getSetting",
+            type: "get",
+            cache: false,
+            data:{},
+            success: function(data)
+            {
+                openTime = data.orderTime;
+            },
+        });
+    }
 }
 
 function update()

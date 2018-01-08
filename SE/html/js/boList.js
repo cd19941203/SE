@@ -190,8 +190,8 @@ function btnTrigger() {
                                             str += '、'+option.value;
                                         else
                                             str += option.value;
+                                        c++;
                                     }
-                                    c++;
                                 }
                                 var orderData = table[this.parentElement.attributes.value.value];
                                 orderData['advice'] = str+' 缺貨';
@@ -284,6 +284,11 @@ function boList_init() {
 
     socket.on('orderCancel', (data) => {
         swal("訂單取消!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "success"});
+        update();
+    });
+    
+    socket.on('orderModify', (data) => {
+        swal("修改訂單!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "success"});
         update();
     });
     //All Trigger Button Action
