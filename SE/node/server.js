@@ -479,10 +479,10 @@ async function init(){
 
 	app.post('/updateMenu',async(req,res)=>{
 		try{
-			var menu = req.body.meal;
+			var menu = req.body;
 			if(typeof menu === 'undefined')
 				throw('no data');
-			await meal.updateMenu(JSON.parse(menu));
+			await meal.updateMenu(menu);
 			res.send('success');
 		}catch(err){
 			res.send(err);

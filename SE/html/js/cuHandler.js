@@ -48,8 +48,20 @@ function update()
     });
 }
 
-function submitOrder()
+async function submitOrder()
 {
+    await $.ajax({
+        sync: false,
+        url: "/getMenu",
+        type: "get",
+        cache: false,
+        data:{},
+        success: function(a)
+        {
+            data = a;
+            updateData(a);
+        },
+    });
     var now = new Date();
     var begin = openTime[now.getDay()].begin.split(':');
     var end = openTime[now.getDay()].end.split(':');
@@ -71,17 +83,33 @@ function submitOrder()
     {
         var nowData = data[menu[i[0]][i[1]]];
         var num = myOrder[i[0]][i[1]];
-        nowData.amount = num;
-        totalPrice += num * nowData.price;
-        meal.push(nowData);
+        if(!data[menu[i[0]][i[1]]].inventory)
+        {
+            //timelyCategoryDelete(menu[i[0]][i[1]]);
+            addNoty('有商品缺貨請重新訂購', notyType.error);
+            $('#clearAll').click();
+            return;
+        }
+        else
+        {
+            nowData.amount = num;
+            totalPrice += num * nowData.price;
+            meal.push(nowData);
+        }
     }
     submitObject.meal = meal;
     submitObject.totalPrice = totalPrice;
-    socket.emit('newOrder', JSON.stringify(submitObject));
-    myOrder = [];
-    myOrderIndex = [];
-    $('#order_list').html("");
+    if(totalPrice != 0)
+    {
+        socket.emit('newOrder', JSON.stringify(submitObject));
+        myOrder = [];
+        myOrderIndex = [];
+        $('#order_list').html("");
+    }
+    else
+    {
+        addNoty('購物車不能為空', notyType.error);
+    }
 }
-
 
 addEventListener("load",init,false);

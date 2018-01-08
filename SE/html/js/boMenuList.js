@@ -119,21 +119,22 @@ function updateInventory()
     {
         meal.inventory = true;
     }
+    var arr = [];
     for(var type in inventory)
     {
         for(var meal in inventory[type])
         {
-            allData[menu[type][meal]].inventory = false;
+            arr.push(meal);
         }
     }
     $.ajax({
-        url: "/updateMenu",
+        url: "/soldOut",
         type: "post",
         cache: false,
-        dataType: 'json',
-        data:{
-            meal: JSON.stringify(allData)
-        },
+        dataType: 'application/json',
+        contentType: 'application/json',
+        data: JSON.stringify(arr)
+        ,
         success: function(data)
         {
             swal("餐點狀態更新", "", {timer:10000,icon:"success"});
