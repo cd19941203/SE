@@ -25,8 +25,15 @@ var mailOptions = {
     //純文字
     //text: 'Hello world2', // plaintext body
     //嵌入 html 的內文
-    html: '<html><head></head><body><div><img src="http://140.121.197.192:9001/BFS.jpg"></div><h2>歡迎註冊 BFS 早餐店系統<br>您的驗證碼為: 1234</h2></body></html>',
+    html: '<html><head></head><body><div><img src="cid:BFS"></div><h2>歡迎註冊 BFS 早餐店系統<br>您的驗證碼為: 5678</h2></body></html>',
     //附件檔案
+    attachments: [
+        {
+            filename: 'BFS.jpg',
+            path: '../mail_BFS.jpg',
+            cid: 'BFS'
+        }
+    ]
 };
 
 transporter.sendMail(mailOptions, function (err, info) {
