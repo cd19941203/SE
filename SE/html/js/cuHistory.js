@@ -42,7 +42,7 @@ function btnTrigger(){
 		console.log('myID');
 		console.log(myID);
 		//////    Guide webpage  'cuMenu.html'     and  get "ID"    ///////
-        windows.location('/index?m=cuMenu&id='+myID);
+        window.location=window.location.href.replace('?m=cuHistory','')+'?m=cuMenu&id='+myID;
 	});
 	$(".refuse").unbind('click');
 	$(".refuse").click(function(){

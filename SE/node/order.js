@@ -131,7 +131,7 @@ async function updateOrder(num,newOrder){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            db.collection('order').updateOne({orderNumber:number},{$set:newOrder},(err,result)=>{
+            db.collection('order').updateOne({orderNumber:num},{$set:newOrder},(err,result)=>{
                 if(err)
                     rej(dbManipulationError);
                 else

@@ -279,7 +279,7 @@ async function init(){
 					orderNumber = orderRes['orderNumber'];
 					orderRes['status'] = 'new';
 					orderRes['beginTime'] = new Date();
-					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:['expectTime'],beginTime:orderRes['beginTime']});
+					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:orderRes['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete orderRes['userInfo']['_id'];
 					delete orderRes['userInfo']['password'];
