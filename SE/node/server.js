@@ -368,6 +368,10 @@ async function init(){
 		res.redirect('/index');
 	});
 
+	app.post('/emailConfirm',async(req,res)=>{
+
+	});
+
 	// login and logout
 	app.post('/index',async(req,res)=>{
 		try{
@@ -381,6 +385,9 @@ async function init(){
 					res.sendFile('boMenu.html',{root:rootPath});
 				else
 					res.sendFile('cuMenu.html',{root:rootPath});
+			}
+			else if(status == 'notValid'){
+				res.sendFile('emailConfirm.html',{root:rootPath});
 			}
 			else{
 				res.sendFile('login.html',{root:rootPath});
