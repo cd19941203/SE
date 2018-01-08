@@ -432,8 +432,11 @@ async function init(){
 				endTime = datePlus8(new Date(endTime));
 				query = {$and:[{beginTime:{$lte:endTime}},{beginTime:{$gte:beginTime}}]};
 			}
+            else{
+                query = {};
+            }
 			if(typeof orderNumber !== "undefined")
-				query['orderNumber'] = orderNumber;
+				query['orderNumber'] = parseInt(orderNumber);
 			if(typeof status === "undefined")
 				;
 			else

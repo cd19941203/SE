@@ -2,6 +2,8 @@ var debugMode = true;
 var isSort = false;
 var viewStatus = "menu";
 var viewCategory = 0;
+var id;
+var changeOrder;
 
 //--------------------------- Function about Action ---------------------------//
 function addNoty(message, myType = notyType.info)
@@ -278,5 +280,23 @@ function init(){
 	data = example;
 	viewCategory = 0;
 	updateData(data);
+    var url = new URL(window.location.href);
+    id = url.searchParams.get('id');
+}
+
+function getIdData()
+{
+    $.ajax({
+        url: "/getOrderList",
+        type: "get",
+        cache: false,
+        data:{
+            orderNumber: id
+        },
+        success: function(data)
+        {
+            changeOrder = data[0];
+        },
+    });
 }
 addEventListener('load', init, false);
