@@ -286,6 +286,8 @@ function init(){
 
 function getIdData()
 {
+    if(id == null)
+        return;
     $.ajax({
         url: "/getOrderList",
         type: "get",
