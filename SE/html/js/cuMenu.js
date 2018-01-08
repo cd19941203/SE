@@ -53,7 +53,7 @@ function viewOrderPage(orderID, myOption = [['單點','singleOrder']]  , isEdit 
 	$('#OP_id').html(orderID);
 	$('#OP_name').html(data[orderID].name);
 	$('#OP_price').html( (data[orderID].price).toLocaleString('en-US') );
-	$('#OP_image')[0].src='image/mealImage/'+data[orderID].name+'.jpg';
+	$('#OP_image')[0].src = data[orderID].image;
 	updateOption(myOption,isEdit,myEdit);
 	updateSumPrice();
 	
@@ -103,9 +103,9 @@ function updateOption(  myOption = [['單點','singleOrder']]  , isEdit = false,
 	}
 	btnTrigger();
 }
-function addOrder(isEdit = false){
-	var myName = data[ $('#OP_id').html() ].name;
-	var myType = data[ $('#OP_id').html() ].type;
+function addOrder(isEdit = false, myType = data[ $('#OP_id').html() ].type, myName = data[ $('#OP_id').html() ].name, singleOrder = parseInt($('#singleOrder').html())){
+	//var myName = data[ $('#OP_id').html() ].name;
+	//var myType = data[ $('#OP_id').html() ].type;
 	if(myOrder[myType]==undefined){myOrder[myType]=[];}
 	if(myOrder[myType][myName]==undefined){
 		myOrder[myType][myName]=0;
@@ -113,13 +113,14 @@ function addOrder(isEdit = false){
 	}
 	if(!isEdit)
 	{
-		myOrder[myType][myName]+= parseInt($('#singleOrder').html());
+		myOrder[myType][myName]+= singleOrder;
 	}
 	else
 	{
-		myOrder[myType][myName] = parseInt($('#singleOrder').html());
+		myOrder[myType][myName] = singleOrder;
 	}
 	updateOrderList();
+	
 }
 function updateOrderList(){
 	if(isSort)
@@ -277,11 +278,21 @@ function init(){
 	btnTrigger();
  
 	
-	data = example;
+	//data = example;
+	//updateData(data);
 	viewCategory = 0;
-	updateData(data);
+	
     var url = new URL(window.location.href);
     id = url.searchParams.get('id');
+	
+	getIdData();
+	if(changeOrder !== undefined)
+	{
+		for(var i = 0 ; i < changeOrder.meal.length ; i++)
+		{
+			addOrder(false,changeOrder.meal[i].type,changeOrder.meal[i].name,changeOrder.meal[i].amount);
+		}
+	}
 }
 
 function getIdData()
@@ -289,6 +300,7 @@ function getIdData()
     if(id == null)
         return;
     $.ajax({
+		async: false,
         url: "/getOrderList",
         type: "get",
         cache: false,

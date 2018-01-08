@@ -22,7 +22,7 @@ function updateMenu(){
 		str += 
 		'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 		'                        <div class="thumbnail">                                                                      '+
-		'                            <img src="image/mealImage/'+data[mydata].name+'.jpg" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
+		'                            <img src="'+data[mydata].image+'" alt="" style = "width:100%">                                                        '+
 		'                            <div class="caption">                                                                    '+
 		'                                <h4>                                                                                 '+
 		'									<span class = "glyphicon glyphicon-heart" style = "color:#B22222;"></span>        '+
@@ -70,8 +70,4 @@ function setOption(optionIndex,value = 1)
 function getOption(optionIndex)
 {
 	return $('#Option'+optionIndex).siblings('.optionChoose').children('.order-number').html();
-}
-function noImage(test){
-	if(debugMode)console.log("NoImage is   "+test);
-	test.src = "image/null.jpg";
 }

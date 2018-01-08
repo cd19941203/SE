@@ -46,7 +46,8 @@ function init()
 function update()
 {
     $.ajax({
-        url: "/getMenu",
+        async:false,
+		url: "/getMenu",
         type: "get",
         cache: false,
         data:{},
