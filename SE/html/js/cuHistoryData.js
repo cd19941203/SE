@@ -19,7 +19,7 @@ function webMake(index){
 '<div class="col-sm-12 col-lg-12 col-md-12">                                                                 '+
 '	<div class="thumbnail">                                                                                  '+
 '	                                                                                                         '+
-'		<div class = "information" id = "id'+ index +'"></div>                                               '+
+'		<div class = "information" id = "id'+ data[index].orderNumber +'"></div>                                               '+
 '		                                                                                                     '+
 '		<div class="caption">                                                                                '+
 '			                                                                                                 '+
