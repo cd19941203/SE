@@ -62,7 +62,7 @@ function btnRemoveList(item, message, myType = notyType.info, runNoty = true) {
 function updateData(tmp = data) {
     clearData();
     tmp = tmp.sort(function (a, b) {
-        if (sortStatus == "Time") return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? 1 : -1;
+        if (sortStatus == "Time") return (Date.parse(a.expectTime)).valueOf() < (Date.parse(b.expectTime)).valueOf() ? -1 : 1;
         else if (sortStatus == "ID") return a.orderNumber > b.orderNumber ? 1 : -1;
     });
     for (var key in tmp) {
@@ -187,18 +187,18 @@ function btnTrigger() {
                                     {
                                         selected.push(option.value);
                                         if(c)
-                                            str += value;
+                                            str += '、'+option.value;
                                         else
-                                            str+='、'+value;
+                                            str += option.value;
+                                        c++;
                                     }
-                                    c++;
                                 }
                                 var orderData = table[this.parentElement.attributes.value.value];
                                 orderData['advice'] = str+' 缺貨';
                                 socket.emit('orderModify', JSON.stringify(orderData));
+                                btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
+                                updateStatusNumber(-1);
                             });
-                            //btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
-                            //updateStatusNumber(-1);
                             break;
                         default:
                             break;
@@ -284,6 +284,11 @@ function boList_init() {
 
     socket.on('orderCancel', (data) => {
         swal("訂單取消!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "success"});
+        update();
+    });
+    
+    socket.on('orderModify', (data) => {
+        swal("修改訂單!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "success"});
         update();
     });
     //All Trigger Button Action
