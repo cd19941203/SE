@@ -192,7 +192,23 @@
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-
+    <script>
+        function resend()
+        {
+            $.ajax({
+                url: "/getNewCode",
+                type: "get",
+                success: function(data)
+                {
+                    document.getElementById("note").innerHTML = data;
+                },
+                error: function(data)
+                {
+                    document.getElementById("note").innerHTML = data;
+                }
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -204,6 +220,7 @@
             <input id="password" type="password" name="password" placeholder="Code" required="required" />
             <div style=" display: inline-flex; width:  100%; ">
                 <button type="submit" class="btn btn-primary btn-block btn-large">Confirm</button>
+                <button id="resend" type="button" class="btn btn-primary btn-block btn-large" onclick="resend()">Resend</button>
             </div>
         </form>
     </div>

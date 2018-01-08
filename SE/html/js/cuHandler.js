@@ -1,13 +1,17 @@
 var socket;
 var openTime;
 var dateDom;
+var url;
 
 function init()
 {
+    url = new URL(window.location.href);
+    m = url.searchParams.get('m');
     socket = io.connect('localhost:8787');
-    socket.on('orderCancel',(data)=>{
-		swal("訂單被拒", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"warning"});
-	});
+    if(m==null || m== 'cuMenu')
+        socket.on('orderCancel',(data)=>{
+            swal("訂單被拒", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"warning"});
+        });
     
     socket.on('orderAccept',(data)=>{
 		swal("訂單成立", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"});
@@ -25,8 +29,7 @@ function init()
 		swal("訂單請求修改", "訂單編號 #"+data["orderNumber"] + '\n' + data.advice, {timer:30000,icon:"success"});
 	});
     
-    var url = new URL(window.location.href);
-    m = url.searchParams.get('m');
+    
     if(m==null || m=='cuMenu')
     {
         update();
