@@ -81,7 +81,7 @@ async function init(){
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(req.session.valid == 'notValid'){
-			next();
+			res.sendFile('emailConfirm.html',{root:rootPath});
 		}
 		else if(!(req.session.valid==true)){
 			res.sendFile('login.html',{root:rootPath});
