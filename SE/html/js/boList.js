@@ -187,18 +187,18 @@ function btnTrigger() {
                                     {
                                         selected.push(option.value);
                                         if(c)
-                                            str += value;
+                                            str += '、'+option.value;
                                         else
-                                            str+='、'+value;
+                                            str += option.value;
                                     }
                                     c++;
                                 }
                                 var orderData = table[this.parentElement.attributes.value.value];
                                 orderData['advice'] = str+' 缺貨';
                                 socket.emit('orderModify', JSON.stringify(orderData));
+                                btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
+                                updateStatusNumber(-1);
                             });
-                            //btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
-                            //updateStatusNumber(-1);
                             break;
                         default:
                             break;
