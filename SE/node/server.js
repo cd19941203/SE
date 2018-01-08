@@ -426,11 +426,14 @@ async function init(){
 			var query;
 			var beginTime = req.query.beginTime;
 			var endTime = req.query.endTime;
+			var orderNumber = req.query.orderNumber;
 			if(typeof beginTime !== 'undefined' && typeof endTime !== 'endefined'){
 				beginTime = datePlus8(new Date(beginTime));
 				endTime = datePlus8(new Date(endTime));
 				query = {$and:[{beginTime:{$lte:endTime}},{beginTime:{$gte:beginTime}}]};
 			}
+			if(typeof orderID !== "undefined")
+				query['orderNumber'] = orderNumber;
 			if(typeof status === "undefined")
 				;
 			else
