@@ -62,7 +62,7 @@ function navinit(){
                 type: "get",
                 success: function(data)
                 {
-                    str = str.replace('<span class="glyphicon glyphicon-user"></span>','<img id="img" style="width: 40px; height: 40px;" src="/userImage/'+user+'.jpg">');
+                    str = str.replace('<span class="glyphicon glyphicon-user"></span>','<img id="img" style="width: 20px; height: 20px;" src="/userImage/'+user+'.jpg">');
                     document.getElementById("nav").innerHTML = str;
                 }
             });
