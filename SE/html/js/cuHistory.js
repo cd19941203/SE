@@ -1,5 +1,6 @@
 var data = [];
 var table = {};
+var socket;
 //--------------------------- Function about Action ---------------------------//
 
 //--------------------------- Function about Data   ---------------------------//
@@ -41,6 +42,7 @@ function btnTrigger(){
 		console.log('myID');
 		console.log(myID);
 		//////    Guide webpage  'cuMenu.html'     and  get "ID"    ///////
+        window.location=window.location.href.replace('?m=cuHistory','')+'?m=cuMenu&id='+myID;
 	});
 	$(".refuse").unbind('click');
 	$(".refuse").click(function(){
@@ -60,10 +62,8 @@ function btnTrigger(){
 			switch (value) {
 				case "OK":
 					var tmpRef = $(this);
-					$(this).parent().parent().parent().parent().fadeOut(400);
-					setTimeout(function(){tmpRef.parent().parent().parent().parent().remove();},1000);
-					//swal("通知","已取消此次訂單", {closeOnClickOutside: false,icon:"success"});
-                    socket.emit('orderCancel', JSON.stringify(table[myID]));
+					updateOrder();
+                    socket.emit('orderCancel', JSON.stringify({orderNumber:myID}));
 					break;
 				default:
 					break;
@@ -77,10 +77,18 @@ function cuHistory_init(){
     socket = io.connect('localhost:8787');
     socket.on('orderCancel', (data) => {
         swal("通知", "已取消此次訂單", {closeOnClickOutside: false,icon:"success"});
-        update();
+        updateOrder();
     });
     
-	$.ajax({
+	updateOrder();
+	//cuHistory_init
+	//updateData(example);
+}
+
+function updateOrder()
+{
+    $.ajax({
+        sync: false,
         url: "/getOrderList",
         type: "get",
         cache: false,
@@ -92,7 +100,5 @@ function cuHistory_init(){
             updateData(data);
         },
     });
-	//cuHistory_init
-	//updateData(example);
 }
 addEventListener("load",cuHistory_init,false);

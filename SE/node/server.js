@@ -279,7 +279,7 @@ async function init(){
 					orderNumber = orderRes['orderNumber'];
 					orderRes['status'] = 'new';
 					orderRes['beginTime'] = new Date();
-					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:['expectTime'],beginTime:orderRes['beginTime']});
+					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:orderRes['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete orderRes['userInfo']['_id'];
 					delete orderRes['userInfo']['password'];
@@ -388,9 +388,10 @@ async function init(){
 	});
 
 	app.get('/getNewCode',async(req,res)=>{
-		var account = req.session.account;
+		var acc = req.session.account;
 		try{
-			await account.getNewVerificationCodes(account);
+            console.log(acc);
+			await account.getNewVerificationCodes(acc);
 			res.send('success');
 		}catch(err){
 			res.send('err');
