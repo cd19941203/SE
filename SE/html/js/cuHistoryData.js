@@ -8,9 +8,9 @@ var statusName = Object.freeze({
 function webMake(index){
 	var isPending = (data[index].status == 'pending');
 	var myOrder = "";
-	for(var i = 0 ;i < 1;i++)
+	for(var i = 0 ;i < data[index].meal.length ;i++)
 	{
-		myOrder +='<p>' + '????'+ 'x' + '99' +  '<span class = "pull-right">NT$ '+ '10000' +'</span></p>';
+		myOrder +='<p>' + data[index].meal[i].name + 'x' + data[index].meal[i].amount +  '<span class = "pull-right">NT$ '+ data[index].meal[i].price +'</span></p>';
 	}
 	var str = 
 '<div class="col-sm-12 col-lg-12 col-md-12">                                                                 '+
@@ -26,9 +26,9 @@ function webMake(index){
 '				<span class = "spe01Span">                                                                   '+
 '					<button class = "btn btn-danger" disabled>'+ statusName[ data[index].status ] +'</button>';
 if(isPending) str+='<span class = "glyphicon glyphicon-info-sign" style = "color:MidnightBlue;font-size:23px;"></span>';
-str+='				<span>'+ (data[index].beginTime).replace("T"," ").substr(0,16) +'</span>                 '+
+str+='				<span>#'+ data[index].orderNumber +"  "+(data[index].beginTime).replace("T"," ").substr(0,16) +'</span>                 '+
 '				</span>                                                                                      '+
-'				<span class="spe01Span-1 font-5">NT$ 105</span>                                              '+
+'				<span class="spe01Span-1 font-5">NT$ '+ data[index].totalPrice +'</span>                                              '+
 '			</h4>                                                                                            '+
 '			<div class = "myOrder" style = "display:none;">                                                  '+
 myOrder+
