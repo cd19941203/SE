@@ -21,7 +21,7 @@ var loginDom = '<h1>Login</h1>' +
 var registerDom = '<div class="login">' +
     '<h1>Register</h1><h4 id="note"></h4>' +
     '<form method="post" action="/createAccount">' +
-    '<input id="account" type="text" name="account" placeholder="Username" required="required">' +
+    '<input id="account" type="text" name="account" placeholder="Account" required="required">' +
     '<input id="password" type="password" name="password" placeholder="Password" required="required">' +
     '<input id="username" type="text" name="username" placeholder="Username" required="required">' +
     '<input placeholder="Birthday" class="textbox-n" type="textbox-n" onfocus="(this.type=\'date\')" id="birth" required="required" name="birth">' +
@@ -49,7 +49,7 @@ function register()
     var phone = $('#phone').val();
     var type = $('#type').val();
     var image = $('#image').val();
-    if(account==''||password==''||username==''||gender==''||phone==''||type==''||image==''||birth=='')
+    if(account==''||password==''||username==''||gender==''||phone==''||type==''||birth=='')
     {
         document.getElementById('note').innerHTML = 'Please fill up all form!!';
         return;

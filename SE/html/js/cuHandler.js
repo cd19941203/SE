@@ -1,13 +1,17 @@
 var socket;
 var openTime;
 var dateDom;
+var url;
 
 function init()
 {
+    url = new URL(window.location.href);
+    m = url.searchParams.get('m');
     socket = io.connect('localhost:8787');
-    socket.on('orderCancel',(data)=>{
-		swal("訂單被拒", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"warning"});
-	});
+    if(m==null || m== 'cuMenu')
+        socket.on('orderCancel',(data)=>{
+            swal("訂單被拒", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"warning"});
+        });
     
     socket.on('orderAccept',(data)=>{
 		swal("訂單成立", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"});
@@ -25,8 +29,11 @@ function init()
 		swal("訂單請求修改", "訂單編號 #"+data["orderNumber"] + '\n' + data.advice, {timer:30000,icon:"success"});
 	});
     
-    var url = new URL(window.location.href);
-    m = url.searchParams.get('m');
+    socket.on('orderRes',(data)=>{
+		swal("訂單修改送出", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"});
+	});
+    
+    
     if(m==null || m=='cuMenu')
     {
         update();
@@ -119,7 +126,13 @@ async function submitOrder()
         submitObject.expectTime = (new Date().toLocaleDateString().replace(/\//g,'-')) + ' ' + expectTime;
 		if(totalPrice != 0)
 		{
-			socket.emit('newOrder', JSON.stringify(submitObject));
+            if(id == null)
+                socket.emit('newOrder', JSON.stringify(submitObject));
+            else
+            {
+                submitObject.orderNumber = parseInt(id);
+                socket.emit('orderRes', JSON.stringify(submitObject));
+            }
 			myOrder = [];
 			myOrderIndex = [];
 			$('#order_list').html("");
