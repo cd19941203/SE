@@ -1,5 +1,6 @@
 var socket;
 var openTime;
+var dateDom;
 
 function init()
 {
@@ -71,10 +72,12 @@ async function submitOrder()
             updateData(a);
         },
     });
-	dateDom = document.createElement("date");
-	swal({title: "預期時間", content: 'input', buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{
+	dateDom = document.createElement("input");
+    dateDom.setAttribute('type','time');
+	swal({closeOnClickOutside: false, title: "預期時間", content: dateDom, buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{
 		if(!value)
 			return;
+        var expectTime = dateDom.value;
 		var now = new Date();
 		var begin = openTime[now.getDay()].begin.split(':');
 		var end = openTime[now.getDay()].end.split(':');
@@ -112,6 +115,7 @@ async function submitOrder()
 		}
 		submitObject.meal = meal;
 		submitObject.totalPrice = totalPrice;
+        submitObject.expectTime = (new Date().toLocaleDateString().replace(/\//g,'-')) + ' ' + expectTime;
 		if(totalPrice != 0)
 		{
 			socket.emit('newOrder', JSON.stringify(submitObject));
