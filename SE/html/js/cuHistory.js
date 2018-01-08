@@ -37,14 +37,16 @@ function btnTrigger(){
 	});
 	$(".edit").unbind('click');
 	$(".edit").click(function(){
-		var myID = parseInt($(this).parent().parent().siblings('.information').html());
-		
+		var myID = parseInt($(this).parent().parent().siblings('.information').attr('id').substr(2));
+		console.log('myID');
+		console.log(myID);
 		//////    Guide webpage  'cuMenu.html'     and  get "ID"    ///////
 	});
 	$(".refuse").unbind('click');
 	$(".refuse").click(function(){
-		var myID = parseInt($(this).parent().parent().siblings('.information').html());
-		
+		var myID = parseInt($(this).parent().parent().siblings('.information').attr('id').substr(2));
+		console.log('myID');
+		console.log(myID);
 		swal("確定取消此次訂單?", {
 			buttons: {
 				OK: {
