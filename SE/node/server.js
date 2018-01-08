@@ -250,16 +250,14 @@ async function init(){
 					var orderModify = JSON.parse(data);
 					orderNumber = orderModify['orderNumber'];
 					var advice = orderModify['advice'];
-					var newMeal = orderModify['meal'];
 					Promise.all([
 						order.getOrderData(orderNumber),
 						order.orderStatusChange(orderNumber,order.orderStatus['pending']),
-						order.updateModifyAdvice(orderNumber,advice),
-						order.updateOrder(orderNumber,{meal:newMeal})
+						order.updateModifyAdvice(orderNumber,advice)
 					]).then(values=>{
 						var account = values[0]['account'];
 						sio.to('boss').emit('orderModify',{orderNumber:orderNumber,status:'success'})
-						sio.to(account).emit('orderModify',{orderNumber:orderNumber,meal:newMeal,advice:advice});
+						sio.to(account).emit('orderModify',{orderNumber:orderNumber,meal:values[0]['meal'],advice:advice});
 					}).catch(err=>{
 						throw(err);
 					});

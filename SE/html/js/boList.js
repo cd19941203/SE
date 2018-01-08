@@ -7,6 +7,7 @@ var onNotice = true;
 var eventAllAccept = false;
 var socket;
 var mealTable = {};
+var selectDom;
 //--------------------------- Function about Action ---------------------------//
 
 //window.Notification       replace by addNoty()
@@ -169,12 +170,35 @@ function btnTrigger() {
 
                             break;
                         case "ofs":
-                            swal("Edit", "缺貨請求已送出", {
+                            /*swal("Edit", "缺貨請求已送出", {
                                 timer: 1200,
                                 icon: "success"
+                            });*/
+                            swal({
+                                title: "請選擇缺貨種類",
+                                content: selectDom,
+                            }).then((value) => {
+                                var selected = [];
+                                var str = '';
+                                var c = 0;
+                                for(var option of selectDom.options)
+                                {
+                                    if(option.selected)
+                                    {
+                                        selected.push(option.value);
+                                        if(c)
+                                            str += '、'+option.value;
+                                        else
+                                            str += option.value;
+                                    }
+                                    c++;
+                                }
+                                var orderData = table[this.parentElement.attributes.value.value];
+                                orderData['advice'] = str+' 缺貨';
+                                socket.emit('orderModify', JSON.stringify(orderData));
+                                btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
+                                updateStatusNumber(-1);
                             });
-                            btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
-                            updateStatusNumber(-1);
                             break;
                         default:
                             break;
@@ -320,11 +344,16 @@ function boList_init() {
         data:{},
         success: function(data)
         {
+            selectDom = document.createElement("select");
+            selectDom.setAttribute('multiple', true);
             for(var one of data)
             {
                 if(! (one.type in mealTable))
                     mealTable[one.type] = [];
-                mealTable[one.type].push(one.name);
+                var option = document.createElement("option");
+                option.value = one.name;
+                option.innerHTML = one.name;
+                selectDom.appendChild(option);
             }
         },
     });
