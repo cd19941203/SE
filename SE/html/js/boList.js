@@ -155,16 +155,24 @@ function btnTrigger() {
                                     },
                                 })
                                 .then((value) => {
-                                    switch (value) {
-                                        case "time10":
-                                        case "time20":
-                                        case "time30":
-                                            swal("Edit", "延期請求已送出", {timer: 1200, icon: "success"});
-                                            btnRemoveList($(this), "延遲" + value.substr(4) + "分鐘", notyType.warning);
-                                            updateStatusNumber(-1);
-                                            break;
-                                        default:
-                                            break;
+                                    var addTime = 0;
+                                    if(value != null)
+                                    {
+                                        switch (value) {
+                                            case "time10":
+                                                addTime=10;
+                                            case "time20":
+                                                addTime=20;
+                                            case "time30":
+                                                addTime=30;
+                                            default:
+                                                break;
+                                        }
+                                        var orderData = table[this.parentElement.attributes.value.value];
+                                        orderData['advice'] = '需要延遲'+addTime.toString()+'分鐘';
+                                        socket.emit('orderModify', JSON.stringify(orderData));
+                                        btnRemoveList($(this), "延遲請求已送出", notyType.warning);
+                                        updateStatusNumber(-1);
                                     }
                                 });
 
@@ -177,27 +185,34 @@ function btnTrigger() {
                             swal({
                                 title: "請選擇缺貨種類",
                                 content: selectDom,
-                            }).then((value) => {
-                                var selected = [];
-                                var str = '';
-                                var c = 0;
-                                for(var option of selectDom.options)
-                                {
-                                    if(option.selected)
-                                    {
-                                        selected.push(option.value);
-                                        if(c)
-                                            str += '、'+option.value;
-                                        else
-                                            str += option.value;
-                                        c++;
-                                    }
+                                buttons:{
+                                    cancel:{text:'cancel',value:'cancel'},
+                                    ok:{text:'OK',value:'ok'}
                                 }
-                                var orderData = table[this.parentElement.attributes.value.value];
-                                orderData['advice'] = str+' 缺貨';
-                                socket.emit('orderModify', JSON.stringify(orderData));
-                                btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
-                                updateStatusNumber(-1);
+                            }).then((value) => {
+                                if(value=='ok')
+                                {
+                                    var selected = [];
+                                    var str = '';
+                                    var c = 0;
+                                    for(var option of selectDom.options)
+                                    {
+                                        if(option.selected)
+                                        {
+                                            selected.push(option.value);
+                                            if(c)
+                                                str += '、'+option.value;
+                                            else
+                                                str += option.value;
+                                            c++;
+                                        }
+                                    }
+                                    var orderData = table[this.parentElement.attributes.value.value];
+                                    orderData['advice'] = str+' 缺貨';
+                                    socket.emit('orderModify', JSON.stringify(orderData));
+                                    btnRemoveList($(this), "缺貨請求已送出", notyType.warning);
+                                    updateStatusNumber(-1);
+                                }
                             });
                             break;
                         default:

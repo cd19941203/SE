@@ -18,7 +18,7 @@ var str =
 '                    <li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-user"></span> Boss</a></li-->'+
 '					<li class="dropdown">'+
 '						<a class="dropdown-toggle" data-toggle="dropdown" href="#">'+
-'							<span class="glyphicon glyphicon-user"></span>'+
+'						<img id="img" style="width: 20px; height: 20px;" src="/userImage/boss.jpg">'+
 '							Boss'+
 '							<span class="caret"></span>'+
 '						</a>'+

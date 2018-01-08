@@ -1,5 +1,5 @@
 var data = [];
-
+var table = {};
 //--------------------------- Function about Action ---------------------------//
 
 //--------------------------- Function about Data   ---------------------------//
@@ -15,6 +15,7 @@ function updateData(tmp = data){
 	$("#DATA").html("");
 	for(var i = 0 ;i < tmp.length;i++ )
 	{
+        table[tmp[i].orderNumber] = tmp[i];
 		webMake(i);
 	}
 }
@@ -36,14 +37,16 @@ function btnTrigger(){
 	});
 	$(".edit").unbind('click');
 	$(".edit").click(function(){
-		var myID = parseInt($(this).parent().parent().siblings('.information').html());
-		
+		var myID = parseInt($(this).parent().parent().siblings('.information').attr('id').substr(2));
+		console.log('myID');
+		console.log(myID);
 		//////    Guide webpage  'cuMenu.html'     and  get "ID"    ///////
 	});
 	$(".refuse").unbind('click');
 	$(".refuse").click(function(){
-		var myID = parseInt($(this).parent().parent().siblings('.information').html());
-		
+		var myID = parseInt($(this).parent().parent().siblings('.information').attr('id').substr(2));
+		console.log('myID');
+		console.log(myID);
 		swal("確定取消此次訂單?", {
 			buttons: {
 				OK: {
@@ -59,7 +62,8 @@ function btnTrigger(){
 					var tmpRef = $(this);
 					$(this).parent().parent().parent().parent().fadeOut(400);
 					setTimeout(function(){tmpRef.parent().parent().parent().parent().remove();},1000);
-					swal("通知","已取消此次訂單", {closeOnClickOutside: false,icon:"success"});
+					//swal("通知","已取消此次訂單", {closeOnClickOutside: false,icon:"success"});
+                    socket.emit('orderCancel', JSON.stringify(table[myID]));
 					break;
 				default:
 					break;
@@ -70,7 +74,12 @@ function btnTrigger(){
 function cuHistory_init(){
 	//All Trigger Button Action
 	btnTrigger();
-
+    socket = io.connect('localhost:8787');
+    socket.on('orderCancel', (data) => {
+        swal("通知", "已取消此次訂單", {closeOnClickOutside: false,icon:"success"});
+        update();
+    });
+    
 	$.ajax({
         url: "/getOrderList",
         type: "get",

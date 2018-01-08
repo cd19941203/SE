@@ -2,7 +2,7 @@ var debugMode = true;
 var isSort = false;
 var viewStatus = "menu";
 var viewCategory = 0;
-
+var EditMode = false;
 //--------------------------- Function about Data   ---------------------------//
 function updateData(myData)
 {
@@ -23,14 +23,14 @@ function updateData(myData)
 	{
 		myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+category[i]+'</a>';
 	}
-	myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "color:MediumBlue;">新增...</a>';
+	myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "display:none; color:MediumBlue;">新增...</a>';
 	$('#categoryList').html(myCategory);
 	updateMenu();
 	btnTrigger();
 }
 function viewMenuPage(){
 	updateMenu();
-	$('#MenuPage').show();
+	$('#MenuPage').show();$('#addMealItem').show();
 	$('#orderPage').hide();
 }
 function viewOrderPage(orderID){
@@ -43,7 +43,7 @@ function viewOrderPage(orderID){
 	$('#OP_image')[0].src='image/mealImage/'+data[orderID].name+'.jpg';
 
 	
-	$('#MenuPage').hide();
+	$('#MenuPage').hide();$('#addMealItem').hide();
 	$('#orderPage').show();
 	btnTrigger();
 }
@@ -119,6 +119,29 @@ function btnTrigger(){
 	$('#editOrder').click(function(){
 		viewMenuPage();
 	});
+	
+	
+	//function about EditMode
+	$('#edit').click(function(){
+		EditMode = !EditMode;
+		if(EditMode)
+		{
+			$('#edit').addClass('btn-warning');
+			$('#edit').removeClass('btn-success');
+			$('#c_add').show();
+			$('#addMealItem').show();
+			
+			
+		}
+		else
+		{
+			$('#edit').addClass('btn-success');
+			$('#edit').removeClass('btn-warning');
+			$('#c_add').hide();
+			$('#addMealItem').hide();
+		}
+	});
+	
 }
 
 function init(){
