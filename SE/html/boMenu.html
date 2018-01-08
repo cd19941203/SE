@@ -33,6 +33,11 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 	<script src="js/navBoss.js"></script>
+	<!--Noty-->
+	<link href="css/noty.css" rel="stylesheet">
+	<script src="js/noty.min.js" type="text/javascript"></script>
+	
+	
 </head>
 
 <body>
@@ -59,31 +64,6 @@
 
             <div class="col-md-9" style = "font-family : Microsoft JhengHei;">
 
-                <div class="row carousel-holder">
-
-                    <!--div class="col-md-12">
-                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                            </ol>
-                            <div class="carousel-inner">
-                                <div class="item active">
-                                    <img class="slide-image" src="image/cover.jpg" alt="">
-                                </div>
-                            </div>
-                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left"></span>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right"></span>
-                            </a>
-                        </div>
-                    </div-->
-
-                </div>
-
                 <div class="row">
 					<div id = "MenuPage">
 						<div class="col-sm-4 col-lg-4 col-md-4">
@@ -108,7 +88,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4 col-lg-4 col-md-4" id = "addMealItem">
+					<div class="col-sm-4 col-lg-4 col-md-4" id = "addMealItem" style = "display:none;">
                         <div class="thumbnail">
                             <img src="image/null.jpg" alt="">
                             <div class="caption">
@@ -120,7 +100,7 @@
 								<hr style = "margin:0px;">
                             </div>
                             <div class="ratings">
-							<button class = "btn btn-warning pull-right btn-elect" id = "addMeal">新增</button>
+							<button class = "btn btn-warning pull-right" id = "addMeal">新增</button>
 								<br><br>
                             </div>
                         </div>
@@ -186,19 +166,19 @@
 											</div>
 											<div class="col-sm-6 col-lg-6 col-md-6">
 												<a href="javascript:;" class="a-upload pull-right" style = "height: 30px;"><!-- beautify uploadUI    Edit by sun -->
-													<input type="file" id="inputfile" accept="image/png,image/jpeg" >上傳照片</input>
+													<input type="file" id="inputfile" accept="image/png,image/jpeg" >Upload</input>
 												</a>
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-8 col-lg-8 col-md-8">
+									<div class="col-sm-8 col-lg-8 col-md-8" id = "comboMeal">
 										<label for="group">套餐內容</label>
 										<div class = "col-sm-12 col-lg-12 col-md-12 panel panel-default">
 											<div style = "padding : 5px;" class="col-sm-5 col-lg-5 col-md-5">
 												<span>(空白)</span>
 											</div>
 											<div style = "padding : 5px;" class="col-sm-5 col-lg-5 col-md-5">
-												<select class="selectpicker" style = "width:60%;float:left;">
+												<select class="selectpicker" style = "width:60%;float:left;" id = "comboMealSelect">
 												  <optgroup label="Picnic">
 													<option>Mustard</option>
 													<option>Ketchup</option>
@@ -211,7 +191,7 @@
 												  </optgroup>
 												</select>
 												<span style = "float:left;">x</span>
-												<input type = "number" class = "form-control" style="height:23px;width:30%;float:left;padding-right:0px;">
+												<input type = "number" class = "form-control" style="height:23px;width:30%;float:left;padding-left:5px;padding-right:0px;">
 											</div>
 											<div class = "col-sm-2 col-lg-2 col-md-2">
 												<button class = "btn btn-success" style="height:100%">新增</button>
@@ -271,6 +251,7 @@
 	<!-- My JavaScript -->
 	<script src="js/boMenu.js"></script>
 	<script src="js/boMenuData.js"></script>
+	<script src="js/global.js"></script>
 
 </body>
 

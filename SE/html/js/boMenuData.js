@@ -3,10 +3,10 @@ var data = [];
 var category = [];
 var menu = [];
 
-var myData = [];
-var myCategory = [];
-var myMenu = [];
-var myViewCategory = 0;
+var editData = [];
+var editCategory = [];
+var editMenu = [];
+var editViewCategory = 0;
 
 function updateMenu(){
 	var str="";
@@ -37,16 +37,16 @@ function updateMenu(){
 		}
 	}
 	else{
-		for (var categoryList in myMenu[ myCategory[myViewCategory] ]){
-			var mydata = myMenu[ myCategory[myViewCategory] ][ categoryList ];
+		for (var categoryList in editMenu[ editCategory[editViewCategory] ]){
+			var mydata = editMenu[ editCategory[editViewCategory] ][ categoryList ];
 			str += 
 			'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 			'                        <div class="thumbnail">                                                                      '+
-			'                            <img src="'+ myData[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
+			'                            <img src="'+ editData[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+
 			'									<span class = "glyphicon glyphicon-search"></span>                      '+
-			'									<B>' + myData[mydata].name + '</B>                                               '+
+			'									<B>' + editData[mydata].name + '</B>                                               '+
 			'                                </h4>                                                                                '+
 			'                                <p>                                                                                  '+
 			'沒有內容OUO'+                                                                                                        
@@ -55,13 +55,14 @@ function updateMenu(){
 			'                            </div>                                                                                   '+
 			'                            <div class="ratings">                                                                    '+
 			'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'">編輯</button>'+
-			'								<span style = "font-size:20px;">NT<B>$ '+ (myData[mydata].price).toLocaleString('en-US') +'</B></span>                                                                              '+
+			'								<span style = "font-size:20px;">NT<B>$ '+ (editData[mydata].price).toLocaleString('en-US') +'</B></span>                                                                              '+
 			'								<br><br>                                                                              '+
 			'                            </div>                                                                                   '+
 			'                        </div>                                                                                       '+
 			'                    </div>                                                                                           ';
 		}
 	}
+	if(debugMode)console.log("MenuPage Update");
 	$('#MenuPage').html(str);
 	btnTrigger();
 }
@@ -69,4 +70,10 @@ function updateMenu(){
 function noImage(test){
 	if(debugMode)console.log("NoImage is   "+test);
 	test.src = "image/null.jpg";
+}
+function updateComboMeal(){
+	var myStr = "";
+	
+	
+	$('#comboMealSelect').html(myStr);
 }

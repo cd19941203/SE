@@ -2,7 +2,7 @@ var example = [{"mealName":"蛋餅","account":"87","orderNumber":34,"status":"pe
 
 var statusName = Object.freeze({
 	'new': ['等待中','btn-warning'],
-	'accept': ['已接受','btn-default'],
+	'accepted': ['已接受','btn-default'],
 	'pending': ['待修改','btn-danger'],
 	'completed': ['已完成','btn-success'],
 	'done': ['已結單',''],
