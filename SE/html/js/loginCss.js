@@ -49,7 +49,7 @@ function register()
     var phone = $('#phone').val();
     var type = $('#type').val();
     var image = $('#image').val();
-    if(account==''||password==''||username==''||gender==''||phone==''||type==''||image==''||birth=='')
+    if(account==''||password==''||username==''||gender==''||phone==''||type==''||birth=='')
     {
         document.getElementById('note').innerHTML = 'Please fill up all form!!';
         return;

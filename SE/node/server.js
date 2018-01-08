@@ -387,9 +387,10 @@ async function init(){
 	});
 
 	app.get('/getNewCode',async(req,res)=>{
-		var account = req.session.account;
+		var acc = req.session.account;
 		try{
-			await account.getNewVerificationCodes(account);
+            console.log(acc);
+			await account.getNewVerificationCodes(acc);
 			res.send('success');
 		}catch(err){
 			res.send('err');
