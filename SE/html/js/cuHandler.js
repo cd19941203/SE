@@ -1,5 +1,6 @@
 var socket;
 var openTime;
+var dateDom;
 
 function init()
 {
@@ -19,18 +20,27 @@ function init()
     socket.on('newOrder',(data)=>{
 		swal("訂單已送出", "", {timer:30000,icon:"success"});
 	});
-    update();
     
-    $.ajax({
-        url: "/getSetting",
-        type: "get",
-        cache: false,
-        data:{},
-        success: function(data)
-        {
-            openTime = data.orderTime;
-        },
-    });
+    socket.on('orderModify',(data)=>{
+		swal("訂單請求修改", "訂單編號 #"+data["orderNumber"] + '\n' + data.advice, {timer:30000,icon:"success"});
+	});
+    
+    var url = new URL(window.location.href);
+    m = url.searchParams.get('m');
+    if(m==null || m=='cuMenu')
+    {
+        update();
+        $.ajax({
+            url: "/getSetting",
+            type: "get",
+            cache: false,
+            data:{},
+            success: function(data)
+            {
+                openTime = data.orderTime;
+            },
+        });
+    }
 }
 
 function update()
@@ -63,10 +73,12 @@ async function submitOrder()
             updateData(a);
         },
     });
-	dateDom = document.createElement("date");
-	swal({title: "預期時間", content: 'input', buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{
+	dateDom = document.createElement("input");
+    dateDom.setAttribute('type','time');
+	swal({closeOnClickOutside: false, title: "預期時間", content: dateDom, buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{
 		if(!value)
 			return;
+        var expectTime = dateDom.value;
 		var now = new Date();
 		var begin = openTime[now.getDay()].begin.split(':');
 		var end = openTime[now.getDay()].end.split(':');
@@ -104,6 +116,7 @@ async function submitOrder()
 		}
 		submitObject.meal = meal;
 		submitObject.totalPrice = totalPrice;
+        submitObject.expectTime = (new Date().toLocaleDateString().replace(/\//g,'-')) + ' ' + expectTime;
 		if(totalPrice != 0)
 		{
 			socket.emit('newOrder', JSON.stringify(submitObject));
