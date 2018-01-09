@@ -1,5 +1,5 @@
 var orderTime;
-
+var example = [{"orderTime":[{"begin":"06:30","end":"18:00"},{"begin":"06:30","end":"23:59"},{"begin":"00:00","end":"23:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"}]}];
 function getSetting()
 {
     $.ajax({

@@ -62,13 +62,20 @@
 					<div class="thumbnail col-sm-12 col-lg-12 col-md-12">
 						<span class = "mytitle" style = "font-size:20px;">開店設定</span>
 						<hr style = "margin-top:5px;margin-bottom:12px;">
-						<button class = "btn btn-default boSettingBtn">一</button>
-						<button class = "btn btn-default boSettingBtn">二</button>
-						<button class = "btn btn-default boSettingBtn">三</button>
-						<button class = "btn btn-default boSettingBtn">四</button>
-						<button class = "btn btn-default boSettingBtn">五</button>
-						<button class = "btn btn-default boSettingBtn">六</button>
-						<button class = "btn btn-default boSettingBtn">日</button>
+						<div style = "margin-bottom:5px;">
+							<button class = "btn btn-default boSettingBtn" id = "switch0">日</button>
+							<button class = "btn btn-default boSettingBtn" id = "switch1">一</button>
+							<button class = "btn btn-default boSettingBtn" id = "switch2">二</button>
+						</div>
+						<div class = "pull-right">
+							<button class = "btn btn-default boSettingBtn" id = "switch3">三</button>
+							<button class = "btn btn-default boSettingBtn" id = "switch4">四</button>
+							<button class = "btn btn-default boSettingBtn" id = "switch5">五</button>
+							<button class = "btn btn-default boSettingBtn" id = "switch6">六</button>
+						</div>
+						<br>
+						<br>
+
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -80,6 +87,12 @@
 							<span>~</span>
 							<input type = "time" id ="week_0_end"  />
 						</div>
+						<br>
+						<div style = "text-align:center;">
+							<button class = "btn btn-default">預設值</button>
+							<button class = "btn btn-success" style = "display:none;">更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -91,6 +104,12 @@
 							<span>~</span>
 							<input type = "time" id ="week_1_end"  />
 						</div>
+						<br>
+						<div style = "text-align:center;">
+							<button class = "btn btn-default">預設值</button>
+							<button class = "btn btn-success" style = "display:none;">更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -102,8 +121,14 @@
 							<span>~</span>
 							<input type = "time" id ="week_2_end"  />
 						</div>
+						<br>
+						<div style = "text-align:center;">
+							<button class = "btn btn-default">預設值</button>
+							<button class = "btn btn-success" style = "display:none;">更改</button>
+						</div>
+						<br>
 					</div>
-				</div
+				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
 					<div class="thumbnail col-sm-12 col-lg-12 col-md-12">
 						<span class = "mytitle" style = "font-size:20px;">星期三</span>
@@ -113,6 +138,12 @@
 							<span>~</span>
 							<input type = "time" id ="week_3_end"  />
 						</div>
+						<br>
+						<div style = "text-align:center;">
+							<button class = "btn btn-default">預設值</button>
+							<button class = "btn btn-success" style = "display:none;">更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -124,6 +155,12 @@
 							<span>~</span>
 							<input type = "time" id ="week_4_end"  />
 						</div>
+						<br>
+						<div style = "text-align:center;">
+							<button class = "btn btn-default">預設值</button>
+							<button class = "btn btn-success" style = "display:none;">更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -135,6 +172,12 @@
 							<span>~</span>
 							<input type = "time" id ="week_5_end"  />
 						</div>
+						<br>
+						<div style = "text-align:center;">
+							<button class = "btn btn-default">預設值</button>
+							<button class = "btn btn-success" style = "display:none;">更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -146,6 +189,12 @@
 							<span>~</span>
 							<input type = "time" id ="week_6_end"  />
 						</div>
+						<br>
+						<div style = "text-align:center;">
+							<button class = "btn btn-default">預設值</button>
+							<button class = "btn btn-success" style = "display:none;">更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				
@@ -194,6 +243,7 @@
     
 	<!-- Team JS -->
 	<script src="js/navBoss.js"></script>
+	<script src="js/boSetting.js"></script>
 	
 </body>
 
