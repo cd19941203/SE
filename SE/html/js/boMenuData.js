@@ -22,12 +22,12 @@ function updateMenu(){
 			'                            </div>                                                                                   '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+
-			'									<span class = "glyphicon glyphicon-search"></span>                      '+
+			'									<span class = "glyphicon glyphicon-tag"></span>                      '+
 			'									<B>' + data[mydata].name + '</B>                                               '+
 			'                                   <span class = "glyphicon glyphicon-remove cursorPointer btnRemove" style = "color:#CC0000;"></span>'+
 			'                                </h4>                                                                                '+
 			'                                <p>                                                                                  '+
-			'沒有內容OUO'+                                                                                                        
+			''+                                                                                                        
 			'								</p>                                                                                  '+
 			'								<hr style = "margin:0px;">                                                            '+
 			'                            </div>                                                                                   '+
@@ -51,11 +51,11 @@ function updateMenu(){
 			'                            </div>                                                                                   '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+
-			'									<span class = "glyphicon glyphicon-search"></span>                                '+
+			'									<span class = "glyphicon glyphicon-tag"></span>                                '+
 			'									<B>' + editData[mydata].name + '</B>                                              '+
 			'                                </h4>                                                                                '+
 			'                                <p>                                                                                  '+
-			'沒有內容OUO'+                                                                                                        
+			''+                                                                                                        
 			'								</p>                                                                                  '+
 			'								<hr style = "margin:0px;">                                                            '+
 			'                            </div>                                                                                   '+
