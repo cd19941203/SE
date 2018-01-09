@@ -140,10 +140,10 @@ async function calculateByAccount(list,beginTime,endTime){
     }
 }
 
-function getOrderStatusCount(){
+function getOrderStatusCount(beginTime,endTime){
     try{
         return new Promise((res,rej)=>{
-            Promise.all([getCount('done'),getCount('notComplete'),getCount('canceled')]).then(values=>{
+            Promise.all([getCount('done',beginTime,endTime),getCount('notComplete',beginTime,endTime),getCount('canceled',beginTime,endTime)]).then(values=>{
                 res({'done':values[0],'notComplete':values[1],'canceled':values[2]});
             }).catch(err=>{
                 rej(err);
@@ -154,11 +154,11 @@ function getOrderStatusCount(){
     }
 }
 
-async function getCount(status){
+async function getCount(status,beginTime,endTime){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            db.collection('order').find({status:status}).toArray((err,result)=>{
+            db.collection('order').find({status:status,$and:[{beginTime:{$gte:beginTime}},{beginTime:{$lte:endTime}}]}).toArray((err,result)=>{
                 if(err)
                     rej(dbManipulationError);
                 else

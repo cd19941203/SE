@@ -131,6 +131,7 @@ function init(){
 			socket.on('newOrder',async(data)=>{
 				try{
 					if(await setting.checkCanOrder() == false){
+						console.log('not order Time');
 						sio.to(socket.request.session.account).emit('newOrder','cant order now');
 					}
 					else{
@@ -631,7 +632,9 @@ function init(){
 
 	app.get('/getOrderStatusCount',async(req,res)=>{
 		try{
-			var data = await analyze.getOrderStatusCount();
+			var beginTime = datePlus8(new Date(req.query.beginTime));
+			var endTime = datePlus8(new Date(req.query.endTime));
+			var data = await analyze.getOrderStatusCount(beginTime,endTime);
 			res.send(data);
 		}catch(err){
 			console.log(err);
