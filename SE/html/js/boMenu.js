@@ -241,6 +241,7 @@ function btnTrigger(){
 			return;
 		}
 		EditMode = !EditMode;
+		updateMenu();
 		if(EditMode)
 		{
 			$('#edit').addClass('btn-warning');
@@ -371,8 +372,22 @@ function btnTrigger(){
 	});
 	$('.btnRemove').unbind('click');
 	$('.btnRemove').click(function(){
-		
-	});
+		swal("確定刪除?", {
+			closeOnClickOutside: false,
+            buttons: {
+				ok: {
+					text: "OK",
+					value: "ok",
+				},
+				cancel: "Cancel"
+			},
+		})
+		.then((value) => {
+            if(value != null)
+            {
+                
+            }
+	})});
 }
 
 function init(){

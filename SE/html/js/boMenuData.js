@@ -24,7 +24,6 @@ function updateMenu(){
 			'                                <h4>                                                                                 '+
 			'									<span class = "glyphicon glyphicon-search"></span>                      '+
 			'									<B>' + data[mydata].name + '</B>                                               '+
-			'                                   <span class = "glyphicon glyphicon-remove cursorPointer btnRemove" style = "color:#CC0000;"></span>'+
 			'                                </h4>                                                                                '+
 			'                                <p>                                                                                  '+
 			'沒有內容OUO'+                                                                                                        
@@ -47,12 +46,13 @@ function updateMenu(){
 			'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 			'                        <div class="thumbnail">                                                                      '+
 			'                            <div style = "width: 100%; height: 200px; display: table-cell; vertical-align: middle;"> '+
-			'                                <img src="'+ editData[mydata].image +'" onerror="noImage(this);" alt="">             '+
+			'                                <img src="'+ editData[mydata].image +'" alt="">             '+
 			'                            </div>                                                                                   '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+
 			'									<span class = "glyphicon glyphicon-search"></span>                                '+
 			'									<B>' + editData[mydata].name + '</B>                                              '+
+			'                                   <span class = "glyphicon glyphicon-remove cursorPointer btnRemove" style = "color:#CC0000;"></span>'+
 			'                                </h4>                                                                                '+
 			'                                <p>                                                                                  '+
 			'沒有內容OUO'+                                                                                                        
@@ -71,15 +71,4 @@ function updateMenu(){
 	if(debugMode)console.log("MenuPage Update");
 	$('#MenuPage').html(str);
 	btnTrigger();
-}
-
-function noImage(test){
-	if(debugMode)console.log("NoImage is   "+test);
-	test.src = "image/null.jpg";
-}
-function updateComboMeal(){
-	var myStr = "";
-	
-	
-	$('#comboMealSelect').html(myStr);
 }
