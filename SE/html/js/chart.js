@@ -10,7 +10,8 @@ function addDays(startDate, numberOfDays) {
 }
 
 function init() {
-    
+	document.getElementById("beginTime").value = (new Date()).getFullYear()+'-01-01';
+	document.getElementById("endTime").value = (new Date()).getFullYear()+'-12-31';
 }
 
 async function submit()
