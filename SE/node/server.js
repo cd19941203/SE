@@ -36,7 +36,7 @@ function datePlus8(x){
 	return x;
 }
 
-async function init(){
+function init(){
 	
 	////////////////////////////////////////////////////////////
 	// setting for parsing post data
@@ -279,7 +279,8 @@ async function init(){
 					var orderRes = JSON.parse(data);
 					orderNumber = orderRes['orderNumber'];
 					orderRes['status'] = 'new';
-					orderRes['beginTime'] = new Date();
+					orderRes['beginTime'] = getDate();
+					orderRes['expectTime']  = datePlus8(new Date(newOrder['expectTime']));
 					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:orderRes['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete orderRes['userInfo']['_id'];
@@ -363,11 +364,14 @@ async function init(){
 		}catch(err){
 			console.log(err);
 		}*/
+		/*
 		var data = await analyze.getGenderAccount('男');
 		console.log(data);
 		var dd = await analyze.calculateByAccount(data,datePlus8(new Date('2017-12-01')),datePlus8(new Date('2018-02-01')));
 		console.log(dd);
 		//await account.sendMail('eden851104@gmail.com');
+		res.location('/index?m=cuSetting');
+		*/
 		res.redirect('/index');
 	});
 
@@ -629,14 +633,17 @@ async function init(){
 
 	app.post('/orderBan',async(req,res)=>{
 		try{
-			
+			var orderNumber = req.body.orderNumber;
+			if(typeof orderNumber === 'undefined')
+				res.send('err');
+			await order.orderStatusChange(orderNumner,'notComplete');
 		}catch(err){
 			res.send(err);
 		}
 	});
 
 	server.listen(8787,()=>{
-		console.log('server gogo OUO!');
+		console.log('server start!');
 	});
 }
 
