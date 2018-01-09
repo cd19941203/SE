@@ -104,7 +104,7 @@ async function createAccount(data,image){
                         hasImage = true;
                     }
                     else{
-                        data['image'] = null;
+                        data['image'] = '/userImage/default.jpg';
                     }
                     if(typeof data['birth'] !== 'undefined')
                         data['birth'] = new Date(data['birth']);
@@ -131,12 +131,12 @@ async function updateAccountInfo(acc,data,image){
     try{
         var db = await database.connect();
         return new Promise((res,rej)=>{
-            if(typeof data['image'] !== 'undefined'){
+            if(typeof image !== 'undefined'){
                 data['image'] = '/userImage/' + acc + '.jpg';
                 hasImage = true;
             }
             else{
-                delete data['image'];
+                data['image'] = '/userImage/default.jpg';
             }
             if(typeof data['birth'] !== 'undefined')
                 data['birth'] = new Date(data['birth']);
