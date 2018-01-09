@@ -10,7 +10,7 @@ function updateData(tmp = data){
 	$("#DATA").html("");
 	tmp = tmp.sort(function(a,b)
 	{
-		return a.orderNumber < b.orderNumber ? -1 : 1;
+		return a.orderNumber < b.orderNumber ? 1 : -1;
 	});
 	data = tmp;
 	$("#DATA").html("");

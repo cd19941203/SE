@@ -27,11 +27,11 @@ function updateMenu(){
 		'                            </div>                                                                                   '+
 		'                            <div class="caption">                                                                    '+
 		'                                <h4>                                                                                 '+
-		'									<span class = "glyphicon glyphicon-search"></span>                                '+
+		'									<span class = "glyphicon glyphicon-tag"></span>                                '+
 		'									<B>' + data[mydata].name + '</B>                                                  '+
 		'                                </h4>                                                                                '+
 		'                                <p>                                                                                  '+
-		'沒有內容OUO'+                                                                                                        
+		''+                                                                                                        
 		'								</p>                                                                                  '+
 		'								<hr style = "margin:0px;">                                                            '+
 		'                            </div>                                                                                   '+
@@ -53,15 +53,15 @@ function updateMenu(){
 var btnStr = Object.freeze({
 	count: 
 	'<div class = "optionChoose" style = "padding : 5px;">                                                                                                     '+
-	'	<button class = "btn btn-success btn-add" style = "height:30px;padding:0px;width:30px;">＋</button>                                                    '+
-	'	<span class = "panel panel-default order-number" style = "margin-left:10px;margin-right:10px;width:30px;text-align: right;">1</span>                   '+
 	'	<button class = "btn btn-danger btn-reduce" style = "height:30px;padding:0px;width:30px;">－</button>                                                  '+
+	'	<span class = "panel panel-default order-number" style = "margin-left:10px;margin-right:10px;width:30px;text-align: right;">1</span>                   '+
+	'	<button class = "btn btn-success btn-add" style = "height:30px;padding:0px;width:30px;">＋</button>                                                    '+
 	'</div>                                                                                                                                                    ',
 	singleOrder: 
 	'<div class = "optionChoose" style = "padding : 5px;">                                                                                                     '+
-	'	<button class = "btn btn-success btn-add" style = "height:30px;padding:0px;width:30px;">＋</button>                                                    '+
-	'	<span class = "panel panel-default order-number" id = "singleOrder" style = "margin-left:10px;margin-right:10px;width:30px;text-align: right;">1</span>'+
 	'	<button class = "btn btn-danger btn-reduce" style = "height:30px;padding:0px;width:30px;">－</button>                                                  '+
+	'	<span class = "panel panel-default order-number" id = "singleOrder" style = "margin-left:10px;margin-right:10px;width:30px;text-align: right;">1</span>'+
+	'	<button class = "btn btn-success btn-add" style = "height:30px;padding:0px;width:30px;">＋</button>                                                    '+
 	'</div>                                                                                                                                                    '
 });
 

@@ -34,10 +34,7 @@ function updateData(tmp = data){
 	clearData();
 	tmp = tmp.sort(function(a,b)
 	{
-		
-		//console.log(a.beginTime + " " + b.beginTime + " = " + (a.beginTime < b.beginTime).toString());
-		if(sortStatus == "Time")return (Date.parse(a.beginTime)).valueOf() < (Date.parse(b.beginTime)).valueOf() ? -1 : 1;
-		else if (sortStatus == "ID")return a.orderNumber > b.orderNumber ? 1 : -1;
+		return a.orderNumber > b.orderNumber ? -1 : 1;
 	});
 	/*var tmp = JSON.parse(tmp);
 	for(var i = 0; i < tmp.length ; i++)
@@ -153,10 +150,12 @@ function boList_init(){
         type: "get",
         cache: false,
         data:{
-            status:"done"
+            //status:"done"
         },
         success: function(data)
         {
+			for(var doc of data)
+				doc.beginTime = doc.beginTime.replace('Z','');
             updateData(data);
         },
     });

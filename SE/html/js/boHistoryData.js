@@ -20,7 +20,15 @@ function webMake(id,name,phone,date,total,order,star,myStatus){
 			'			<p>'+order[i][0] + plural + ' <span class = "pull-right">NT$ '+order[i][2]+'</span></p>                 \n';
 	}
 	date = new Date(date);
-	date = date.getFullYear() + "." + (date.getMonth()+1) + "." + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+	var dateMonth = (date.getMonth()+1);
+	if(dateMonth<10) dateMonth = "0" + dateMonth;
+	var dateDate = date.getDate();
+	if(dateDate<10) dateDate = "0" + dateDate;
+	var dateHours = date.getHours();
+	if(dateHours<10) dateHours = "0"+dateHours;
+	var dateMinutes = date.getMinutes();
+	if(dateMinutes<10) dateMinutes = "0"+dateMinutes;
+	date = date.getFullYear() + "." + dateMonth + "." + dateDate + " " + dateHours + ":" + dateMinutes;
 	var web = 
 	'<div class="col-sm-12 col-lg-12 col-md-12">                                         '+
 	'	<div class="thumbnail">                                                          '+
@@ -31,15 +39,15 @@ function webMake(id,name,phone,date,total,order,star,myStatus){
 	'			                                                                         '+
 	'			<h4 class = "spe01H4">                                                   '+
 	'				<i class="fa fa-angle-down btnOrder spe01I"></i>                       '+
-	'					<button class = "btn '+ statusName[ myStatus ][1] +'" disabled>'+ statusName[ myStatus ][0] +'</button>';
-	'				<span class = "spe01Span">'+'訂餐時間'+'</span>                      '+
-	'				<a href="#" class = "spe01A">                                        '+
+	'					<button class = "btn '+ statusName[ myStatus ][1] +'" disabled>'+ statusName[ myStatus ][0] +'</button>'+
+	'				<span>#'+ id +' 訂餐時間'+'</span>                      '+
+	'				<a href="#">                                        '+
 	'					'+name+'                                                         '+
 	'				</a>                                                                 '+
-	'				<span class = "spe01Span">                                           '+
+	'				<span>                                           '+
 	'					('+phone+')                                                      '+
 	'				</span>                                                              '+
-	'				<span class = "spe01Span">                                           '+
+	'				<span>                                           '+
 	'					                                                      '+
 	'				</span>                                                              '+
 	'				<span class="spe01Span-1 font-5">NT$ '+total+'</span>                '+

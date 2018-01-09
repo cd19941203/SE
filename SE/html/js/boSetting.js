@@ -12,6 +12,7 @@ function btnTrigger(){
 			$(this).addClass('btn-default');
 			$(this).removeClass('btn-info');
 		}
+		$('#change_week').removeAttr('disabled');
 	});
 	$('.inputTime').change(function()
 	{
@@ -53,7 +54,7 @@ function btnTrigger(){
 		$('#week_'+myId+'_end').val(orderTime[myId].end);
 		$('#change_'+myId).attr('disabled',true);
 	});
-	$('.change_week').click(function(){
+	$('#change_week').click(function(){
 		for(var i = 0 ; i < 7 ; i++)
 		{
 			if($("#week_"+i).hasClass('btn-info'))
@@ -70,6 +71,7 @@ function btnTrigger(){
 				orderTime[i].end = "00:00";
 			}
 		}
+		submitChangeSetting(orderTime);
 	});
 	$('.default_week').click(function(){
 		for(var i = 0 ; i < 7 ; i++)
