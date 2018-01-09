@@ -83,65 +83,82 @@ async function submitOrder()
     });
 	dateDom = document.createElement("input");
     dateDom.setAttribute('type','time');
-	swal({closeOnClickOutside: false, title: "預期時間", content: dateDom, buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{
-		if(!value)
-			return;
+	swal({closeOnClickOutside: false, title: "預期時間", content: dateDom, buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{        
+        if(!value)
+            return;
         var expectTime = dateDom.value;
-		var now = new Date();
-		var begin = openTime[now.getDay()].begin.split(':');
-		var end = openTime[now.getDay()].end.split(':');
-		begin[0] = parseInt(begin[0]);
-		begin[1] = parseInt(begin[1]);
-		end[0] = parseInt(end[0]);
-		end[1] = parseInt(end[1]);
-		begin = new Date(now.getFullYear(),now.getMonth(),now.getDate(),begin[0],begin[1]);
-		end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
-		if(now < begin || now > end)
-		{
-			swal("非點餐時間", '', {timer:10000,icon:"info"});
-			return;
-		}
-		var meal = [];
-		var totalPrice = 0;
-		var submitObject = {};
-		for(var i of myOrderIndex)
-		{
-			var nowData = data[menu[i[0]][i[1]]];
-			var num = myOrder[i[0]][i[1]];
-			if(!data[menu[i[0]][i[1]]].inventory)
-			{
-				//timelyCategoryDelete(menu[i[0]][i[1]]);
-				addNoty('有商品缺貨請重新訂購', notyType.error);
-				$('#clearAll').click();
-				return;
-			}
-			else
-			{
-				nowData.amount = num;
-				totalPrice += num * nowData.price;
-				meal.push(nowData);
-			}
-		}
-		submitObject.meal = meal;
-		submitObject.totalPrice = totalPrice;
-        submitObject.expectTime = (new Date().toLocaleDateString().replace(/\//g,'-')) + ' ' + expectTime;
-		if(totalPrice != 0)
-		{
-            if(id == null)
-                socket.emit('newOrder', JSON.stringify(submitObject));
+        var now = new Date();
+        var begin = openTime[now.getDay()].begin.split(':');
+        var end = openTime[now.getDay()].end.split(':');
+        begin[0] = parseInt(begin[0]);
+        begin[1] = parseInt(begin[1]);
+        end[0] = parseInt(end[0]);
+        end[1] = parseInt(end[1]);
+        begin = new Date(now.getFullYear(),now.getMonth(),now.getDate(),begin[0],begin[1]);
+        end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
+        if(now < begin || now > end)
+        {
+            swal("非點餐時間", '', {timer:10000,icon:"info"});
+            return;
+        }
+        
+        var meal = [];
+        var totalPrice = 0;
+        var submitObject = {};        
+        for(var i of myOrderIndex)
+        {
+            var nowData = data[menu[i[0]][i[1]]];
+            var num = myOrder[i[0]][i[1]];            
+            if(!data[menu[i[0]][i[1]]].inventory)
+            {
+                //timelyCategoryDelete(menu[i[0]][i[1]]);
+                addNoty('有商品缺貨請重新訂購', notyType.error);
+                $('#clearAll').click();
+                return;
+            }
             else
             {
-                submitObject.orderNumber = parseInt(id);
-                socket.emit('orderRes', JSON.stringify(submitObject));
+                nowData.amount = num;
+                totalPrice += num * nowData.price;
+                meal.push(nowData);
             }
-			myOrder = [];
-			myOrderIndex = [];
-			$('#order_list').html("");
-		}
-		else
-		{
-			addNoty('購物車不能為空', notyType.error);
-		}
+        }
+        submitObject.meal = meal;
+        submitObject.totalPrice = totalPrice;
+        submitObject.expectTime = (new Date().toLocaleDateString().replace(/\//g,'-')) + ' ' + expectTime;
+        if(totalPrice != 0)
+        {
+            var orderDom = document.createElement("div");
+            var tmp = document.getElementById("order_list").cloneNode(true);
+            tmp.style.textAlign = "left";
+            for(var d of tmp.children)
+                d.removeChild(d.lastChild);;
+            orderDom.appendChild(tmp);
+            tmp = document.createElement("span");
+            tmp.innerHTML = "預期時間 : " + expectTime;
+            orderDom.appendChild(tmp);
+                        
+            swal({closeOnClickOutside: false, title: "確認訂單", content: orderDom, buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{
+                if(!value)
+                    return;
+                
+                if(id == null)
+                    socket.emit('newOrder', JSON.stringify(submitObject));
+                else
+                {
+                    submitObject.orderNumber = parseInt(id);
+                    socket.emit('orderRes', JSON.stringify(submitObject));
+                }
+                myOrder = [];
+                myOrderIndex = [];
+                $('#order_list').html("");
+            });
+        }
+        else
+        {
+            addNoty('購物車不能為空', notyType.error);
+        }
+        
 	});
     
 }
