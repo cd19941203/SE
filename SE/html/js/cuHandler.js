@@ -27,7 +27,11 @@ function init()
 	});
     
     socket.on('orderModify',(data)=>{
-		swal("訂單請求修改", "訂單編號 #"+data["orderNumber"] + '\n' + data.advice, {timer:30000,icon:"success"});
+		swal("訂單請求修改", "訂單編號 #"+data["orderNumber"] + '\n' + data.advice, {timer:30000,icon:"success"}).then((value)=>{
+            if(m == 'cuHistory')
+                location.reload();
+        });
+        
 	});
     
     socket.on('orderRes',(data)=>{
