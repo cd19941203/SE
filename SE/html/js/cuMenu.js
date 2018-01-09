@@ -141,7 +141,7 @@ function updateOrderList(){
 						'	<span>x<B>'+ myOrder[ arrI[i] ][ arrJ[j] ] +'</B></span>'+
 						'</span>'+
 						'<span>'+
-						'	<div class = "information" id = "info_'+menu[ arrI[i] ][ myOrder[ arrI[i] ] ]+'"hidden>'+arrI[i]+','+myOrder[ arrI[i] ]+','+myOrder[ arrI[i] ][ arrJ[j] ]+'</div>'+
+						'	<div class = "information" id = "info_'+menu[ arrI[i] ][ arrJ[j] ]+'"hidden>'+arrI[i]+','+ arrJ[j] +','+myOrder[ arrI[i] ][ arrJ[j] ]+'</div>'+
 						'	<span class = "glyphicon glyphicon-edit cuMenu-btn cuMenu-btn-edit"></span>'+
 						'	<span class = "glyphicon glyphicon-remove cuMenu-btn cuMenu-btn-remove"></span> '+
 						'</span>';
@@ -211,6 +211,7 @@ function btnTrigger(){
 	$('.cuMenu-btn-remove').click(function(){
 		if(debugMode)console.log("remove button click");
 		var info = ($(this).siblings('.information').html()).split(',');
+		if(debugMode)console.log(info);
 		if(debugMode)console.log(info);
 		for(var i = 0 ; i < myOrderIndex.length ;i++)
 		{
