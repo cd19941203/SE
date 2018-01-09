@@ -69,6 +69,11 @@ function btnTrigger(){
 					break;
 		}});
 	});
+    $(".glyphicon-info-sign").unbind('click');
+    $(".glyphicon-info-sign").click(function(){
+        swal('資訊',this.getAttribute('title'),{icon:'info'});
+    });
+    
 }
 
 function cuHistory_init(){
