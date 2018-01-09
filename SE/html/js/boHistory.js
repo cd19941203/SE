@@ -54,6 +54,7 @@ function updateData(tmp = data){
 		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,tmp[key].totalPrice,mealTemp,4);
 	}
 	data = tmp;
+    userInfo();
 }
 function clearData(){
 	$("#DATA").html("");
