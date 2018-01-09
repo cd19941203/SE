@@ -87,8 +87,8 @@ async function submitOrder()
         },
     });
 	dateDom = document.createElement("input");
+	dateDom.setAttribute("required", "");
     dateDom.setAttribute('type','time');
-    dateDom.setAttribute('required','');
 	swal({closeOnClickOutside: false, title: "預期時間", content: dateDom, buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{        
         if(!value)
             return;
@@ -101,12 +101,18 @@ async function submitOrder()
         end[0] = parseInt(end[0]);
         end[1] = parseInt(end[1]);
         begin = new Date(now.getFullYear(),now.getMonth(),now.getDate(),begin[0],begin[1]);
-        end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
+		end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
+		
+		if(expectTime=="")
+		{
+            swal("未輸入取餐時間", '', {timer:10000,icon:"info"});
+            return;
+		}
         if(now < begin || now > end)
         {
             swal("非點餐時間", '', {timer:10000,icon:"info"});
             return;
-        }
+		}
         
         var meal = [];
         var totalPrice = 0;

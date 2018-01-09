@@ -62,13 +62,20 @@
 					<div class="thumbnail col-sm-12 col-lg-12 col-md-12">
 						<span class = "mytitle" style = "font-size:20px;">開店設定</span>
 						<hr style = "margin-top:5px;margin-bottom:12px;">
-						<button class = "btn btn-default boSettingBtn">一</button>
-						<button class = "btn btn-default boSettingBtn">二</button>
-						<button class = "btn btn-default boSettingBtn">三</button>
-						<button class = "btn btn-default boSettingBtn">四</button>
-						<button class = "btn btn-default boSettingBtn">五</button>
-						<button class = "btn btn-default boSettingBtn">六</button>
-						<button class = "btn btn-default boSettingBtn">日</button>
+						<div style = "margin-bottom:20px;text-align:center;">
+							<button class = "btn btn-default boSettingBtn" id = "week_0">日</button>
+							<button class = "btn btn-default boSettingBtn" id = "week_1">一</button>
+							<button class = "btn btn-default boSettingBtn" id = "week_2">二</button>
+							<button class = "btn btn-default boSettingBtn" id = "week_3">三</button>
+							<button class = "btn btn-default boSettingBtn" id = "week_4">四</button>
+							<button class = "btn btn-default boSettingBtn" id = "week_5">五</button>
+							<button class = "btn btn-default boSettingBtn" id = "week_6">六</button>
+						</div>
+						<div class = "inputBtnWeek" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_week">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_week" disabled>更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -76,10 +83,16 @@
 						<span class = "mytitle" style = "font-size:20px;">星期日</span>
 						<hr style = "margin-top:5px;">
 						<div style = "text-align:center;">
-							<input type = "time" id ="week_0_begin"/>
+							<input class = "inputTime" type = "time" value="00:00" id ="week_0_begin" disabled/>
 							<span>~</span>
-							<input type = "time" id ="week_0_end"  />
+							<input class = "inputTime" type = "time" value="00:00" id ="week_0_end"   disabled/>
 						</div>
+						<br>
+						<div class = "inputBtn" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_0">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_0" disabled>更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -87,10 +100,16 @@
 						<span class = "mytitle" style = "font-size:20px;">星期一</span>
 						<hr style = "margin-top:5px;">
 						<div style = "text-align:center;">
-							<input type = "time" id ="week_1_begin"/>
+							<input class = "inputTime" type = "time" value="00:00" id ="week_1_begin" disabled/>
 							<span>~</span>
-							<input type = "time" id ="week_1_end"  />
+							<input class = "inputTime" type = "time" value="00:00" id ="week_1_end"   disabled/>
 						</div>
+						<br>
+						<div class = "inputBtn" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_1">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_1" disabled>更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -98,21 +117,33 @@
 						<span class = "mytitle" style = "font-size:20px;">星期二</span>
 						<hr style = "margin-top:5px;">
 						<div style = "text-align:center;">
-							<input type = "time" id ="week_2_begin"/>
+							<input class = "inputTime" type = "time" value="00:00" id ="week_2_begin" disabled/>
 							<span>~</span>
-							<input type = "time" id ="week_2_end"  />
+							<input class = "inputTime" type = "time" value="00:00" id ="week_2_end"   disabled/>
 						</div>
+						<br>
+						<div class = "inputBtn" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_2">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_2" disabled>更改</button>
+						</div>
+						<br>
 					</div>
-				</div
+				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
 					<div class="thumbnail col-sm-12 col-lg-12 col-md-12">
 						<span class = "mytitle" style = "font-size:20px;">星期三</span>
 						<hr style = "margin-top:5px;">
 						<div style = "text-align:center;">
-							<input type = "time" id ="week_3_begin"/>
+							<input class = "inputTime" type = "time" value="00:00" id ="week_3_begin" disabled/>
 							<span>~</span>
-							<input type = "time" id ="week_3_end"  />
+							<input class = "inputTime" type = "time" value="00:00" id ="week_3_end"   disabled/>
 						</div>
+						<br>
+						<div class = "inputBtn" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_3">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_3" disabled>更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -120,10 +151,16 @@
 						<span class = "mytitle" style = "font-size:20px;">星期四</span>
 						<hr style = "margin-top:5px;">
 						<div style = "text-align:center;">
-							<input type = "time" id ="week_4_begin"/>
+							<input class = "inputTime" type = "time" value="00:00" id ="week_4_begin" disabled/>
 							<span>~</span>
-							<input type = "time" id ="week_4_end"  />
+							<input class = "inputTime" type = "time" value="00:00" id ="week_4_end"   disabled/>
 						</div>
+						<br>
+						<div class = "inputBtn" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_4">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_4" disabled>更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -131,10 +168,16 @@
 						<span class = "mytitle" style = "font-size:20px;">星期五</span>
 						<hr style = "margin-top:5px;">
 						<div style = "text-align:center;">
-							<input type = "time" id ="week_5_begin"/>
+							<input class = "inputTime" type = "time" value="00:00" id ="week_5_begin" disabled/>
 							<span>~</span>
-							<input type = "time" id ="week_5_end"  />
+							<input class = "inputTime" type = "time" value="00:00" id ="week_5_end"   disabled/>
 						</div>
+						<br>
+						<div class = "inputBtn" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_5">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_5" disabled>更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				<div class="col-sm-3 col-lg-3 col-md-3">
@@ -142,10 +185,16 @@
 						<span class = "mytitle" style = "font-size:20px;">星期六</span>
 						<hr style = "margin-top:5px;">
 						<div style = "text-align:center;">
-							<input type = "time" id ="week_6_begin"/>
+							<input class = "inputTime" type = "time" value="00:00" id ="week_6_begin" disabled/>
 							<span>~</span>
-							<input type = "time" id ="week_6_end"  />
+							<input class = "inputTime" type = "time" value="00:00" id ="week_6_end"   disabled/>
 						</div>
+						<br>
+						<div class = "inputBtn" style = "text-align:center;">
+							<button class = "btn btn-default default_time" id = "default_6">預設值</button>
+							<button class = "btn btn-success changeBtn" id = "change_6" disabled>更改</button>
+						</div>
+						<br>
 					</div>
 				</div>
 				
@@ -194,6 +243,7 @@
     
 	<!-- Team JS -->
 	<script src="js/navBoss.js"></script>
+	<script src="js/boSetting.js"></script>
 	
 </body>
 
