@@ -41,7 +41,7 @@ function submitSetting()
     }
     if( gender!='男' && gender!='女')
     {
-        swal("Gender invalid!!", '', {timer:10000,icon:"info"});
+        swal("性別需要是: 男 或 女", '', {timer:10000,icon:"info"});
         return;
     }
     if(!(oPassword != '' && nPassword != '' && nnPassword != '' && oPassword == oldUserData.password && nPassword == nnPassword))

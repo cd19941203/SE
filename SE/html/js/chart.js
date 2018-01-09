@@ -13,8 +13,11 @@ function init() {
     
 }
 
-function submit()
+async function submit()
 {
+    var label = [];
+    var amount = [];
+    var color = [];
     var begin = document.getElementById("beginTime").value;
     var end = document.getElementById("endTime").value;
     if(begin == "" || end == "")
@@ -39,43 +42,61 @@ function submit()
             beginTime: begin,
         },
         success: function (data) {
-            var label = [];
-            var amount = [];
-            var color = [];
-            for (var doc of data) {
-                label.push(doc.meal);
-                amount.push(doc.amount);
-                color.push(getRandomColor());
+            createChart(data,"Meal Analyze", document.getElementById('chart').getContext('2d'));
+        }
+    });
+    $.ajax({
+        url: "/genderAnalyze",
+        type: "get",
+        data: {
+            endTime: end,
+            beginTime: begin,
+        },
+        success: function (data) {
+            createChart(data["男"],"Male Order Analyze", document.getElementById('chartMale').getContext('2d'));
+            createChart(data["女"],"Female Order Analyze", document.getElementById('chartFemale').getContext('2d'));
+        }
+    });
+    
+}
+
+function createChart(data, title, chartDom)
+{
+    var label = [];
+    var amount = [];
+    var color = [];
+    for (var doc of data) {
+        label.push(doc.meal);
+        amount.push(doc.amount);
+        color.push(getRandomColor());
+    }
+    var chart = new Chart(chartDom, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: label,
+            datasets: [{
+                label: title,
+                data: amount,
+                backgroundColor: color,
+                borderColor: color,
+                fill: false
+            }],
+
+        },
+
+        // Configuration options go here
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    min: 0
+                }]
             }
-            var chart = new Chart(ctx, {
-                // The type of chart we want to create
-                type: 'bar',
-
-                // The data for our dataset
-                data: {
-                    labels: label,
-                    datasets: [{
-                        label: "Meal Analyze",
-                        data: amount,
-                        backgroundColor: color,
-                        borderColor: color,
-                        fill: false
-                    }],
-
-                },
-
-                // Configuration options go here
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            },
-                            min: 0
-                        }]
-                    }
-                }
-            });
         }
     });
 }
