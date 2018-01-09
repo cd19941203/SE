@@ -2,7 +2,6 @@ var debugMode = false;
 var orderTime;
 var example = {"orderTime":[{"begin":"00:00","end":"00:00"},{"begin":"06:30","end":"23:59"},{"begin":"00:00","end":"23:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"}]};
 function btnTrigger(){
-	$(".boSettingBtn").unbind('click');
 	$(".boSettingBtn").click(function(){
 		if($(this).hasClass('btn-default')){
 			$(this).removeClass('btn-default');
@@ -14,7 +13,6 @@ function btnTrigger(){
 			$(this).removeClass('btn-info');
 		}
 	});
-	
 	$('.inputTime').change(function()
 	{
 		if(debugMode)console.log($(this).attr('id') + ' is click');
@@ -55,8 +53,36 @@ function btnTrigger(){
 		$('#week_'+myId+'_end').val(orderTime[myId].end);
 		$('#change_'+myId).attr('disabled',true);
 	});
-	$('.boSettingBtn').click(function(){
-		
+	$('.change_week').click(function(){
+		for(var i = 0 ; i < 7 ; i++)
+		{
+			if($("#week_"+i).hasClass('btn-info'))
+			{
+				$("#week_"+ i +"_begin").removeAttr('disabled');
+				$("#week_"+ i +"_end").removeAttr('disabled');
+			}
+			else
+			{
+				$("#week_"+ i +"_begin").attr('disabled',true);
+				$("#week_"+ i +"_end").attr('disabled',true);
+				$("#change_"+ i).attr('disabled',true);
+				orderTime[i].begin = "00:00";
+				orderTime[i].end = "00:00";
+			}
+		}
+	});
+	$('.default_week').click(function(){
+		for(var i = 0 ; i < 7 ; i++)
+		{
+			console.log($("#week_"+i).hasClass('btn-info'));
+			console.log((orderTime[i].begin == orderTime[i].end && orderTime[i].begin =="00:00"));
+			
+			if( !($("#week_"+i).hasClass('btn-info') ^ (orderTime[i].begin == orderTime[i].end && orderTime[i].begin =="00:00")) )
+			{
+				console.log("go");
+				$("#week_"+i).click();
+			}
+		}
 	});
 }
 
