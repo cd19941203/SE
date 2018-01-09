@@ -18,7 +18,7 @@ var loginDom = '<h1>Login</h1>' +
     '</div>' +
     '</form>';
 
-var registerDom = '<div class="login">' +
+var registerDom = '<div class="register">' +
     '<h1>Register</h1><h4 id="note"></h4>' +
     '<form method="post" action="/createAccount">' +
     '<input id="account" type="text" name="account" placeholder="Account" required="required">' +
@@ -34,13 +34,11 @@ var registerDom = '<div class="login">' +
     '<button type="button" class="btn btn-primary btn-block btn-large" onclick="(window.location = \'/index\')">Back</button></div></form>' +
     '</div>';
 
-function registerPage()
-{
+function registerPage() {
     document.getElementById('body').innerHTML = registerDom;
 }
 
-function register()
-{
+function register() {
     var account = $('#account').val();
     var password = $('#password').val();
     var username = $('#username').val();
@@ -49,8 +47,7 @@ function register()
     var phone = $('#phone').val();
     var type = $('#type').val();
     var image = $('#image').val();
-    if(account==''||password==''||username==''||gender==''||phone==''||type==''||birth=='')
-    {
+    if (account == '' || password == '' || username == '' || gender == '' || phone == '' || type == '' || birth == '') {
         document.getElementById('note').innerHTML = 'Please fill up all form!!';
         return;
     }
@@ -62,8 +59,7 @@ function register()
         success: function (data) {
             document.getElementById('note').innerHTML = data;
         },
-        err: function(e)
-        {
+        err: function (e) {
             document.getElementById('note').innerHTML = 'Some errors occur!!';
         },
         cache: false,
