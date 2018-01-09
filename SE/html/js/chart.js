@@ -72,10 +72,19 @@ function createChart(data, title, chartDom)
     var label = [];
     var amount = [];
     var color = [];
-    for (var doc of data) {
-        label.push(doc.meal);
-        amount.push(doc.amount);
-        color.push(getRandomColor());
+    try{
+        for (var doc of data) {
+            label.push(doc.meal);
+            amount.push(doc.amount);
+            color.push(getRandomColor());
+        }
+    }catch(err)
+    {
+        for (var doc of data) {
+            label.push(doc);
+            amount.push(data[doc]);
+            color.push(getRandomColor());
+        }
     }
     var chart = new Chart(chartDom, {
         // The type of chart we want to create
