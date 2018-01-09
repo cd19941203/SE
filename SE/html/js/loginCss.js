@@ -51,6 +51,11 @@ function register() {
         document.getElementById('note').innerHTML = 'Please fill up all form!!';
         return;
     }
+    if(gender != '男' || gender != '女')
+    {
+        document.getElementById('note').innerHTML = '性別需要是: 男 或 女';
+        return;
+    }
     var formData = new FormData($('form')[0]);
     $.ajax({
         url: "/createAccount",

@@ -25,7 +25,7 @@ var str =
 '							<span class="caret"></span>'+
 '						</a>'+
 '						<ul class="dropdown-menu">'+
-'							<li><a href="#">'+
+'                           <li><a href="/index?m=boSetting">'+
 '								<span class="glyphicon glyphicon glyphicon-cog"></span>'+
 '								Setting'+
 '							</a></li>'+

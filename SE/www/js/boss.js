@@ -2,7 +2,8 @@ var socket;
 var x;
 
 function init(){
-	socket = io.connect('localhost:8787');
+	//socket = io.connect('localhost:8787');
+	socket = io.connect('140.121.197.192:9487');
 	socket.on('newOrder',(data)=>{
 		x=data;
 		document.getElementById("output1").innerHTML = JSON.stringify(data);
