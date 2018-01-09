@@ -16,15 +16,15 @@ function init() {
 function submit()
 {
     var begin = document.getElementById("beginTime").value;
-    var end = document.getElementById("end").value;
+    var end = document.getElementById("endTime").value;
     if(begin == "" || end == "")
     {
         swal("錯誤","請輸入時間區間",{icon:"error"});
         return;
     }
-    var begin = new Date(begin);
-    var end = new Date(end);
-    if(begin > end)
+    var a = new Date(begin);
+    var b = new Date(end);
+    if(a > b)
     {
         swal("錯誤","起始時間必須小於結束時間",{icon:"error"});
         return;
@@ -35,8 +35,8 @@ function submit()
         url: "/mealAnalyze",
         type: "get",
         data: {
-            endTime: begin.toISOString(),
-            beginTime: end.toISOString(),
+            endTime: begin,
+            beginTime: end,
         },
         success: function (data) {
             var label = [];
