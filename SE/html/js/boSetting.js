@@ -12,13 +12,13 @@ function getSetting()
     });
 }
 
-function submitChangeSetting()
+function submitChangeSetting(newSetting)
 {
     $.ajax({
         url: "/updateOrderTime",
         type: "post",
         contentType: "application/json",
-        data: xxx,
+        data: newSetting,
         success: function(data)
         {
             swal(data ,"更改營業時間成功",{icon:'success'});
