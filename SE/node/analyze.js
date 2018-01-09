@@ -140,8 +140,39 @@ async function calculateByAccount(list,beginTime,endTime){
     }
 }
 
+function getOrderStatusCount(){
+    try{
+        return new Promise((res,rej)=>{
+            Promise.all([getCount('done'),getCount('notComplete'),getCount('canceled')]).then(values=>{
+                res({'done':values[0],'notComplete':values[1],'canceled':values[2]});
+            }).catch(err=>{
+                rej(err);
+            });
+        });
+    }catch(err){
+        throw(err);
+    }
+}
+
+async function getCount(status){
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('order').find({status:status}).toArray((err,result)=>{
+                if(err)
+                    rej(dbManipulationError);
+                else
+                    res(result.length);
+            });
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
 module.exports.mealAnalyze = mealAnalyze;
 module.exports.genderAnalyze = genderAnalyze;
 module.exports.ageAnalyze = ageAnalyze;
 module.exports.getGenderAccount = getGenderAccount;
 module.exports.calculateByAccount = calculateByAccount;
+module.exports.getOrderStatusCount = getOrderStatusCount;

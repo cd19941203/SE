@@ -75,10 +75,10 @@ function init(){
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
 						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze',
-						'/genderAnalyze','/orderBan','/getAllUserInfo'];
+						'/genderAnalyze','/orderBan','/getAllUserInfo','/getOrderStatusCount'];
 
 	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze',
-				   '/orderBan','/getAllUserInfo'];
+				   '/orderBan','/getAllUserInfo','/getOrderStatusCount'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(req.session.valid == 'notValid'){
@@ -624,6 +624,16 @@ function init(){
 			var data = await analyze.mealAnalyze(beginTime,endTime);
 			res.send(data);
 		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.get('/getOrderStatusCount',async(req,res)=>{
+		try{
+			var data = await analyze.getOrderStatusCount();
+			res.send(data);
+		}catch(err){
+			console.log(err);
 			res.send(err);
 		}
 	});
