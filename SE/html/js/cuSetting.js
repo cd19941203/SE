@@ -39,7 +39,7 @@ function submitSetting()
         swal("Please fill up all form!!", '', {timer:10000,icon:"info"});
         return;
     }
-    if( gender!='男' || gender!='女')
+    if( gender!='男' && gender!='女')
     {
         swal("Gender invalid!!", '', {timer:10000,icon:"info"});
         return;
