@@ -243,7 +243,6 @@ function btnTrigger(){
 			return;
 		}
 		EditMode = !EditMode;
-		updateMenu();
 		if(EditMode)
 		{
 			$('#edit').addClass('btn-warning');
@@ -320,6 +319,7 @@ function btnTrigger(){
             }
             
 		}
+		updateMenu();
 	});
 	$('#editCancel').unbind('click');
 	$('#editCancel').click(function(){

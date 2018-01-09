@@ -72,6 +72,7 @@ function btnTrigger(){
 			}
 		}
 		submitChangeSetting(orderTime);
+		$('#change_week').attr('disabled',true);
 	});
 	$('.default_week').click(function(){
 		for(var i = 0 ; i < 7 ; i++)
