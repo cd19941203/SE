@@ -101,12 +101,18 @@ async function submitOrder()
         end[0] = parseInt(end[0]);
         end[1] = parseInt(end[1]);
         begin = new Date(now.getFullYear(),now.getMonth(),now.getDate(),begin[0],begin[1]);
-        end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
+		end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
+		
+		if(expectTime=="")
+		{
+            swal("未輸入取餐時間", '', {timer:10000,icon:"info"});
+            return;
+		}
         if(now < begin || now > end)
         {
             swal("非點餐時間", '', {timer:10000,icon:"info"});
             return;
-        }
+		}
         
         var meal = [];
         var totalPrice = 0;

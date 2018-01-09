@@ -10,14 +10,33 @@ function addDays(startDate, numberOfDays) {
 }
 
 function init() {
+    
+}
+
+function submit()
+{
+    var begin = document.getElementById("beginTime").value;
+    var end = document.getElementById("endTime").value;
+    if(begin == "" || end == "")
+    {
+        swal("錯誤","請輸入時間區間",{icon:"error"});
+        return;
+    }
+    var a = new Date(begin);
+    var b = new Date(end);
+    if(a > b)
+    {
+        swal("錯誤","起始時間必須小於結束時間",{icon:"error"});
+        return;
+    }
     var ctx = document.getElementById('chart').getContext('2d');
     var date = new Date();
     $.ajax({
         url: "/mealAnalyze",
         type: "get",
         data: {
-            endTime: date.toISOString(),
-            beginTime: addDays(date, -30).toISOString(),
+            endTime: end,
+            beginTime: begin,
         },
         success: function (data) {
             var label = [];
@@ -59,24 +78,6 @@ function init() {
             });
         }
     });
-    /*var chart = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'line',
-
-        // The data for our dataset
-        data: {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
-            datasets: [{
-                label: "My First dataset",
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45],
-            }]
-        },
-
-        // Configuration options go here
-        options: {}
-    });*/
 }
 
 function getRandomColor() {
