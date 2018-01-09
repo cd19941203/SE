@@ -57,6 +57,13 @@ async function submit()
             createChart(data["女"],"Female Order Analyze", document.getElementById('chartFemale').getContext('2d'));
         }
     });
+    $.ajax({
+        url: "/getOrderStatusCount",
+        type: "get",
+        success: function (data) {
+            createChart(data,"Order Analyze", document.getElementById('chartB').getContext('2d'));
+        }
+    });
     
 }
 
