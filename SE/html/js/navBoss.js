@@ -92,6 +92,8 @@ function buildTable(a) {
     {
         if(c == 'image')
             continue;
+        if(c == 'birth')
+            a[c] = a[c].substr(0,10);
         "object" != typeof a[c] || isArray(a[c]) ? "object" == typeof a[c] && isArray(a[c]) ? (d = e.insertRow(-1),
         b = d.insertCell(-1),
         b.colSpan = 2,
