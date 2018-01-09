@@ -34,6 +34,11 @@ function init()
 		swal("訂單修改送出", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"});
 	});
     
+    socket.on('menuStatusUpdate',(data)=>{
+		swal("商品缺貨", "", {timer:30000,icon:"success"}).then((value)=>{
+            location.reload();
+        });
+	});
     
     if(m==null || m=='cuMenu')
     {
