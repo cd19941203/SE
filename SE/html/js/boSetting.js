@@ -1,3 +1,4 @@
+var debugMode = false;
 var orderTime;
 var example = {"orderTime":[{"begin":"00:00","end":"00:00"},{"begin":"06:30","end":"23:59"},{"begin":"00:00","end":"23:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"},{"begin":"06:30","end":"12:00"}]};
 function btnTrigger(){
@@ -12,6 +13,37 @@ function btnTrigger(){
 			$(this).addClass('btn-default');
 			$(this).removeClass('btn-info');
 		}
+	});
+	
+	$('.inputTime').change(function()
+	{
+		if(debugMode)console.log($(this).attr('id') + ' is click');
+		if(debugMode)console.log($(this).val());
+		
+		if($(this).val()!="")
+		{
+			var myId = $(this).attr('id').substr(5,1);
+			console.log('Start' + myId);
+			console.log($('#week_'+myId+'_begin').val());
+			console.log($('#week_'+myId+'_end').val());
+			if($('#week_'+myId+'_begin').val() < $('#week_'+myId+'_end').val())
+			{
+				$(this).parent().siblings('.inputBtn').children('.btn-success').removeAttr('disabled');
+			}
+			else
+			{
+				$(this).parent().siblings('.inputBtn').children('.btn-success').attr('disabled',true);
+			}
+		}
+		else
+		{
+			$(this).parent().siblings('.inputBtn').children('.btn-success').attr('disabled',true);
+		}
+	});
+	$('.changeBtn').click(function(){
+		var myID = $('this').attr('id').substr(8);
+		console.log(myID);
+		orderTime
 	});
 }
 

@@ -162,10 +162,13 @@ function btnTrigger() {
                                         switch (value) {
                                             case "time10":
                                                 addTime=10;
+												break;
                                             case "time20":
                                                 addTime=20;
+												break;
                                             case "time30":
                                                 addTime=30;
+												break;
                                             default:
                                                 break;
                                         }
