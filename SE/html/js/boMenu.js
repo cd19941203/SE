@@ -299,6 +299,7 @@ function btnTrigger(){
 		$('#edit').html("編輯");
 		$('#editCancel').hide();
 		$('#c_add').hide();
+		$('#addMealItem').hide();
 	});
 	$('#c_add').unbind('click');
 	$('#c_add').click(function(){
