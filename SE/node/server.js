@@ -364,11 +364,14 @@ function init(){
 		}catch(err){
 			console.log(err);
 		}*/
+		/*
 		var data = await analyze.getGenderAccount('男');
 		console.log(data);
 		var dd = await analyze.calculateByAccount(data,datePlus8(new Date('2017-12-01')),datePlus8(new Date('2018-02-01')));
 		console.log(dd);
 		//await account.sendMail('eden851104@gmail.com');
+		res.location('/index?m=cuSetting');
+		*/
 		res.redirect('/index');
 	});
 
@@ -640,7 +643,7 @@ function init(){
 	});
 
 	server.listen(8787,()=>{
-		console.log('server gogo OUO!');
+		console.log('server start!');
 	});
 }
 

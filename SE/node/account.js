@@ -99,7 +99,7 @@ async function createAccount(data,image){
                         code = '0' + code;
                     }
                     data['code'] = code;
-                    if(typeof data['image'] !== 'undefined'){
+                    if(typeof image !== 'undefined'){
                         data['image'] = '/userImage/' + data.account + '.jpg';
                         hasImage = true;
                     }
