@@ -324,6 +324,7 @@ function btnTrigger(){
 		$('#c_add').hide();
 		$('#addMealItem').hide();
 		$('.btn-elect').hide();
+		updateMenu();
 	});
 	$('#c_add').unbind('click');
 	$('#c_add').click(function(){
