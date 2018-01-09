@@ -75,6 +75,7 @@ function updateData(tmp = data) {
         }
     }
     data = tmp;
+    userInfo();
 }
 
 function clearData() {

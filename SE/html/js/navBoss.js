@@ -1,3 +1,5 @@
+var usersInfo = {};
+
 var str = 
 '        <div class="container">'+
 '            <!-- Brand and toggle get grouped for better mobile display -->'+
@@ -54,5 +56,60 @@ var str =
 '        <!-- /.container -->';
 function navinit(){
 	document.getElementById("nav").innerHTML = str;
+    $.ajax({
+        url: "/getAllUserInfo",
+        type: "get",
+        success: function(data)
+        {
+            //usersInfo = data;
+            for(var one of data)
+                userInfo[one.account] = one;
+        }
+    });
 }
+
+function userInfo()
+{
+    var classname = document.getElementsByClassName("spe01A");
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', function(){
+            //console.log(this);
+            var table = buildTable(userInfo[this.innerText]);
+            table.style = "margin: 0 auto;";
+            swal({title:this.innerText,content:table,icon:userInfo[this.innerText].image});
+        }, false);
+    }
+}
+
+function buildTable(a) {
+    var e = document.createElement("table"), d, b;
+    if (isArray(a))
+        return buildArray(a);
+    for (var c in a)
+    {
+        if(c == 'image')
+            continue;
+        "object" != typeof a[c] || isArray(a[c]) ? "object" == typeof a[c] && isArray(a[c]) ? (d = e.insertRow(-1),
+        b = d.insertCell(-1),
+        b.colSpan = 2,
+        b.innerHTML = '<div>' + encodeText(c) + '</div><table style="width:100%">' + $(buildArray(a[c]), !1).html() + "</table>") : (d = e.insertRow(-1),
+        b = d.insertCell(-1),
+        b.innerHTML = "<div>" + encodeText(c) + "</div>",
+        d = d.insertCell(-1),
+        d.innerHTML = "<div>" + encodeText(a[c]) + "</div>") : (d = e.insertRow(-1),
+        b = d.insertCell(-1),
+        b.colSpan = 2,
+        b.innerHTML = '<div>' + encodeText(c) + '</div><table style="width:100%">' + $(buildTable(a[c]), !1).html() + "</table>");
+    }
+    return e
+}
+
+function isArray(a) {
+    return "[object Array]" === Object.prototype.toString.call(a)
+}
+
+function encodeText(a) {
+    return $("<div />").text(a).html()
+}
+
 window.addEventListener("load",navinit,false);
