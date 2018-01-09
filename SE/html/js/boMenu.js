@@ -55,8 +55,24 @@ function viewOrderPage(orderID,isNew = false){
 	if(debugMode)console.log("click " + orderID + " 編輯");
 	viewStatus = "order";
 	
+	//clearData
+	$('#name').val("");
+	$('#price').val(0);
+	$('#divUpload').html(
+		'<label for="usr">照片:</label><br>                                                                                     '+
+		'<div class="col-sm-6 col-lg-6 col-md-6" style = "padding-left : 5px;">                                                 '+
+		'	<span id = "filename" title = "None">None</span>                                                                    '+
+		'</div>                                                                                                                 '+
+		'<div class="col-sm-6 col-lg-6 col-md-6">                                                                               '+
+		'	<a href="javascript:;" class="a-upload pull-right" style = "height: 30px;">                                         '+
+		'		<input type="file" id="inputfile" accept="image/png,image/jpeg" >Upload</input>                                 '+
+		'	</a>                                                                                                                '+
+		'</div>                                                                                                                 ');
+	$('#comboMealOrder').html("");
+	$('#comboMealNumber').val(1);
+	
 	$('#OP_id').html(orderID);
-	if(!EditMode){
+	if(!isNew){
 		if(category[viewCategory] == "套餐")$('#comboMeal').show();
 		else $('#comboMeal').hide();
 		$('#OP_name').html(data[orderID].name);
@@ -71,6 +87,7 @@ function viewOrderPage(orderID,isNew = false){
 		$('#OP_image')[0].src='/mealImage/default.jpg';
 		thisIsNewMeal = true;
 	}
+	updateComboMeal();
 	$('#MenuPage').hide();
 	$('#orderPage').show();
 	btnTrigger();
@@ -187,14 +204,15 @@ function btnTrigger(){
 			$('#editCancel').show();
 			$('#c_add').show();
 			$('#addMealItem').show();
+			$('.btn-elect').show();
 			
 			//set initial  My menu variable			
 			editData = JSON.parse(JSON.stringify(data));
 			editCategory = JSON.parse(JSON.stringify(category));
 			editMenu = JSON.parse(JSON.stringify(menu));
 			editViewCategory = JSON.parse(JSON.stringify(viewCategory));
-			
-			
+			//update select
+			updateComboMeal();
 		}
 		else
 		{
@@ -204,6 +222,7 @@ function btnTrigger(){
 			$('#editCancel').hide();
 			$('#c_add').hide();
 			$('#addMealItem').hide();
+			$('.btn-elect').hide();
 		}
 	});
 	$('#editCancel').unbind('click');
@@ -218,6 +237,8 @@ function btnTrigger(){
 		$('#edit').html("編輯");
 		$('#editCancel').hide();
 		$('#c_add').hide();
+		$('#addMealItem').hide();
+		$('.btn-elect').hide();
 	});
 	$('#c_add').unbind('click');
 	$('#c_add').click(function(){
@@ -247,6 +268,25 @@ function btnTrigger(){
 	$('#addMeal').unbind('click');
 	$('#addMeal').click(function(){
 		viewOrderPage( editData.length ,true);
+	});
+	$('#comboAddMealBtn').unbind('click');
+	$('#comboAddMealBtn').click(function(){
+		if( $('#comboMealOrder').html()=="(空白)" ) $('#comboMealOrder').html("");
+		
+		var myCategory = $(':selected', $('#comboMealSelect')).closest('optgroup').attr('label');
+		var myMeal = $(':selected', $('#comboMealSelect')).val();
+		var myStr = editData[ editMenu[ myCategory ][ myMeal ] ].name;
+		myStr += ' x' + $('#comboMealNumber').val();
+		
+		
+		myStr = '<span class = "a-click comboAddMeal myDel">'+ myStr +'<br></span>';
+		$('#comboMealOrder').html($('#comboMealOrder').html()+myStr);
+		
+		$('.comboAddMeal').unbind('click');
+		$('.comboAddMeal').click(function(){
+			console.log( $(this).html() );
+			$(this).remove();
+		});
 	});
 }
 

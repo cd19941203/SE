@@ -28,7 +28,7 @@ function updateMenu(){
 			'								<hr style = "margin:0px;">                                                            '+
 			'                            </div>                                                                                   '+
 			'                            <div class="ratings">                                                                    '+
-			'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'">編輯</button>'+
+			'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'" style = "display:none;">編輯</button>'+
 			'								<span style = "font-size:20px;">NT<B>$ '+ (data[mydata].price).toLocaleString('en-US') +'</B></span>                                                                              '+
 			'								<br><br>                                                                              '+
 			'                            </div>                                                                                   '+
@@ -73,7 +73,17 @@ function noImage(test){
 }
 function updateComboMeal(){
 	var myStr = "";
-	
-	
+	var myCategory = Object.getOwnPropertyNames(editMenu);
+	for(var i = 0;i<myCategory.length; i++)
+	{
+		if(myCategory[i]=='套餐')continue;
+		var myMeal = Object.getOwnPropertyNames(editMenu[myCategory[i]]);
+		myStr += '<optgroup label="'+ myCategory[i] +'">';
+		for(var j = 0; j < myMeal.length; j++)
+		{
+			myStr += '<option>'+ editData[editMenu[myCategory[i]][myMeal[j]]].name +'</option>';
+		}
+		myStr += '</optgroup>';
+	}
 	$('#comboMealSelect').html(myStr);
 }
