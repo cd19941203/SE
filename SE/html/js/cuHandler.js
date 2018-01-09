@@ -36,7 +36,7 @@ function init()
     
     socket.on('menuStatusUpdate',(data)=>{
 		swal("商品缺貨", "", {timer:30000,icon:"success"}).then((value)=>{
-            location.reload();
+            update();
         });
 	});
     
