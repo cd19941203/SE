@@ -257,6 +257,22 @@ async function getNewVerificationCodes(account){
     }
 }
 
+async function getAllUserInfo(){
+    try{
+        var db = await database.connect();
+        return new Promise((res,rej)=>{
+            db.collection('user').find({},{projection:{_id:0,password:0,validate:0,code:0}}).toArray((err,result)=>{
+                if(err)
+                    rej(dbManipulationError);
+                else
+                    res(result);
+            });
+        });
+    }catch(err){
+        throw(dbConnectionError);
+    }
+}
+
 module.exports.getAccountType = getAccountType;
 module.exports.createAccount = createAccount;
 module.exports.login = login;
@@ -265,3 +281,4 @@ module.exports.updateAccountInfo = updateAccountInfo;
 module.exports.sendVerificationCodes = sendVerificationCodes;
 module.exports.emailConfirm = emailConfirm;
 module.exports.getNewVerificationCodes = getNewVerificationCodes;
+module.exports.getAllUserInfo = getAllUserInfo;

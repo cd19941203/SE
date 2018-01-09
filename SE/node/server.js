@@ -75,10 +75,10 @@ function init(){
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
 						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze',
-						'/genderAnalyze','/orderBan'];
+						'/genderAnalyze','/orderBan','/getAllUserInfo'];
 
 	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze',
-				   '/orderBan'];
+				   '/orderBan','/getAllUserInfo'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(req.session.valid == 'notValid'){
@@ -568,10 +568,6 @@ function init(){
 		}
 	});
 
-	app.post('/updateSetting',(req,res)=>{
-
-	});
-
 	app.get('/getUserInfo',async(req,res)=>{
 		try{
 			var acc = req.session.account;
@@ -583,6 +579,15 @@ function init(){
 			delete data['_id'];
 			if(req.session.account == 'boss')
 				delete data['password'];
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.get('/getAllUserInfo',async(req,res)=>{
+		try{
+			var data = await account.getAllUserInfo();
 			res.send(data);
 		}catch(err){
 			res.send(err);
