@@ -35,8 +35,8 @@ function submit()
         url: "/mealAnalyze",
         type: "get",
         data: {
-            endTime: begin,
-            beginTime: end,
+            endTime: end,
+            beginTime: begin,
         },
         success: function (data) {
             var label = [];
