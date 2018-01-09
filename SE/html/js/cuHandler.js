@@ -88,6 +88,7 @@ async function submitOrder()
     });
 	dateDom = document.createElement("input");
     dateDom.setAttribute('type','time');
+    dateDom.setAttribute('required','');
 	swal({closeOnClickOutside: false, title: "預期時間", content: dateDom, buttons: {confirm:{text:"確定", value:true},cancle:{text:"取消",value:false}}}).then((value)=>{        
         if(!value)
             return;
