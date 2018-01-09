@@ -69,8 +69,20 @@ async function checkCanOrder(){
         var day = now.getDay();
         var min = now.getMinutes();
         var hr = now.getHours();
-        var nowStr = hr + ':' + min;
+        var minstr;
+        var hrstr;
+        if(min<10)
+            minstr = '0'+min;
+        else
+            minstr = min.toString();
+        if(hr<10)
+            hrstr = '0'+hr;
+        else
+            hrstr = hr.toString();
+        var nowStr = hrstr + ':' + minstr;
         var orderTime = data['orderTime'][day];
+        console.log(nowStr);
+        console.log(orderTime);
         if(nowStr < orderTime['begin'] || nowStr > orderTime['end'])
             return false;
         else
