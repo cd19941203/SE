@@ -186,6 +186,22 @@ function updateOrderList(){
 function btnTrigger(){
 	$('.btn-elect').unbind('click');
 	$('.btn-elect').click(function(){
+		//test
+		var now = new Date();
+        var begin = openTime[now.getDay()].begin.split(':');
+        var end = openTime[now.getDay()].end.split(':');
+        begin[0] = parseInt(begin[0]);
+        begin[1] = parseInt(begin[1]);
+        end[0] = parseInt(end[0]);
+        end[1] = parseInt(end[1]);
+        begin = new Date(now.getFullYear(),now.getMonth(),now.getDate(),begin[0],begin[1]);
+		end = new Date(now.getFullYear(),now.getMonth(),now.getDate(),end[0],end[1]);
+		if(now < begin || now > end)
+        {
+            swal("非點餐時間", '', {timer:10000,icon:"info"});
+            return;
+		}
+		
 		viewOrderPage( $(this).attr('id') );
 	});
 	//[OrderPage] add and reduce order number
