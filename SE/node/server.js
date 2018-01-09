@@ -560,10 +560,11 @@ function init(){
 
 	app.post('/updateOrderTime',async(req,res)=>{
 		try{
-			var newTime = req.body;
+			var newTime = JSON.parse(req.body.data);
 			await setting.updateOrderTime(newTime);
 			res.send('success');
 		}catch(err){
+			console.log(err);
 			res.send(err);
 		}
 	});
