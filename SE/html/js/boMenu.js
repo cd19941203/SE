@@ -20,8 +20,8 @@ function updateCategory(){
 			myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+editCategory[i]+'</a>';
 		}
 	}
-	if(!EditMode)myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "display:none; color:MediumBlue;">新增...</a>';
-	else myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "color:MediumBlue;">新增...</a>';
+	if(!EditMode)myCategory += '<a href="#" class="list-group-item list-group-item-warning categoryAdd" id = "c_add" style = "display:none;">新增...</a>';
+	else myCategory += '<a href="#" class="list-group-item list-group-item-warning categoryAdd" id = "c_add" >新增...</a>';
 	$('#categoryList').html(myCategory);
 	btnTrigger();
 }
