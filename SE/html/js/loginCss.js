@@ -79,4 +79,5 @@ function conFirmPage() {
 
     $('#account').val(account);
     $('#password').val(password);
+    $("[type=submit]").click()
 }
