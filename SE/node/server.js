@@ -535,7 +535,7 @@ async function init(){
 		try{
 			if(typeof req.body.name === 'undefined' || typeof req.files.image === 'undefined')
 				throw('no data');
-			await setMealImage(req.body.name,req.files.image);
+			await meal.setMealImage(req.body.name,req.files.image);
 			res.send('success');
 		}catch(err){
 			res.send(err);

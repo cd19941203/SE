@@ -245,15 +245,42 @@ function btnTrigger(){
 			$('#addMealItem').hide();
             
             $.ajax({
+                async: false,
                 url: "/updateMenu",
                 type: "post",
                 cache: false,
                 data: {data:JSON.stringify(editData)},
                 success: function(data)
                 {
+                    
                     swal("更新菜單",data,{timer: 10000, icon: "info"});
                 },
             });
+            for(var type in uploadImages)
+            {
+                for(var name in uploadImages[type])
+                {
+
+                    var form = new FormData();
+                    form.append('name',name);
+                    form.append('image', uploadImages[type][name]);
+
+                    $.ajax({
+                        url: "/setMealImage",
+                        type: "post",
+                        async: true,
+                        data: form,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(data)
+                        {
+                            console.log(data);
+                        },
+                    });
+                }
+            }
+            
 		}
 	});
 	$('#editCancel').unbind('click');

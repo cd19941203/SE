@@ -35,11 +35,11 @@ var str =
 '					</li>'+
 '				</ul>'+
 '                <ul class="nav navbar-nav">'+
-'                    <li>'+
+'                    <!--li>'+
 '                        <a href="#">About</a>'+
-'                    </li>'+
+'                    </li-->'+
 '                    <li>'+
-'                        <a href="#">Menu</a>'+
+'                        <a href="/index?m=cuMenu">Menu</a>'+
 '                    </li>'+
 '                    <li>'+
 '                        <a href="/index?m=cuHistory">History</a>'+
