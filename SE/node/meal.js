@@ -29,8 +29,6 @@ async function updateMenu(menu){
 					rej(dbManipulationError);
 				else{
 					db.collection('menu').insertMany(menu,async(err,result)=>{
-                        console.log(err);
-                        console.log(result);
 						if(err)
 							rej(dbManipulationError);
 						else{
