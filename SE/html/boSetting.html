@@ -36,10 +36,6 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 	
-	<!--Noty-->
-	<link href="css/noty.css" rel="stylesheet">
-	<script src="js/noty.min.js" type="text/javascript"></script>
-	
 </head>
 
 <body>
@@ -55,12 +51,14 @@
 
 				<div class="col-md-12">
 					<div>
-						<h1 class = "mytitle" id = "title" style = "display : inline;vertical-align:bottom;">歷史清單 &nbsp; </h1>
+						<h1 class = "mytitle" id = "title" style = "display : inline;vertical-align:bottom;">設定頁面 &nbsp; </h1>
+
 					</div>
 				</div>
 			</div>
-			<div class="row" id = "DATA">
-				<div class="col-sm-12 col-lg-12 col-md-12">
+			<div class="row" id = "DATA" >
+
+				<div class="col-sm-4 col-lg-4 col-md-4">
 					<div class="thumbnail">
 					
 						<div class = "information">123</div>
@@ -69,11 +67,12 @@
 							
 							<h4 class = "spe01H4">
 								<i class="fa fa-angle-up btnOrder spe01I"></i>
-								
+								<span class = "spe01Span">#123</span>
+								<a href="#" class = "spe01A">
+									吳先生
+								</a>
 								<span class = "spe01Span">
-									<button class = "btn btn-danger QQ" disabled>拒絕</button>
-									<span class = "glyphicon glyphicon-info-sign" style = "color:MidnightBlue;"></span>
-									<span>[2017-01-03 07:35]</span>
+									(0982547854)
 								</span>
 								<span class="spe01Span-1 font-5">NT$ 105</span>
 							</h4>
@@ -87,11 +86,12 @@
 							</div>
 						</div>
 						<div class="ratings" style = "height: 40px;">
-							<div class = "pull-right myBtn">
-								<button type="button" class="btn btn-success edit">Edit</button>
-								<button type="button" class="btn btn-danger refuse">Refuse</button>
+							<div class = "pull-right ratings myBtn">
 							</div>
-							<br><br>
+							<p>
+								<span class="glyphicon glyphicon-star"></span>
+								<span >4</span>
+							</p>
 						</div>
 						
 					</div>
@@ -134,17 +134,13 @@
     <script src="js/bootstrap-switch.min.js"></script>
 	
 	<!-- Bootstrap-Switch -->
-    <!--script src="js/bootstrap-notify.min.js"></script-->
+    <script src="js/bootstrap-notify.min.js"></script>
     
     <!-- Socket.io -->
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     
 	<!-- Team JS -->
-	<script src="js/navCustomer.js"></script>
-	<script src="js/cuHistory.js"></script>
-	<script src="js/cuHistoryData.js"></script>
-	<script src="js/global.js"></script>
-	<script src="js/cuHandler.js"></script>
+	<script src="js/navBoss.js"></script>
 	
 </body>
 

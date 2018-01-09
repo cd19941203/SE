@@ -39,12 +39,3 @@ function addNoty(message, myType = notyType.info,myNotice = true)
 		}).show();
 	}
 }
-
-
-
-
-//init
-function globalInit(){
-	
-}
-addEventListener('load',globalInit,false);

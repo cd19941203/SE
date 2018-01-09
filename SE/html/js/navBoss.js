@@ -49,6 +49,9 @@ var str =
 '                    <li>'+
 '                        <a href="/index?m=boHistory">History</a>'+
 '                    </li>'+
+'                    <li>'+
+'                        <a href="/index?m=boAnalyze">Analyze</a>'+
+'                    </li>'+
 '                </ul>'+
 '            </div>'+
 '            <!-- /.navbar-collapse -->'+
