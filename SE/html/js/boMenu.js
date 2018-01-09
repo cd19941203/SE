@@ -245,12 +245,10 @@ function btnTrigger(){
 			$('#addMealItem').hide();
             
             $.ajax({
-                sync: false,
                 url: "/updateMenu",
                 type: "post",
                 cache: false,
-                contentType: 'json',
-                data: editData,
+                data: {data:JSON.stringify(editData)},
                 success: function(data)
                 {
                     swal("更新菜單",data,{timer: 10000, icon: "info"});
