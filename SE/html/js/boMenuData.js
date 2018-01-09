@@ -7,6 +7,7 @@ var editData = [];
 var editCategory = [];
 var editMenu = [];
 var editViewCategory = 0;
+var uploadImages = {};
 
 function updateMenu(){
 	var str="";
