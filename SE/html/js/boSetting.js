@@ -55,6 +55,9 @@ function btnTrigger(){
 		$('#week_'+myId+'_end').val(orderTime[myId].end);
 		$('#change_'+myId).attr('disabled',true);
 	});
+	$('.boSettingBtn').click(function(){
+		
+	});
 }
 
 function getSetting(isExample = false)
