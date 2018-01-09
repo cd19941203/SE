@@ -41,9 +41,19 @@ function btnTrigger(){
 		}
 	});
 	$('.changeBtn').click(function(){
-		var myID = $('this').attr('id').substr(8);
-		console.log(myID);
-		orderTime
+		var myId = $(this).attr('id').substr(7);
+		console.log(myId);
+		orderTime[myId].begin = $('#week_'+myId+'_begin').val();
+		orderTime[myId].end = $('#week_'+myId+'_end').val();
+		submitChangeSetting(orderTime);
+		$(this).attr('disabled',true);
+	});
+	$('.default_time').click(function(){
+		var myId = $(this).attr('id').substr(8);
+		console.log(myId);
+		$('#week_'+myId+'_begin').val(orderTime[myId].begin);
+		$('#week_'+myId+'_end').val(orderTime[myId].end);
+		$('#change_'+myId).attr('disabled',true);
 	});
 }
 
