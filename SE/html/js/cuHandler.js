@@ -7,8 +7,9 @@ function init()
 {
     url = new URL(window.location.href);
     m = url.searchParams.get('m');
-    socket = io.connect('localhost:8787');
-    if(m==null || m== 'cuMenu')
+    //socket = io.connect('localhost:8787');
+	socket = io.connect('140.121.197.192:9487');
+	if(m==null || m== 'cuMenu')
         socket.on('orderCancel',(data)=>{
             swal("訂單被拒", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"warning"});
         });

@@ -205,17 +205,19 @@ function btnTrigger(){
 			addNoty("請輸入餐點名稱",notyType.error);
 			return;
 		}
-		if(mealObject.item.length==0)
-		{
-			addNoty("請輸入套餐內容",notyType.error);
-			return;
+		if(mealObject.type == "套餐"){
+			if(mealObject.item.length==0)
+			{
+				addNoty("請輸入套餐內容",notyType.error);
+				return;
+			}
 		}
-		
 		if(thisIsNewMeal)
 		{
 			editData.push(mealObject);
 			console.log(editData);
 			console.log( editData.length-1 );
+			if(editMenu[mealObject.type] === undefined)editMenu[mealObject.type]={};
 			editMenu[mealObject.type][mealObject.name] = editData.length-1;
 		}
 		else

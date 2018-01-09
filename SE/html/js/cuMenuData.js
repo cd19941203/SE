@@ -22,11 +22,13 @@ function updateMenu(){
 		str += 
 		'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 		'                        <div class="thumbnail">                                                                      '+
-		'                            <img src="'+data[mydata].image+'" alt="" style = "width:100%;height: 14vh">                                                        '+
+		'                            <div style = "width: 100%; height: 150px; display: table-cell; vertical-align: middle;"> '+
+		'                                <img src="'+data[mydata].image+'" alt="">                                            '+
+		'                            </div>                                                                                   '+
 		'                            <div class="caption">                                                                    '+
 		'                                <h4>                                                                                 '+
-		'									<span class = "glyphicon glyphicon-search"></span>                      '+
-		'									<B>' + data[mydata].name + '</B>                                               '+
+		'									<span class = "glyphicon glyphicon-search"></span>                                '+
+		'									<B>' + data[mydata].name + '</B>                                                  '+
 		'                                </h4>                                                                                '+
 		'                                <p>                                                                                  '+
 		'沒有內容OUO'+                                                                                                        
