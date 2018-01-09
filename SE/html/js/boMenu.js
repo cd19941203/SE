@@ -43,6 +43,8 @@ function updateData(myData)
 	}
     for(var type in menu)
     {
+        if(type == '套餐')
+            continue;
         var group = document.createElement('optgroup');
         group.setAttribute('label', type);
         for(var name in menu[type])
@@ -94,6 +96,7 @@ function viewOrderPage(orderID,isNew = false){
 		$('#OP_name').html("新資料");
 		$('#OP_price').html( "0" );
 		$('#OP_image')[0].src='/mealImage/default.jpg';
+        document.getElementById('item').innerHTML = '';
 		thisIsNewMeal = true;
 	}
 	$('#MenuPage').hide();
@@ -245,15 +248,43 @@ function btnTrigger(){
 			$('#addMealItem').hide();
             
             $.ajax({
+                async: false,
                 url: "/updateMenu",
                 type: "post",
                 cache: false,
                 data: {data:JSON.stringify(editData)},
                 success: function(data)
                 {
-                    swal("更新菜單",data,{timer: 10000, icon: "info"});
+                    swal("更新菜單",data,{timer: 10000, icon: "info"}).then((value)=>{
+                        location.reload();
+                    });
                 },
             });
+            for(var type in uploadImages)
+            {
+                for(var name in uploadImages[type])
+                {
+
+                    var form = new FormData();
+                    form.append('name',name);
+                    form.append('image', uploadImages[type][name]);
+
+                    $.ajax({
+                        url: "/setMealImage",
+                        type: "post",
+                        async: true,
+                        data: form,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(data)
+                        {
+                            console.log(data);
+                        },
+                    });
+                }
+            }
+            
 		}
 	});
 	$('#editCancel').unbind('click');
