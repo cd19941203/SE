@@ -9,7 +9,7 @@ var btnStr = Object.freeze({
 	'				<button type="button" class="btn btn-success ok">OK</button>         ',
 	WAIT: 
 	'				<button type="button" class="btn btn-success ok">OK</button>         '+
-	/*'				<button type="button" class="btn btn-danger cancel">Cancel</button>  '*/});
+	'				<button type="button" class="btn btn-danger cancel">Cancel</button>  '});
 var statusNumber = Object.seal({
 	NEW:0,
 	ACCEPT:0,
