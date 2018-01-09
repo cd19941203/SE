@@ -183,6 +183,7 @@ function btnTrigger(){
         mealObject.price = parseInt(document.getElementById('price').value);
         mealObject.inventory = true;
         mealObject.image = '/mealImage/default.jpg';
+		
         if(mealObject.type == "套餐")
         {
             var arr = document.getElementById('item').innerHTML.split('<br>');
@@ -197,9 +198,25 @@ function btnTrigger(){
             document.getElementById('inputfile').value = "";
             document.getElementById('filename').innerHTML = "None";
         }
+		
+		//if  is Empty
+		if(mealObject.name=="")
+		{
+			addNoty("請輸入餐點名稱",notyType.error);
+			return;
+		}
+		if(mealObject.item.length==0)
+		{
+			addNoty("請輸入套餐內容",notyType.error);
+			return;
+		}
+		
 		if(thisIsNewMeal)
 		{
 			editData.push(mealObject);
+			console.log(editData);
+			console.log( editData.length-1 );
+			editMenu[mealObject.type][mealObject.name] = editData.length-1;
 		}
 		else
 		{
@@ -218,7 +235,7 @@ function btnTrigger(){
 	$('#edit').unbind('click');
 	$('#edit').click(function(){
 		if(viewStatus != "menu"){
-			addNoty("請先回到菜單頁面後再次嘗試。",notyType.error);
+			addNoty("請先回到菜單頁面後再次嘗試",notyType.error);
 			return;
 		}
 		EditMode = !EditMode;
@@ -230,6 +247,7 @@ function btnTrigger(){
 			$('#editCancel').show();
 			$('#c_add').show();
 			$('#addMealItem').show();
+			$('.btn-elect').show();
 			
 			//set initial  My menu variable			
 			editData = JSON.parse(JSON.stringify(data));
@@ -246,6 +264,7 @@ function btnTrigger(){
 			$('#editCancel').hide();
 			$('#c_add').hide();
 			$('#addMealItem').hide();
+			$('.btn-elect').hide();
             
             $.ajax({
                 async: false,
@@ -300,6 +319,7 @@ function btnTrigger(){
 		$('#editCancel').hide();
 		$('#c_add').hide();
 		$('#addMealItem').hide();
+		$('.btn-elect').hide();
 	});
 	$('#c_add').unbind('click');
 	$('#c_add').click(function(){
@@ -346,6 +366,10 @@ function btnTrigger(){
             }
             document.getElementById('item').innerHTML = itemStr;
         }
+	});
+	$('.btnRemove').unbind('click');
+	$('.btnRemove').click(function(){
+		
 	});
 }
 

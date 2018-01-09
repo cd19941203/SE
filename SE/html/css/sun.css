@@ -157,6 +157,10 @@ ul li ul
 	text-decoration: line-through;
 	color:red;
 }
+.cursorPointer
+{
+	cursor: pointer;
+}
 /* Let input type="number" noButton       NOW NOT USE
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

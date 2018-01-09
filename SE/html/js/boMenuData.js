@@ -22,6 +22,7 @@ function updateMenu(){
 			'                                <h4>                                                                                 '+
 			'									<span class = "glyphicon glyphicon-search"></span>                      '+
 			'									<B>' + data[mydata].name + '</B>                                               '+
+			'                                   <span class = "glyphicon glyphicon-remove cursorPointer btnRemove" style = "color:#CC0000;"></span>'+
 			'                                </h4>                                                                                '+
 			'                                <p>                                                                                  '+
 			'沒有內容OUO'+                                                                                                        
@@ -29,7 +30,7 @@ function updateMenu(){
 			'								<hr style = "margin:0px;">                                                            '+
 			'                            </div>                                                                                   '+
 			'                            <div class="ratings">                                                                    '+
-			'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'">編輯</button>'+
+			'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'" style = "display:none;">編輯</button>'+
 			'								<span style = "font-size:20px;">NT<B>$ '+ (data[mydata].price).toLocaleString('en-US') +'</B></span>                                                                              '+
 			'								<br><br>                                                                              '+
 			'                            </div>                                                                                   '+
