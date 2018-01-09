@@ -97,6 +97,8 @@ function viewOrderPage(orderID,isNew = false){
 		$('#OP_price').html( "0" );
 		$('#OP_image')[0].src='/mealImage/default.jpg';
         document.getElementById('item').innerHTML = '';
+        document.getElementById('name').innerHTML = '';
+        document.getElementById('price').innerHTML = '';
 		thisIsNewMeal = true;
 	}
 	$('#MenuPage').hide();
