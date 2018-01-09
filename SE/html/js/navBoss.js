@@ -50,7 +50,7 @@ var str =
 '                        <a href="/index?m=boHistory">History</a>'+
 '                    </li>'+
 '                    <li>'+
-'                        <a href="/index?m=boAnalyze">History</a>'+
+'                        <a href="/index?m=boAnalyze">Analyze</a>'+
 '                    </li>'+
 '                </ul>'+
 '            </div>'+
