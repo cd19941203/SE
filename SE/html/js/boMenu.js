@@ -43,6 +43,8 @@ function updateData(myData)
 	}
     for(var type in menu)
     {
+        if(type == '套餐')
+            continue;
         var group = document.createElement('optgroup');
         group.setAttribute('label', type);
         for(var name in menu[type])
@@ -94,6 +96,7 @@ function viewOrderPage(orderID,isNew = false){
 		$('#OP_name').html("新資料");
 		$('#OP_price').html( "0" );
 		$('#OP_image')[0].src='/mealImage/default.jpg';
+        document.getElementById('item').innerHTML = '';
 		thisIsNewMeal = true;
 	}
 	$('#MenuPage').hide();
