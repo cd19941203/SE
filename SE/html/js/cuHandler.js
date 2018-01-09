@@ -129,11 +129,30 @@ async function submitOrder()
         if(totalPrice != 0)
         {
             var orderDom = document.createElement("div");
-            var tmp = document.getElementById("order_list").cloneNode(true);
+            
+            var myStr = "";
+            for(var i=0;i<myOrderIndex.length;i++){
+                myStr+='<li class = "top-li">';
+                myStr+=	'<span class = "order_name">'+
+                        '	'+myOrderIndex[i][1]+
+                        '	<span>x<B>'+ myOrder[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ] +'</B></span>'+
+                        '</span>'+
+                        '<span>'+
+                        '	<div class = "information" id = "info_'+menu[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ]+'"hidden>'+myOrderIndex[i][0]+','+myOrderIndex[i][1]+','+myOrder[ myOrderIndex[i][0] ][ myOrderIndex[i][1] ]+'</div>'+
+                        '</span>';
+
+                if(myOrderIndex[i][1] == "套餐"){
+                    myStr+='<ul>';
+                    myStr+='</ul>';
+                }
+                myStr+='</li>';
+            }            
+            
+            var tmp = document.createElement("span");
             tmp.style.textAlign = "left";
-            for(var d of tmp.children)
-                d.removeChild(d.lastChild);;
+            tmp.innerHTML = myStr;;
             orderDom.appendChild(tmp);
+            
             tmp = document.createElement("span");
             tmp.innerHTML = "預期時間 : " + expectTime;
             orderDom.appendChild(tmp);
