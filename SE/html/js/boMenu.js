@@ -270,7 +270,9 @@ function btnTrigger(){
 			$('#c_add').hide();
 			$('#addMealItem').hide();
 			$('.btn-elect').hide();
-            
+			console.log("送出資料");
+			console.log(editData);
+            /*
             $.ajax({
                 async: false,
                 url: "/updateMenu",
@@ -308,7 +310,7 @@ function btnTrigger(){
                     });
                 }
             }
-            
+            */
 		}
 	});
 	$('#editCancel').unbind('click');
@@ -388,7 +390,16 @@ function btnTrigger(){
 		.then((value) => {
             if(value != null)
             {
-                
+				var thisCategory = editCategory[$(this).attr('id').substr(7)];
+				var thisMeal = $(this).siblings('b').html();
+				delete editData[ editMenu[ thisCategory ][ thisMeal ] ];
+				delete editMenu[thisCategory][thisMeal];
+				if(Object.getOwnPropertyNames(editMenu[thisCategory]).length == 0)
+				{
+					delete editMenu[thisCategory];
+				}
+				
+				swal("操作成功", "已刪除一筆資料", {timer: 10000, icon: "success"});
             }
 	})});
 }

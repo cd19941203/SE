@@ -294,7 +294,8 @@ function boList_init() {
     //socket = io.connect('localhost:8787');
 
     socket.on('newOrder', (data) => {
-        swal("有新訂單!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "info"});
+        //swal("有新訂單!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "info"});
+        addNoty("#" + data["orderNumber"] +" 有新訂單!!",notyType.info);
         update();
     });
 
