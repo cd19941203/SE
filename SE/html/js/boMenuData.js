@@ -7,6 +7,7 @@ var editData = [];
 var editCategory = [];
 var editMenu = [];
 var editViewCategory = 0;
+var uploadImages = {};
 
 function updateMenu(){
 	var str="";
@@ -16,7 +17,7 @@ function updateMenu(){
 			str += 
 			'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 			'                        <div class="thumbnail">                                                                      '+
-			'                            <img src="'+ data[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%; height: 16vh;">                                                        '+
+			'                            <img src="'+ data[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+
 			'									<span class = "glyphicon glyphicon-search"></span>                      '+
@@ -28,7 +29,7 @@ function updateMenu(){
 			'								<hr style = "margin:0px;">                                                            '+
 			'                            </div>                                                                                   '+
 			'                            <div class="ratings">                                                                    '+
-			'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'" style = "display:none;">編輯</button>'+
+			'								<button class = "btn btn-success pull-right btn-elect" id = "'+mydata+'">編輯</button>'+
 			'								<span style = "font-size:20px;">NT<B>$ '+ (data[mydata].price).toLocaleString('en-US') +'</B></span>                                                                              '+
 			'								<br><br>                                                                              '+
 			'                            </div>                                                                                   '+
@@ -42,7 +43,7 @@ function updateMenu(){
 			str += 
 			'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 			'                        <div class="thumbnail">                                                                      '+
-			'                            <img src="'+ editData[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%; height: 16vh;">                  '+
+			'                            <img src="'+ editData[mydata].image +'" onerror="noImage(this);" alt="" style = "width:100%">                                                        '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+
 			'									<span class = "glyphicon glyphicon-search"></span>                      '+
@@ -73,17 +74,7 @@ function noImage(test){
 }
 function updateComboMeal(){
 	var myStr = "";
-	var myCategory = Object.getOwnPropertyNames(editMenu);
-	for(var i = 0;i<myCategory.length; i++)
-	{
-		if(myCategory[i]=='套餐')continue;
-		var myMeal = Object.getOwnPropertyNames(editMenu[myCategory[i]]);
-		myStr += '<optgroup label="'+ myCategory[i] +'">';
-		for(var j = 0; j < myMeal.length; j++)
-		{
-			myStr += '<option>'+ editData[editMenu[myCategory[i]][myMeal[j]]].name +'</option>';
-		}
-		myStr += '</optgroup>';
-	}
+	
+	
 	$('#comboMealSelect').html(myStr);
 }

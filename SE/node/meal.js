@@ -97,7 +97,7 @@ async function setMealImage(mealName,image){
 	try{
 		var db = await database.connect();
 		return new Promise((res,rej)=>{
-			db.collection('menu').updateOne({name:mealName},{$set:{image:'/mealImage' + mealName + '.jpg'}},(err,result)=>{
+			db.collection('menu').updateOne({name:mealName},{$set:{image:'/mealImage/' + mealName + '.jpg'}},(err,result)=>{
 				if(err)
 					rej(dbManipulationError);
 				else{

@@ -8,7 +8,7 @@ var str =
 '                    <span class="icon-bar"></span>'+
 '                    <span class="icon-bar"></span>'+
 '                </button>'+
-'                <a class="navbar-brand" href="#">BFS</a>'+
+'                <a class="navbar-brand" href="/index?m=boMenu">BFS</a>'+
 '            </div>'+
 '            <!-- Collect the nav links, forms, and other content for toggling -->'+
 '            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">'+
@@ -36,10 +36,13 @@ var str =
 '				</ul>'+
 '                <ul class="nav navbar-nav">'+
 '                    <li>'+
-'                        <a href="/index?m=boList">Make List</a>'+
+'                        <a href="/index?m=boList">Order List</a>'+
 '                    </li>'+
 '                    <li>'+
-'                        <a href="/index?m=boMenuList">Menu</a>'+
+'                        <a href="/index?m=boMenu">Menu</a>'+
+'                    </li>'+
+'                    <li>'+
+'                        <a href="/index?m=boMenuList">Meal Inventory</a>'+
 '                    </li>'+
 '                    <li>'+
 '                        <a href="/index?m=boHistory">History</a>'+

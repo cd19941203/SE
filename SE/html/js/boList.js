@@ -237,6 +237,13 @@ function btnTrigger() {
         $(".cancel").click(function () {
             btnRemoveList($(this), "cancel", notyType.success);
             updateStatusNumber(0, 0, -1);
+            $.ajax({
+                url: '/orderBan',
+                type: 'post',
+                data: {
+                    orderNumber: this.parentElement.attributes.value.value
+                }
+            });
         });
     } else {
         console.error("'STATUS' is error");

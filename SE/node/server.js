@@ -36,7 +36,7 @@ function datePlus8(x){
 	return x;
 }
 
-async function init(){
+function init(){
 	
 	////////////////////////////////////////////////////////////
 	// setting for parsing post data
@@ -75,10 +75,10 @@ async function init(){
 	
 	var needLoginPath = ['/getOrderList','/getMenu','/whoAmI','/updateMenu','/getMenu','/getSetting','/updateSetting',
 						'/setMealImage','/getUserInfo','/updateAccountInfo','/updateOrderTime','/soldOut','/mealAnalyze',
-						'/genderAnalyze','/orderBan'];
+						'/genderAnalyze','/orderBan','/getAllUserInfo'];
 
 	var bossOnly = ['/updateMenu','/updateSetting','/updateOrderTime','/soldOut','/mealAnalyze','/genderAnalyze',
-				   '/orderBan'];
+				   '/orderBan','/getAllUserInfo'];
 
 	app.use(needLoginPath,(req,res,next)=>{
 		if(req.session.valid == 'notValid'){
@@ -276,10 +276,12 @@ async function init(){
 			socket.on('orderRes',async(data)=>{
 				var orderNumber;
 				try{
+					console.log(data);
 					var orderRes = JSON.parse(data);
 					orderNumber = orderRes['orderNumber'];
 					orderRes['status'] = 'new';
-					orderRes['beginTime'] = new Date();
+					orderRes['beginTime'] = getDate();
+					orderRes['expectTime']  = datePlus8(new Date(orderRes['expectTime']));
 					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:orderRes['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete orderRes['userInfo']['_id'];
@@ -288,6 +290,7 @@ async function init(){
 					sio.to(socket.request.session.account).emit('orderRes',{orderNumber:orderNumber,status:'success'});
 					sio.to('boss').emit('newOrder',orderRes);
 				}catch(err){
+					console.log(err);
 					if(err instanceof SyntaxError){
 						sio.to(socket.request.session.account).emit('orderRes',{status:'Data format error'});
 					}
@@ -363,11 +366,14 @@ async function init(){
 		}catch(err){
 			console.log(err);
 		}*/
+		/*
 		var data = await analyze.getGenderAccount('男');
 		console.log(data);
 		var dd = await analyze.calculateByAccount(data,datePlus8(new Date('2017-12-01')),datePlus8(new Date('2018-02-01')));
 		console.log(dd);
 		//await account.sendMail('eden851104@gmail.com');
+		res.location('/index?m=cuSetting');
+		*/
 		res.redirect('/index');
 	});
 
@@ -521,7 +527,7 @@ async function init(){
 
 	app.post('/updateMenu',async(req,res)=>{
 		try{
-			var menu = req.body;
+			var menu = JSON.parse(req.body.data);
 			if(typeof menu === 'undefined')
 				throw('no data');
 			await meal.updateMenu(menu);
@@ -535,9 +541,10 @@ async function init(){
 		try{
 			if(typeof req.body.name === 'undefined' || typeof req.files.image === 'undefined')
 				throw('no data');
-			await setMealImage(req.body.name,req.files.image);
+			await meal.setMealImage(req.body.name,req.files.image);
 			res.send('success');
 		}catch(err){
+			console.log(err);
 			res.send(err);
 		}
 	});
@@ -561,10 +568,6 @@ async function init(){
 		}
 	});
 
-	app.post('/updateSetting',(req,res)=>{
-
-	});
-
 	app.get('/getUserInfo',async(req,res)=>{
 		try{
 			var acc = req.session.account;
@@ -576,6 +579,15 @@ async function init(){
 			delete data['_id'];
 			if(req.session.account == 'boss')
 				delete data['password'];
+			res.send(data);
+		}catch(err){
+			res.send(err);
+		}
+	});
+
+	app.get('/getAllUserInfo',async(req,res)=>{
+		try{
+			var data = await account.getAllUserInfo();
 			res.send(data);
 		}catch(err){
 			res.send(err);
@@ -629,14 +641,17 @@ async function init(){
 
 	app.post('/orderBan',async(req,res)=>{
 		try{
-			
+			var orderNumber = req.body.orderNumber;
+			if(typeof orderNumber === 'undefined')
+				res.send('err');
+			await order.orderStatusChange(parseInt(orderNumber),'notComplete');
 		}catch(err){
-			res.send(err);
+            res.send(err);
 		}
 	});
 
 	server.listen(8787,()=>{
-		console.log('server gogo OUO!');
+		console.log('server start!');
 	});
 }
 
