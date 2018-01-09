@@ -164,7 +164,8 @@ function boList_init(){
 	//Notification
 	$("#onNotice").bootstrapSwitch({size:"mini"});
 	$("#onNotice").on('switchChange.bootstrapSwitch', function(event, state) {onNotice = state;});
-	
+	document.getElementById("beginTime").value = (new Date()).getFullYear()+'-01-01';
+	document.getElementById("endTime").value = (new Date()).getFullYear()+'-12-31';
 	//boList_init
 }
 
