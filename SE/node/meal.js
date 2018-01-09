@@ -101,7 +101,7 @@ async function setMealImage(mealName,image){
 				if(err)
 					rej(dbManipulationError);
 				else{
-					fs.renameSync(image.path,'../mealImage/' + mealName + '.jpg');
+					fs.copyFileSync(image.path,'../mealImage/' + mealName + '.jpg');
 					res();
 				}
 			});
