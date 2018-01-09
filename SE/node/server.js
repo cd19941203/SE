@@ -59,7 +59,7 @@ function init(){
 	//let we can get connection session from socket
 	var sessionMiddleware = session({
 		secret: "keyboard cat",
-		cookie:{maxAge:60*30000}
+		cookie:{maxAge:60*3000000}
 	});
 
 	sio.use(function(socket, next) {
