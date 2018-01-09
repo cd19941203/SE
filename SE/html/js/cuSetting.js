@@ -39,6 +39,11 @@ function submitSetting()
         swal("Please fill up all form!!", '', {timer:10000,icon:"info"});
         return;
     }
+    if( gender!='男' || gender!='女')
+    {
+        swal("Gender invalid!!", '', {timer:10000,icon:"info"});
+        return;
+    }
     if(!(oPassword != '' && nPassword != '' && nnPassword != '' && oPassword == oldUserData.password && nPassword == nnPassword))
     {
         document.getElementById('nnPassword').value = oldUserData.password;
