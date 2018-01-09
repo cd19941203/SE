@@ -20,8 +20,8 @@ function updateCategory(){
 			myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+editCategory[i]+'</a>';
 		}
 	}
-	if(!EditMode)myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "display:none; color:MediumBlue;">新增...</a>';
-	else myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "color:MediumBlue;">新增...</a>';
+	if(!EditMode)myCategory += '<a href="#" class="list-group-item list-group-item-warning categoryAdd" id = "c_add" style = "display:none;">新增...</a>';
+	else myCategory += '<a href="#" class="list-group-item list-group-item-warning categoryAdd" id = "c_add">新增...</a>';
 	$('#categoryList').html(myCategory);
 	btnTrigger();
 }
@@ -73,17 +73,28 @@ function viewOrderPage(orderID,isNew = false){
 	
 	$('#OP_id').html(orderID);
 	if(!isNew){
-		if(category[viewCategory] == "套餐")$('#comboMeal').show();
+		if(category[editViewCategory] == "套餐"){
+			var myStr="";
+			for(var i = 0 ;i<editData[orderID].item.length;i++){
+				myStr += '<span class = "a-click comboAddMeal myDel">'+ editData[orderID].item[i] +'<br></span>';
+			}
+			$('#comboMealOrder').html($('#comboMealOrder').html()+myStr);
+			$('#comboMeal').show();
+		}
 		else $('#comboMeal').hide();
-		$('#OP_name').html(data[orderID].name);
-		$('#OP_price').html( (data[orderID].price).toLocaleString('en-US') );
-		$('#OP_image')[0].src='image/mealImage/'+data[orderID].name+'.jpg';
+		$('#OP_name').html(editData[orderID].name);
+		$('#OP_price').html( (editData[orderID].price).toLocaleString('en-US') );
+		$('#OP_image')[0].src=editData[orderID].image;
+		
+		$('#name').val(editData[orderID].name);
+		$('#price').val( (editData[orderID].price) );
+		
 	}
 	else{
 		if(editCategory[editViewCategory] == "套餐")$('#comboMeal').show();
 		else $('#comboMeal').hide();
 		$('#OP_name').html("新資料");
-		$('#OP_price').html( "0" );
+		$('#OP_price').html("0");
 		$('#OP_image')[0].src='/mealImage/default.jpg';
 		thisIsNewMeal = true;
 	}
@@ -276,17 +287,16 @@ function btnTrigger(){
 		var myCategory = $(':selected', $('#comboMealSelect')).closest('optgroup').attr('label');
 		var myMeal = $(':selected', $('#comboMealSelect')).val();
 		var myStr = editData[ editMenu[ myCategory ][ myMeal ] ].name;
-		myStr += ' x' + $('#comboMealNumber').val();
+		if($('#comboMealNumber').val() != 1)myStr += ' x' + $('#comboMealNumber').val();
 		
 		
 		myStr = '<span class = "a-click comboAddMeal myDel">'+ myStr +'<br></span>';
 		$('#comboMealOrder').html($('#comboMealOrder').html()+myStr);
-		
-		$('.comboAddMeal').unbind('click');
-		$('.comboAddMeal').click(function(){
-			console.log( $(this).html() );
-			$(this).remove();
-		});
+	});
+	$('.comboAddMeal').unbind('click');
+	$('.comboAddMeal').click(function(){
+		console.log( $(this).html() );
+		$(this).remove();
 	});
 }
 

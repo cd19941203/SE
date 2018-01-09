@@ -17,8 +17,8 @@ var str =
 '                    <li><a data-toggle="tab" href="#">Log out</a></li>'+
 '                    <li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-user"></span> Boss</a></li-->'+
 '					<li class="dropdown">'+
-'						<a class="dropdown-toggle" data-toggle="dropdown" href="#">'+
-'						<img id="img" style="width: 20px; height: 20px;" src="/userImage/boss.jpg">'+
+'						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style = "padding-top:5px;padding-bottom:5px;">'+
+'						<img id="img" style="width: 40px; height: 40px;" src="/userImage/boss.jpg">'+
 '							Boss'+
 '							<span class="caret"></span>'+
 '						</a>'+
