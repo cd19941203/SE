@@ -12,7 +12,7 @@ function webMake(id,name,phone,date,total,order,star){
 			'			<p>'+order[i][0] + plural + ' <span class = "pull-right">NT$ '+order[i][2]+'</span></p>                 \n';
 	}
 	date = new Date(date);
-	date = date.getFullYear() + "." + (date.getMonth()) + "." + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+	date = date.getFullYear() + "." + (date.getMonth()+1) + "." + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
 	var web = 
 	'<div class="col-sm-12 col-lg-12 col-md-12">                                         '+
 	'	<div class="thumbnail">                                                          '+
