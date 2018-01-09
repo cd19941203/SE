@@ -415,7 +415,7 @@ function init(){
 				req.session.valid = true;
 				req.session.account = acc;
 				if(acc == 'boss')
-					res.sendFile('boMenu.html',{root:rootPath});
+					res.sendFile('boList.html',{root:rootPath});
 				else
 					res.sendFile('cuMenu.html',{root:rootPath});
 			}
@@ -448,7 +448,7 @@ function init(){
         }
 		else if(typeof m === "undefined"){
 			if(req.session.account == 'boss'){
-				res.sendFile('boMenu.html',{root:rootPath});
+				res.sendFile('boList.html',{root:rootPath});
 			}
 			else{
 				res.sendFile('cuMenu.html',{root:rootPath});
