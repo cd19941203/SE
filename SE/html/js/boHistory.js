@@ -51,7 +51,7 @@ function updateData(tmp = data){
 		var mealTemp = [];
         for(var meal of tmp[key].meal)
             mealTemp.push([meal.name,meal.amount,meal.price*meal.amount]);
-		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,tmp[key].totalPrice,mealTemp,4);
+		webMake(tmp[key].orderNumber,tmp[key].account,"0988452145",tmp[key].beginTime,tmp[key].totalPrice,mealTemp,4,tmp[key].status);
 	}
 	data = tmp;
     userInfo();
