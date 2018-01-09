@@ -61,6 +61,10 @@ async function submit()
     $.ajax({
         url: "/getOrderStatusCount",
         type: "get",
+        data: {
+            endTime: end,
+            beginTime: begin,
+        },
         success: function (data) {
             createChart(data,"Order Analyze", document.getElementById('chartB').getContext('2d'));
         }
