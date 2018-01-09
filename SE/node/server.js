@@ -276,11 +276,12 @@ function init(){
 			socket.on('orderRes',async(data)=>{
 				var orderNumber;
 				try{
+					console.log(data);
 					var orderRes = JSON.parse(data);
 					orderNumber = orderRes['orderNumber'];
 					orderRes['status'] = 'new';
 					orderRes['beginTime'] = getDate();
-					orderRes['expectTime']  = datePlus8(new Date(newOrder['expectTime']));
+					orderRes['expectTime']  = datePlus8(new Date(orderRes['expectTime']));
 					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:orderRes['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete orderRes['userInfo']['_id'];
@@ -289,6 +290,7 @@ function init(){
 					sio.to(socket.request.session.account).emit('orderRes',{orderNumber:orderNumber,status:'success'});
 					sio.to('boss').emit('newOrder',orderRes);
 				}catch(err){
+					console.log(err);
 					if(err instanceof SyntaxError){
 						sio.to(socket.request.session.account).emit('orderRes',{status:'Data format error'});
 					}
@@ -542,6 +544,7 @@ function init(){
 			await meal.setMealImage(req.body.name,req.files.image);
 			res.send('success');
 		}catch(err){
+			console.log(err);
 			res.send(err);
 		}
 	});
@@ -636,9 +639,9 @@ function init(){
 			var orderNumber = req.body.orderNumber;
 			if(typeof orderNumber === 'undefined')
 				res.send('err');
-			await order.orderStatusChange(orderNumner,'notComplete');
+			await order.orderStatusChange(parseInt(orderNumber),'notComplete');
 		}catch(err){
-			res.send(err);
+            res.send(err);
 		}
 	});
 
