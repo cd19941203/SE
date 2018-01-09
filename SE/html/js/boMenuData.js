@@ -52,7 +52,7 @@ function updateMenu(){
 			'                                <h4>                                                                                 '+
 			'									<span class = "glyphicon glyphicon-tag"></span>                                '+
 			'									<B>' + editData[mydata].name + '</B>                                              '+
-			'                                   <span class = "glyphicon glyphicon-remove cursorPointer btnRemove" style = "color:#CC0000;"></span>'+
+			'                                   <span class = "glyphicon glyphicon-remove cursorPointer btnRemove" id = "remove_'+ editViewCategory +'" style = "color:#CC0000;"></span>'+
 			'                                </h4>                                                                                '+
 			'                                <p>                                                                                  '+
 			''+                                                                                                        
