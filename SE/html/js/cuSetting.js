@@ -49,10 +49,25 @@ function submitSetting()
         document.getElementById('nnPassword').value = oldUserData.password;
     }
 	//is empty or error
-	if(!(oPassword != '' && nPassword != '' && nnPassword != '' && oPassword == oldUserData.password && nPassword == nnPassword))
+	if(oPassword == '' || oPassword != oldUserData.password)
     {
-        document.getElementById('nnPassword').value = oldUserData.password;
+        swal("請輸入密碼", '', {timer:10000,icon:"error"});
+		return;
     }
+	if(nPassword == '')
+    {
+        swal("請輸入新密碼", '', {timer:10000,icon:"error"});
+		return;
+    }
+	if(nPassword != nnPassword)
+	{
+		swal("密碼不相符", '', {timer:10000,icon:"error"});
+		return;
+	}
+	if(!$('#check')[0].checked){
+		swal("請勾選 我同意。早餐店老闆很辛苦做早餐，我會乖乖不棄單。", '', {timer:10000,icon:"error"});
+		return;
+	}
     document.getElementById('nnPassword').name = 'password';
     document.getElementById('nPassword').removeAttribute('name');
     document.getElementById('oPassword').removeAttribute('name');
