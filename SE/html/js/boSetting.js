@@ -71,24 +71,19 @@ function btnTrigger(){
 			}
 		}
 	});
-	/*$('.default_week').click(function(){
+	$('.default_week').click(function(){
 		for(var i = 0 ; i < 7 ; i++)
 		{
-			if($("#week_"+i).hasClass('btn-info'))
+			console.log($("#week_"+i).hasClass('btn-info'));
+			console.log((orderTime[i].begin == orderTime[i].end && orderTime[i].begin =="00:00"));
+			
+			if( !($("#week_"+i).hasClass('btn-info') ^ (orderTime[i].begin == orderTime[i].end && orderTime[i].begin =="00:00")) )
 			{
-				$("#week_"+ i +"_begin").removeAttr('disabled');
-				$("#week_"+ i +"_end").removeAttr('disabled');
-			}
-			else
-			{
-				$("#week_"+ i +"_begin").attr('disabled',true);
-				$("#week_"+ i +"_end").attr('disabled',true);
-				$("#change_"+ i).attr('disabled',true);
-				orderTime[i].begin = "00:00";
-				orderTime[i].end = "00:00";
+				console.log("go");
+				$("#week_"+i).click();
 			}
 		}
-	});*/
+	});
 }
 
 function getSetting(isExample = false)
