@@ -304,7 +304,8 @@ function boList_init() {
     });
 
     socket.on('orderComplete', (data) => {
-        swal("訂單已完成!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "info"});
+        //swal("訂單已完成!!", "訂單編號 #" + data["orderNumber"], {timer: 10000, icon: "info"});
+		addNoty("#" + data["orderNumber"] +" 訂單已完成!!",notyType.success);
         update();
     });
 
