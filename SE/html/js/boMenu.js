@@ -255,8 +255,9 @@ function btnTrigger(){
                 data: {data:JSON.stringify(editData)},
                 success: function(data)
                 {
-                    
-                    swal("更新菜單",data,{timer: 10000, icon: "info"});
+                    swal("更新菜單",data,{timer: 10000, icon: "info"}).then((value)=>{
+                        location.reload();
+                    });
                 },
             });
             for(var type in uploadImages)
