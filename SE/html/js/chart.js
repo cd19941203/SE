@@ -80,7 +80,7 @@ function createChart(data, title, chartDom)
         }
     }catch(err)
     {
-        for (var doc of data) {
+        for (var doc in data) {
             label.push(doc);
             amount.push(data[doc]);
             color.push(getRandomColor());
