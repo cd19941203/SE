@@ -167,4 +167,29 @@ function boList_init(){
 	
 	//boList_init
 }
+
+function query()
+{
+    var begin = document.getElementById("beginTime").value;
+    var end = document.getElementById("endTime").value;
+    if(begin == "" || end == "" || end < begin)
+    {
+        swal('錯誤','時間格式錯誤',{icon:'error'});
+        return;
+    }
+        
+    $.ajax({
+        url: "/getOrderList",
+        type: "get",
+        cache: false,
+        data:{
+            beginTime: begin,
+            endTime: end
+        },
+        success: function(data)
+        {
+            updateData(data);
+        }
+    });
+}
 addEventListener("load",boList_init,false);
