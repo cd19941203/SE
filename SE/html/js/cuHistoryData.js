@@ -5,6 +5,7 @@ var statusName = Object.freeze({
 	'accepted': ['已接受','btn-default'],
 	'pending': ['待修改','btn-danger'],
 	'completed': ['已完成','btn-success'],
+	'notComplete': ['未取餐','btn-success'],
 	'done': ['已結單',''],
 	'canceled': ['已取消',''],
 });
