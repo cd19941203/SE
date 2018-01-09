@@ -11,15 +11,24 @@ function init()
 	socket = io.connect('140.121.197.192:9487');
 	if(m==null || m== 'cuMenu')
         socket.on('orderCancel',(data)=>{
-            swal("訂單被拒", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"warning"});
+            swal("訂單被拒", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"warning"}).then((value)=>{
+                if(m == 'cuHistory')
+                    location.reload();
+            });
         });
     
     socket.on('orderAccept',(data)=>{
-		swal("訂單成立", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"});
+		swal("訂單成立", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"}).then((value)=>{
+            if(m == 'cuHistory')
+                location.reload();
+        });
 	});
     
     socket.on('orderComplete',(data)=>{
-		swal("訂單完成", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"});
+		swal("訂單完成", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"}).then((value)=>{
+            if(m == 'cuHistory')
+                location.reload();
+        });
 	});
     
     socket.on('newOrder',(data)=>{
@@ -32,6 +41,13 @@ function init()
                 location.reload();
         });
         
+    });
+    
+    socket.on('orderDone',(data)=>{
+		swal("訂單結單", "訂單編號 #"+data["orderNumber"], {timer:30000,icon:"success"}).then((value)=>{
+            if(m == 'cuHistory')
+                location.reload();
+        });
 	});
     
     socket.on('orderRes',(data)=>{
