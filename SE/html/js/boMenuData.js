@@ -18,7 +18,7 @@ function updateMenu(){
 			'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 			'                        <div class="thumbnail">                                                                      '+
 			'                            <div style = "width: 100%; height: 200px; display: table-cell; vertical-align: middle;"> '+
-			'                                <img src="'+ data[mydata].image +'" alt="" style = "height:100%">                 '+
+			'                                <img src="'+ data[mydata].image +'" alt="" style = "max-height:100%">                 '+
 			'                            </div>                                                                                   '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+
@@ -46,7 +46,7 @@ function updateMenu(){
 			'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 			'                        <div class="thumbnail">                                                                      '+
 			'                            <div style = "width: 100%; height: 200px; display: table-cell; vertical-align: middle;"> '+
-			'                                <img src="'+ editData[mydata].image +'" alt="" style = "height:100%">             '+
+			'                                <img src="'+ editData[mydata].image +'" alt="" style = "max-height:100%">             '+
 			'                            </div>                                                                                   '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+

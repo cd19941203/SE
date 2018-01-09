@@ -48,6 +48,11 @@ function submitSetting()
     {
         document.getElementById('nnPassword').value = oldUserData.password;
     }
+	//is empty or error
+	if(!(oPassword != '' && nPassword != '' && nnPassword != '' && oPassword == oldUserData.password && nPassword == nnPassword))
+    {
+        document.getElementById('nnPassword').value = oldUserData.password;
+    }
     document.getElementById('nnPassword').name = 'password';
     document.getElementById('nPassword').removeAttribute('name');
     document.getElementById('oPassword').removeAttribute('name');
