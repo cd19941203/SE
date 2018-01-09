@@ -17,7 +17,7 @@ var str =
 '                    <li><a data-toggle="tab" href="#">Log out</a></li>'+
 '                    <li><a data-toggle="tab" href="#"><span class="glyphicon glyphicon-user"></span> Admin</a></li-->'+*/
 '					<li class="dropdown">'+
-'						<a class="dropdown-toggle" data-toggle="dropdown" href="#">'+
+'						<a class="dropdown-toggle" data-toggle="dropdown" href="#" style = "padding-top:5px;padding-bottom:5px;">'+
 '							<span class="glyphicon glyphicon-user"></span>'+
 '							Admin'+
 '							<span class="caret"></span>'+
@@ -62,7 +62,7 @@ function navinit(){
                 type: "get",
                 success: function(data)
                 {
-                    str = str.replace('<span class="glyphicon glyphicon-user"></span>','<img id="img" style="width: 20px; height: 20px;" src="/userImage/'+user+'.jpg">');
+                    str = str.replace('<span class="glyphicon glyphicon-user"></span>','<img id="img" style="width: 40px; height: 40px;" src="/userImage/'+user+'.jpg">');
                     document.getElementById("nav").innerHTML = str;
                 }
             });
