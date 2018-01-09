@@ -134,13 +134,13 @@
 								</table>
 								
 								<div id = "orderOption">
-									<div style = "padding : 5px;" class="col-sm-4 col-lg-4 col-md-4">
+									<div style = "padding : 5px;" class="col-sm-4 col-lg-6 col-md-4">
 										<div class="form-group">
 											<label for="name">名稱:</label>
 											<input type="text" class="form-control" id = "name"></input>
 										</div>
 									</div>
-									<div style = "padding : 5px;" class="col-sm-4 col-lg-4 col-md-4">
+									<!--div style = "padding : 5px;" class="col-sm-4 col-lg-4 col-md-4">
 										<div class="form-group">
 											<label for="group">Select list:</label>
 											<select class="form-control" id="group">
@@ -150,8 +150,8 @@
 												<option>漢堡</option>
 											</select>
 										</div>
-									</div>
-									<div style = "padding : 5px;" class="col-sm-4 col-lg-4 col-md-4">
+									</div-->
+									<div style = "padding : 5px;" class="col-sm-4 col-lg-6 col-md-4">
 										<div class="form-group">
 											<label for="price">價錢:</label>
 											<input type="number" class="form-control" min=0 step = 1 value = 1 id = "price"></input>
@@ -175,7 +175,7 @@
 										<label for="group">套餐內容</label>
 										<div class = "col-sm-12 col-lg-12 col-md-12 panel panel-default">
 											<div style = "padding : 5px;" class="col-sm-5 col-lg-5 col-md-5">
-												<span>(空白)</span>
+												<span id="item">(空白)</span>
 											</div>
 											<div style = "padding : 5px;" class="col-sm-5 col-lg-5 col-md-5">
 												<select class="selectpicker" style = "width:60%;float:left;" id = "comboMealSelect">
@@ -191,10 +191,10 @@
 												  </optgroup>
 												</select>
 												<span style = "float:left;">x</span>
-												<input type = "number" class = "form-control" style="height:23px;width:30%;float:left;padding-left:5px;padding-right:0px;">
+												<input id="itemNumber" type = "number" class = "form-control" style="height:23px;width:30%;float:left;padding-left:5px;padding-right:0px;">
 											</div>
 											<div class = "col-sm-2 col-lg-2 col-md-2">
-												<button class = "btn btn-success" style="height:100%">新增</button>
+												<button id="itemAdd" class = "btn btn-success" style="height:100%">新增</button>
 											</div>
 										</div>
 									</div>

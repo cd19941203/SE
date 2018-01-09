@@ -29,6 +29,8 @@ function updateData(myData)
 {
 	category = [];
 	menu = {};
+    var comboMealSelectDom = document.getElementById('comboMealSelect');
+    comboMealSelectDom.innerHTML = '';
 	for(var i=0; i < myData.length ; i++)
 	{
 		if(menu[ myData[i].type ] == undefined)
@@ -39,6 +41,19 @@ function updateData(myData)
 		}
 		menu[ myData[i].type ][ myData[i].name ] = i;
 	}
+    for(var type in menu)
+    {
+        var group = document.createElement('optgroup');
+        group.setAttribute('label', type);
+        for(var name in menu[type])
+        {
+            var option = document.createElement('option');
+            option.setAttribute('value', name);
+            option.innerHTML = name;
+            group.appendChild(option);
+        }
+        comboMealSelectDom.appendChild(group);
+    }
 	updateCategory();
 	updateMenu();
 	btnTrigger();
@@ -54,14 +69,24 @@ function viewOrderPage(orderID,isNew = false){
 	$('#addMealItem').hide();
 	if(debugMode)console.log("click " + orderID + " 編輯");
 	viewStatus = "order";
-	
+	orderID = parseInt(orderID);
+    
 	$('#OP_id').html(orderID);
-	if(!EditMode){
-		if(category[viewCategory] == "套餐")$('#comboMeal').show();
+	if(!thisIsNewMeal){
+		if(category[viewCategory] == "套餐")
+        {
+            $('#comboMeal').show();
+            var itemStr = '';
+            for(var i of data[orderID].item)
+                itemStr += i + '<br>';
+            document.getElementById('item').innerHTML = itemStr;
+        }
 		else $('#comboMeal').hide();
 		$('#OP_name').html(data[orderID].name);
+        document.getElementById('name').value = data[orderID].name;
 		$('#OP_price').html( (data[orderID].price).toLocaleString('en-US') );
-		$('#OP_image')[0].src='image/mealImage/'+data[orderID].name+'.jpg';
+        document.getElementById('price').value = data[orderID].price;
+		$('#OP_image')[0].src=data[orderID].image;
 	}
 	else{
 		if(editCategory[editViewCategory] == "套餐")$('#comboMeal').show();
@@ -148,19 +173,34 @@ function btnTrigger(){
 	});
 	$('#editOrder').unbind('click');
 	$('#editOrder').click(function(){
+        var mealID = parseInt($('#OP_id')[0].innerHTML);
+        var mealObject = {};
+        mealObject.type = editCategory[editViewCategory];
+        mealObject.name = document.getElementById('name').value;
+        mealObject.price = parseInt(document.getElementById('price').value);
+        mealObject.inventory = true;
+        mealObject.image = '/mealImage/default.jpg';
+        if(mealObject.type == "套餐")
+        {
+            var arr = document.getElementById('item').innerHTML.split('<br>');
+            arr.pop();
+            mealObject.item = arr;
+        }
+        if(document.getElementById('inputfile').value != "")
+        {
+            if(!(mealObject.type in uploadImages))
+                uploadImages[mealObject.type] = {};
+            uploadImages[mealObject.type][mealObject.name] = document.getElementById('inputfile').files[0];
+            document.getElementById('inputfile').value = "";
+            document.getElementById('filename').innerHTML = "None";
+        }
 		if(thisIsNewMeal)
 		{
-			
-			
-			
-			
+			editData.push(mealObject);
 		}
 		else
 		{
-			
-			
-			
-			
+            editData[mealID] = mealObject;
 		}
 		thisIsNewMeal = false;
 		viewMenuPage();
@@ -194,7 +234,6 @@ function btnTrigger(){
 			editMenu = JSON.parse(JSON.stringify(menu));
 			editViewCategory = JSON.parse(JSON.stringify(viewCategory));
 			
-			
 		}
 		else
 		{
@@ -204,6 +243,19 @@ function btnTrigger(){
 			$('#editCancel').hide();
 			$('#c_add').hide();
 			$('#addMealItem').hide();
+            
+            $.ajax({
+                sync: false,
+                url: "/updateMenu",
+                type: "post",
+                cache: false,
+                contentType: 'json',
+                data: editData,
+                success: function(data)
+                {
+                    swal("更新菜單",data,{timer: 10000, icon: "info"});
+                },
+            });
 		}
 	});
 	$('#editCancel').unbind('click');
@@ -221,32 +273,49 @@ function btnTrigger(){
 	});
 	$('#c_add').unbind('click');
 	$('#c_add').click(function(){
-		swal("NAME?", {
+		swal("請輸入餐點種類", {
 			closeOnClickOutside: false,
-			buttons: {
-				OK: {
-					text: "OK",
-					value: "OK",
-				},
-				cancel: "Cancel"
-			},
+            content: "input",
+            buttons: true
 		})
 		.then((value) => {
-			switch (value) {
-				case "OK":
-					var myTmp = "test";
-					//doSomething
-					editCategory.push(myTmp);
-					updateCategory();
-					console.log("QQ");
-					break;
-				default:
-					break;
-			}
+            if(value != null)
+            {
+                if(editCategory.indexOf(value)>=0)
+                {
+                    addNoty("請勿輸入重複餐點種類!!",notyType.error);
+                }
+                else
+                {
+                    editCategory.push(value);
+                    updateCategory();
+                }
+            }
 	})});
 	$('#addMeal').unbind('click');
 	$('#addMeal').click(function(){
+        thisIsNewMeal = true;
 		viewOrderPage( editData.length ,true);
+	});
+    $('#itemAdd').unbind('click');
+    $('#itemAdd').click(function(){
+        if(EditMode)
+        {
+            var selected = document.getElementById('comboMealSelect').options[document.getElementById('comboMealSelect').selectedIndex].value;
+            var number = document.getElementById('itemNumber').value;
+            var itemStr = document.getElementById('item').innerHTML;
+            var from = itemStr.indexOf(selected);
+            if(from >= 0)
+            {
+                var reg = new RegExp(selected+'\\*[0-9]+',"g");
+                itemStr = itemStr.replace(reg, selected+'*'+number);
+            }
+            else
+            {
+                itemStr += selected+'*'+number+'<br>'
+            }
+            document.getElementById('item').innerHTML = itemStr;
+        }
 	});
 }
 
