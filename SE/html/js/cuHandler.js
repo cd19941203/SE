@@ -7,7 +7,7 @@ function init()
 {
     url = new URL(window.location.href);
     m = url.searchParams.get('m');
-    //socket = io.connect('localhost:8787');
+    //socket = io.connect('140.121.197.192:9487');
 	socket = io.connect('140.121.197.192:9487');
 	if(m==null || m== 'cuMenu')
         socket.on('orderCancel',(data)=>{

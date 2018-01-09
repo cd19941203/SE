@@ -1,7 +1,7 @@
 var socket;
 
 function init(){
-	//socket = io.connect('localhost:8787');
+	//socket = io.connect('140.121.197.192:9487');
 	socket = io.connect('140.121.197.192:9487');
 	socket.on('orderAck',(data)=>{
 		document.getElementById("output2").innerHTML = JSON.stringify(data);
