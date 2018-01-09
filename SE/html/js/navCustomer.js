@@ -44,6 +44,9 @@ var str =
 '                    <li>'+
 '                        <a href="/index?m=cuHistory">History</a>'+
 '                    </li>'+
+'                    <li>'+
+'                        <a href="/index?m=cuTime">Time</a>'+
+'                    </li>'+
 '                </ul>'+
 '            </div>'+
 '            <!-- /.navbar-collapse -->'+

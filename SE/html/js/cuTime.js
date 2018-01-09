@@ -1,24 +1,25 @@
-var orderTime;
 function getSetting(isExample = false)
 {
 	if(!isExample)
-    $.ajax({
-        url: "/getSetting",
-		type: "get",
-		async:false,
-        success: function(data)
-        {
-            orderTime = data.orderTime;
-        }
-    });
+		$.ajax({
+			url: "/getSetting",
+			type: "get",
+			success: function(data)
+			{
+				var orderTime = data.orderTime;
+				for(var i = 0 ; i < 7;i++)
+				{ 
+					if(orderTime[i].begin == orderTime[i].end)
+						$('#'+i).html('closed');
+					else
+						$('#'+i).html(orderTime[i].begin + "~" + orderTime[i].end);
+				}
+			}
+		});
 	else orderTime = example.orderTime;
 }
 
 function init(){
 	getSetting();
-	for(var i = 0 ; i < 7;i++)
-	{
-		$('#'+i).html(orderTime.begin + "~" + orderTime.end);
-	}
 }
 addEventListener('load',init,false);
