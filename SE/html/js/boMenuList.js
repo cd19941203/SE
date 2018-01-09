@@ -32,7 +32,7 @@ function updateData(myData)
         tmpName = Object.getOwnPropertyNames(menu[category[i]]);
         for(var j=1;j<tmpName.length;j++)
         {
-            if(allData[counter].inventory)
+            if(allData[menu[category[i]][tmpName[j]]].inventory)
                 str+='	    <a href="#" class="list-group-item" id = "'+ category[i] +'_'+ j +'">'+ tmpName[j] +'</a>';
             else
             {

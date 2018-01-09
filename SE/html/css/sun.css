@@ -161,6 +161,11 @@ ul li ul
 {
 	cursor: pointer;
 }
+.boSettingBtn
+{
+	padding-left:9px;
+	padding-right:9px;
+}
 /* Let input type="number" noButton       NOW NOT USE
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
