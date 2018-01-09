@@ -71,7 +71,7 @@ function updateData(tmp = data) {
         for (var meal of tmp[key].meal)
             mealTemp.push([meal.name, meal.amount, meal.price * meal.amount]);
         if (tmp[key]["status"].includes(STATUS.toLocaleLowerCase()) || (STATUS == "WAIT" && tmp[key]["status"] == "completed")) {
-            webMake(new Order(tmp[key].orderNumber, tmp[key].account, "0988452145", tmp[key].beginTime, tmp[key].totalPrice, mealTemp));
+            webMake(new Order(tmp[key].orderNumber, tmp[key].account, "0988452145", tmp[key].expectTime, tmp[key].totalPrice, mealTemp));
         }
     }
     data = tmp;
