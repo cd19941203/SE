@@ -96,7 +96,8 @@ function getSetting(isExample = false)
 	if(!isExample)
     $.ajax({
         url: "/getSetting",
-        type: "get",
+		type: "get",
+		async:false,
         success: function(data)
         {
             orderTime = data.orderTime;
@@ -107,20 +108,21 @@ function getSetting(isExample = false)
 
 function submitChangeSetting(newSetting)
 {
+	console.log(newSetting);
     $.ajax({
         url: "/updateOrderTime",
         type: "post",
-        contentType: "application/json",
-        data: newSetting,
+        data: {data:JSON.stringify(newSetting)},
         success: function(data)
         {
-            swal(data ,"更改營業時間成功",{icon:'success'});
+			console.log(data);
+            //swal(data ,"更改營業時間成功",{icon:'success'});
         }
     });
 }
 function boSettinginit(){
 	btnTrigger();
-	getSetting(true);
+	getSetting();
 	for(var i = 0 ; i < 7; i++)
 	{
 		if(!(orderTime[i].begin == orderTime[i].end && orderTime[i].begin =="00:00")){
