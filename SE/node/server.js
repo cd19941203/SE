@@ -36,7 +36,7 @@ function datePlus8(x){
 	return x;
 }
 
-async function init(){
+function init(){
 	
 	////////////////////////////////////////////////////////////
 	// setting for parsing post data
@@ -279,7 +279,8 @@ async function init(){
 					var orderRes = JSON.parse(data);
 					orderNumber = orderRes['orderNumber'];
 					orderRes['status'] = 'new';
-					orderRes['beginTime'] = new Date();
+					orderRes['beginTime'] = getDate();
+					orderRes['expectTime']  = datePlus8(new Date(newOrder['expectTime']));
 					await order.updateOrder(orderNumber,{status:'new',meal:orderRes['meal'],totalPrice:orderRes['totalPrice'],expectTime:orderRes['expectTime'],beginTime:orderRes['beginTime']});
 					orderRes['userInfo'] = account.getUserInfo(socket.request.session.account);
 					delete orderRes['userInfo']['_id'];
@@ -629,7 +630,10 @@ async function init(){
 
 	app.post('/orderBan',async(req,res)=>{
 		try{
-			
+			var orderNumber = req.body.orderNumber;
+			if(typeof orderNumber === 'undefined')
+				res.send('err');
+			await order.orderStatusChange(orderNumner,'notComplete');
 		}catch(err){
 			res.send(err);
 		}
