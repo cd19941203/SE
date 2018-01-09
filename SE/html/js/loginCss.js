@@ -58,6 +58,9 @@ function register() {
         data: formData,
         success: function (data) {
             document.getElementById('note').innerHTML = data;
+
+            if (data == "success")
+                setTimeout(conFirmPage, 3000);
         },
         err: function (e) {
             document.getElementById('note').innerHTML = 'Some errors occur!!';
@@ -66,4 +69,14 @@ function register() {
         contentType: false,
         processData: false
     });
+}
+
+function conFirmPage() {
+    var account = $('#account').val();
+    var password = $('#password').val();
+
+    document.getElementById('body').innerHTML = loginDom;
+
+    $('#account').val(account);
+    $('#password').val(password);
 }
