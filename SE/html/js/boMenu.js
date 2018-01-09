@@ -3,47 +3,75 @@ var isSort = false;
 var viewStatus = "menu";
 var viewCategory = 0;
 var EditMode = false;
+var thisIsNewMeal = false;
 //--------------------------- Function about Data   ---------------------------//
+function updateCategory(){
+	var myCategory = "";
+	if(!EditMode){
+		for(var i=0;i<category.length;i++)
+		{
+			myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+category[i]+'</a>';
+		}
+	}
+	else
+	{
+		for(var i=0;i<editCategory.length;i++)
+		{
+			myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+editCategory[i]+'</a>';
+		}
+	}
+	if(!EditMode)myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "display:none; color:MediumBlue;">新增...</a>';
+	else myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "color:MediumBlue;">新增...</a>';
+	$('#categoryList').html(myCategory);
+	btnTrigger();
+}
 function updateData(myData)
 {
 	category = [];
-	menu = [];
+	menu = {};
 	for(var i=0; i < myData.length ; i++)
 	{
 		if(menu[ myData[i].type ] == undefined)
 		{
 			if(debugMode)console.log('add a category name is '+myData[i].type);
-			menu[ myData[i].type ] = [];
+			menu[ myData[i].type ] = {};
 			category.push(myData[i].type);
 		}
 		menu[ myData[i].type ][ myData[i].name ] = i;
 	}
-	var myCategory = "";
-	for(var i=0;i<category.length;i++)
-	{
-		myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+category[i]+'</a>';
-	}
-	myCategory += '<a href="#" class="list-group-item categoryAdd" id = "c_add" style = "display:none; color:MediumBlue;">新增...</a>';
-	$('#categoryList').html(myCategory);
+	updateCategory();
 	updateMenu();
 	btnTrigger();
 }
 function viewMenuPage(){
+	if(EditMode)$('#addMealItem').show();
 	updateMenu();
-	$('#MenuPage').show();$('#addMealItem').show();
+	$('#MenuPage').show();
 	$('#orderPage').hide();
+	viewStatus = "menu";
 }
-function viewOrderPage(orderID){
+function viewOrderPage(orderID,isNew = false){
+	$('#addMealItem').hide();
 	if(debugMode)console.log("click " + orderID + " 編輯");
 	viewStatus = "order";
 	
 	$('#OP_id').html(orderID);
-	$('#OP_name').html(data[orderID].name);
-	$('#OP_price').html( (data[orderID].price).toLocaleString('en-US') );
-	$('#OP_image')[0].src='image/mealImage/'+data[orderID].name+'.jpg';
-
-	
-	$('#MenuPage').hide();$('#addMealItem').hide();
+	if(!EditMode){
+		if(category[viewCategory] == "套餐")$('#comboMeal').show();
+		else $('#comboMeal').hide();
+		$('#OP_name').html(data[orderID].name);
+		$('#OP_price').html( (data[orderID].price).toLocaleString('en-US') );
+		$('#OP_image')[0].src='image/mealImage/'+data[orderID].name+'.jpg';
+	}
+	else{
+		if(editCategory[editViewCategory] == "套餐")$('#comboMeal').show();
+		else $('#comboMeal').hide();
+		$('#OP_name').html("新資料");
+		$('#OP_price').html( "0" );
+		$('#OP_image')[0].src='/mealImage/default.jpg';
+		thisIsNewMeal = true;
+	}
+	$('#MenuPage').hide();
 	$('#orderPage').show();
 	btnTrigger();
 }
@@ -101,11 +129,13 @@ function btnTrigger(){
 	$('.category').click(function(){
 		if(debugMode)console.log('categoryItem click');
 		viewCategory = parseInt($(this).attr('id').substr(2));
+		editViewCategory = parseInt($(this).attr('id').substr(2));
 		updateMenu();
 	});
 	$('#cancelOrder').unbind('click');
 	$('#cancelOrder').click(function(){
 		viewMenuPage();
+		thisIsNewMeal = false;
 	});
 	$('#inputfile').unbind('click');
 	$('#inputfile').change(function(){
@@ -116,20 +146,53 @@ function btnTrigger(){
 		$('#filename').html( tmp );
 		$('#filename').attr('title', ($(this).val()).replace(/fakepath/,"...") );
 	});
+	$('#editOrder').unbind('click');
 	$('#editOrder').click(function(){
+		if(thisIsNewMeal)
+		{
+			
+			
+			
+			
+		}
+		else
+		{
+			
+			
+			
+			
+		}
+		thisIsNewMeal = false;
 		viewMenuPage();
 	});
 	
 	
 	//function about EditMode
+	
+	$('#editCancel').click(function(){
+		updateCategory();
+	});
+	$('#edit').unbind('click');
 	$('#edit').click(function(){
+		if(viewStatus != "menu"){
+			addNoty("請先回到菜單頁面後再次嘗試。",notyType.error);
+			return;
+		}
 		EditMode = !EditMode;
 		if(EditMode)
 		{
 			$('#edit').addClass('btn-warning');
 			$('#edit').removeClass('btn-success');
+			$('#edit').html("完成");
+			$('#editCancel').show();
 			$('#c_add').show();
 			$('#addMealItem').show();
+			
+			//set initial  My menu variable			
+			editData = JSON.parse(JSON.stringify(data));
+			editCategory = JSON.parse(JSON.stringify(category));
+			editMenu = JSON.parse(JSON.stringify(menu));
+			editViewCategory = JSON.parse(JSON.stringify(viewCategory));
 			
 			
 		}
@@ -137,11 +200,54 @@ function btnTrigger(){
 		{
 			$('#edit').addClass('btn-success');
 			$('#edit').removeClass('btn-warning');
+			$('#edit').html("編輯");
+			$('#editCancel').hide();
 			$('#c_add').hide();
 			$('#addMealItem').hide();
 		}
 	});
-	
+	$('#editCancel').unbind('click');
+	$('#editCancel').click(function(){
+		if(viewStatus != "menu"){
+			addNoty("請先回到菜單頁面後再次嘗試。",notyType.error);
+			return;
+		}
+		EditMode = !EditMode;
+		$('#edit').addClass('btn-success');
+		$('#edit').removeClass('btn-warning');
+		$('#edit').html("編輯");
+		$('#editCancel').hide();
+		$('#c_add').hide();
+	});
+	$('#c_add').unbind('click');
+	$('#c_add').click(function(){
+		swal("NAME?", {
+			closeOnClickOutside: false,
+			buttons: {
+				OK: {
+					text: "OK",
+					value: "OK",
+				},
+				cancel: "Cancel"
+			},
+		})
+		.then((value) => {
+			switch (value) {
+				case "OK":
+					var myTmp = "test";
+					//doSomething
+					editCategory.push(myTmp);
+					updateCategory();
+					console.log("QQ");
+					break;
+				default:
+					break;
+			}
+	})});
+	$('#addMeal').unbind('click');
+	$('#addMeal').click(function(){
+		viewOrderPage( editData.length ,true);
+	});
 }
 
 function init(){
@@ -162,8 +268,8 @@ function init(){
 	});
 	$('#clearAll').click(function()
 	{
-		myOrder = [];
-		myOrderIndex = [];
+		myOrder = {};
+		myOrderIndex = {};
 		$('#order_list').html("");
 	});
 	btnTrigger();
