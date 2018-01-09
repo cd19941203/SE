@@ -18,7 +18,7 @@ function updateMenu(){
 			'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 			'                        <div class="thumbnail">                                                                      '+
 			'                            <div style = "width: 100%; height: 200px; display: table-cell; vertical-align: middle;"> '+
-			'                                <img src="'+ data[mydata].image +'" onerror="noImage(this);" alt="">                 '+
+			'                                <img src="'+ data[mydata].image +'" alt="">                 '+
 			'                            </div>                                                                                   '+
 			'                            <div class="caption">                                                                    '+
 			'                                <h4>                                                                                 '+

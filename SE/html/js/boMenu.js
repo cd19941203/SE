@@ -270,9 +270,17 @@ function btnTrigger(){
 			$('#c_add').hide();
 			$('#addMealItem').hide();
 			$('.btn-elect').hide();
+			
+			console.log("尚未刪除的送出資料");
+			console.log(editData);
+			//delete empty data
+			for(var i = editData.length-1; i >=0  ;i--)
+			{
+				if(editData[i]==undefined)editData.splice(i,1);
+			}
 			console.log("送出資料");
 			console.log(editData);
-            /*
+            
             $.ajax({
                 async: false,
                 url: "/updateMenu",
@@ -310,7 +318,7 @@ function btnTrigger(){
                     });
                 }
             }
-            */
+            
 		}
 	});
 	$('#editCancel').unbind('click');
@@ -392,7 +400,7 @@ function btnTrigger(){
             {
 				var thisCategory = editCategory[$(this).attr('id').substr(7)];
 				var thisMeal = $(this).siblings('b').html();
-				delete editData[ editMenu[ thisCategory ][ thisMeal ] ];
+				delete editData[editMenu[ thisCategory ][ thisMeal ]];
 				delete editMenu[thisCategory][thisMeal];
 				if(Object.getOwnPropertyNames(editMenu[thisCategory]).length == 0)
 				{
@@ -400,6 +408,7 @@ function btnTrigger(){
 				}
 				
 				swal("操作成功", "已刪除一筆資料", {timer: 10000, icon: "success"});
+				$(this).parent().parent().parent().parent().remove();
             }
 	})});
 }
