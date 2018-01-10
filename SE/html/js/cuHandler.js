@@ -32,7 +32,11 @@ function init()
 	});
     
     socket.on('newOrder',(data)=>{
-		swal("訂單已送出", "", {timer:30000,icon:"success"});
+        if(data=="success")
+		    swal("訂單已送出", "", {timer:30000,icon:"success"});
+        else
+            swal("訂單錯誤", "", {timer:30000,icon:"error
+            "});
 	});
     
     socket.on('orderModify',(data)=>{
