@@ -67,7 +67,9 @@ function btnTrigger(){
 				$("#week_"+ i +"_begin").attr('disabled',true);
 				$("#week_"+ i +"_end").attr('disabled',true);
 				$("#change_"+ i).attr('disabled',true);
+				$("#week_"+ i +"_begin").val("00:00");
 				orderTime[i].begin = "00:00";
+				$("#week_"+ i +"_end").val("00:00");
 				orderTime[i].end = "00:00";
 			}
 		}
