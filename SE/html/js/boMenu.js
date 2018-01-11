@@ -17,8 +17,27 @@ function updateCategory(){
 	{
 		for(var i=0;i<editCategory.length;i++)
 		{
-			myCategory += '<a href="#" class="list-group-item category" id = "c_'+i+'">'+editCategory[i]+'</a>';
+			myCategory +=
+			'<a href="#" class="list-group-item category" id = "c_'+i+'">'+
+				'<span class="glyphicon glyphicon-remove btnRemoveType" style="color:#CC0000;"></span>'+
+				editCategory[i]+
+			'</a>';
 		}
+
+		$(".btnRemoveType").click(function(){
+			delete editCategory[category[this.parentElement.id.substr(2)]];
+			editMenu[category[this.parentElement.id.substr(2)]] = {};
+			for(var i=0; i<editData.length; i++)
+			{
+				if(editData[i]['type']==category[this.parentElement.id.substr(2)])
+				{
+					editData.splice(i,1);
+					i--;
+				}
+			}
+			
+			this.parentElement.remove();
+		});
 	}
 	if(!EditMode)myCategory += '<a href="#" class="list-group-item list-group-item-warning categoryAdd" id = "c_add" style = "display:none;">新增...</a>';
 	else myCategory += '<a href="#" class="list-group-item list-group-item-warning categoryAdd" id = "c_add" >新增...</a>';
@@ -259,6 +278,24 @@ function btnTrigger(){
 			editMenu = JSON.parse(JSON.stringify(menu));
 			editViewCategory = JSON.parse(JSON.stringify(viewCategory));
 			
+			var str = '<span class="glyphicon glyphicon-remove btnRemoveType" style="color:#CC0000;"></span>';
+			for(var type of document.getElementById("categoryList").children)
+				if(type.id != "c_add" && type.innerText != "套餐")
+					type.innerHTML = str + type.innerHTML;
+			$(".btnRemoveType").click(function(){
+				delete editCategory[category[this.parentElement.id.substr(2)]];
+				editMenu[category[this.parentElement.id.substr(2)]] = {};
+				for(var i=0; i<editData.length; i++)
+				{
+					if(editData[i]['type']==category[this.parentElement.id.substr(2)])
+					{
+						editData.splice(i,1);
+						i--;
+					}
+				}
+				
+				this.parentElement.remove();
+			});
 		}
 		else
 		{
@@ -273,10 +310,23 @@ function btnTrigger(){
 			console.log("尚未刪除的送出資料");
 			console.log(editData);
 			//delete empty data
+			var mul=false;
 			for(var i = editData.length-1; i >=0  ;i--)
 			{
-				if(editData[i]==undefined)editData.splice(i,1);
+				if(editData[i]==undefined)
+					editData.splice(i,1);
+				if(editData[i]["type"]=='套餐')
+					mul = true;
 			}
+			if(!mul)
+				editData.push({
+						"image":"/mealImage/default.jpg",
+						"inventory":true,
+						"item":[],
+						"name":" ",
+						"price":0,
+						"type":"套餐"
+					});
 			console.log("送出資料");
 			console.log(editData);
             
@@ -336,6 +386,8 @@ function btnTrigger(){
 		$('#addMealItem').hide();
 		$('.btn-elect').hide();
 		updateMenu();
+		//$(".btnRemoveType").remove();
+		updateCategory();
 	});
 	$('#c_add').unbind('click');
 	$('#c_add').click(function(){
@@ -345,7 +397,7 @@ function btnTrigger(){
             buttons: true
 		})
 		.then((value) => {
-            if(value != null)
+            if(value != null && value.trim() != "")
             {
                 if(editCategory.indexOf(value)>=0)
                 {

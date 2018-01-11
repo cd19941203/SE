@@ -388,6 +388,7 @@ function init(){
 				res.redirect('/index');
 			}else{
 				res.send('err');
+				res.redirect('/index');
 			}
 		}catch(err){
 			console.log(err);
