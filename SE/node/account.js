@@ -175,7 +175,7 @@ async function sendVerificationCodes(userName, mail, verificationCodes) {
             //密件副本
             //bcc: '00357030@ntou.edu.tw',
             //主旨
-            subject: 'BFS 早餐店系統 註冊驗證碼 Hi :) ，這是 node.js 發送的測試信件', // Subject line
+            subject: 'BFS 早餐店系統 註冊驗證碼', // Subject line
             //純文字
             //text: 'Hello world2', // plaintext body
             //嵌入 html 的內文
