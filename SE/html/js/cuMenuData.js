@@ -23,7 +23,7 @@ function updateMenu(){
 		'                    <div class="col-sm-4 col-lg-4 col-md-4">                                                         '+
 		'                        <div class="thumbnail">                                                                      '+
 		'                            <div style = "width: 100%; height: 150px; display: table-cell; vertical-align: middle;"> '+
-		'                                <img src="'+data[mydata].image+'" alt="" style = "max-height:100%">                       '+
+		'                                <img src="'+data[mydata].image+'" alt="" style = "max-height: 150px; max-width: 100%; width: auto; height: auto; top: 0; left: 0; right: 0; margin: auto;">                       '+
 		'                            </div>                                                                                   '+
 		'                            <div class="caption">                                                                    '+
 		'                                <h4>                                                                                 '+
